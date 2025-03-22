@@ -11,7 +11,12 @@ const Navbar = () => {
   return (
     <nav className="relative w-full z-50 border-b border-white/10 bg-black/90 backdrop-blur-sm">
       <div className="container mx-auto flex items-center justify-between h-16">
-        <Link to="/" className="font-mono text-xl font-bold text-white">
+        <Link to="/" className="flex items-center font-mono text-xl font-bold text-white">
+          <img 
+            src="/lovable-uploads/3f33997c-c5f6-4835-b087-7fd5e1060a12.png" 
+            alt="InnovAIte Logo" 
+            className="h-10 mr-2" 
+          />
           InnovAIte
         </Link>
         

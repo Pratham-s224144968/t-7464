@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import FeatureCard from "@/components/FeatureCard";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
@@ -13,6 +14,11 @@ const Index = () => {
       {/* Hero Section */}
       <section id="home" className="pt-32 pb-24 bg-gradient-to-br from-blue-900/70 to-black">
         <div className="container mx-auto text-center">
+          <img 
+            src="/lovable-uploads/3f33997c-c5f6-4835-b087-7fd5e1060a12.png" 
+            alt="InnovAIte Logo" 
+            className="h-32 mx-auto mb-6" 
+          />
           <h1 className="text-5xl md:text-7xl font-mono font-bold mb-6 text-white">
             InnovAIte
           </h1>
@@ -81,16 +87,18 @@ const Index = () => {
           <div className="grid md:grid-cols-2 gap-8">
             <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 text-white">
                   <Lightbulb className="h-6 w-6 text-blue-400" />
-                  <span>AI Prototyping Lab</span>
+                  <Link to="/projects/ai-prototyping-lab" className="hover:text-blue-400 transition-colors">
+                    AI Prototyping Lab
+                  </Link>
                 </CardTitle>
-                <CardDescription className="text-white/70">
+                <CardDescription className="text-blue-200">
                   Exploring AI development platforms
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-white/80">
+                <p className="text-white/90">
                   A hands-on lab where student teams explore AI development platforms and test how AI can build applications rapidly for businesses and startups.
                 </p>
               </CardContent>
@@ -104,16 +112,18 @@ const Index = () => {
             
             <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 text-white">
                   <Code className="h-6 w-6 text-blue-400" />
-                  <span>AI Generalist Program</span>
+                  <Link to="/projects/ai-generalist-program" className="hover:text-blue-400 transition-colors">
+                    AI Generalist Program
+                  </Link>
                 </CardTitle>
-                <CardDescription className="text-white/70">
+                <CardDescription className="text-blue-200">
                   Knowledge-sharing for non-technical users
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-white/80">
+                <p className="text-white/90">
                   A knowledge-sharing program that researches AI tools for non-technical users and academics to boost productivity, creativity, and learning.
                 </p>
               </CardContent>
@@ -127,16 +137,18 @@ const Index = () => {
             
             <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 text-white">
                   <Webhook className="h-6 w-6 text-blue-400" />
-                  <span>Coming Soon</span>
+                  <Link to="/projects/coming-soon-1" className="hover:text-blue-400 transition-colors">
+                    Coming Soon
+                  </Link>
                 </CardTitle>
-                <CardDescription className="text-white/70">
+                <CardDescription className="text-blue-200">
                   New project under development
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-white/80">
+                <p className="text-white/90">
                   We're working on expanding our project portfolio. Stay tuned for our next innovative AI research initiative.
                 </p>
               </CardContent>
@@ -150,16 +162,18 @@ const Index = () => {
             
             <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 text-white">
                   <Network className="h-6 w-6 text-blue-400" />
-                  <span>Coming Soon</span>
+                  <Link to="/projects/coming-soon-2" className="hover:text-blue-400 transition-colors">
+                    Coming Soon
+                  </Link>
                 </CardTitle>
-                <CardDescription className="text-white/70">
+                <CardDescription className="text-blue-200">
                   Future innovation project
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-white/80">
+                <p className="text-white/90">
                   Another exciting project is in the pipeline. Check back later for updates on our newest AI research avenue.
                 </p>
               </CardContent>
@@ -254,11 +268,18 @@ const Index = () => {
       <footer className="bg-black border-t border-blue-900/30 py-12">
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-6 md:mb-0">
-              <p className="text-xl font-mono font-bold text-white mb-2">InnovAIte</p>
-              <p className="text-sm text-white/60">
-                A research initiative under Deakin University's SPARK 2026 program
-              </p>
+            <div className="mb-6 md:mb-0 flex items-center">
+              <img 
+                src="/lovable-uploads/3f33997c-c5f6-4835-b087-7fd5e1060a12.png" 
+                alt="InnovAIte Logo" 
+                className="h-12 mr-3" 
+              />
+              <div>
+                <p className="text-xl font-mono font-bold text-white mb-2">InnovAIte</p>
+                <p className="text-sm text-white/60">
+                  A research initiative under Deakin University's SPARK 2026 program
+                </p>
+              </div>
             </div>
             <div className="flex flex-col items-center md:items-end">
               <div className="flex space-x-6 mb-4">

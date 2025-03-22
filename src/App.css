@@ -51,6 +51,19 @@ body {
   box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
 }
 
+/* Text contrast helpers */
+.text-high-contrast {
+  color: #FFFFFF;
+}
+
+.text-medium-contrast {
+  color: #C8C8C9;
+}
+
+.text-blue-contrast {
+  color: #33C3F0;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
