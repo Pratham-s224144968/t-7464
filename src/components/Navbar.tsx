@@ -1,10 +1,23 @@
+
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Navbar = () => {
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleAuthAction = () => {
+    if (user) {
+      signOut();
+    } else {
+      navigate("/auth");
+    }
   };
 
   return (
@@ -53,10 +66,24 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="sm" className="text-white/80 hover:text-white hover:bg-white/10">
-            Login
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-white/80 hover:text-white hover:bg-white/10"
+            onClick={handleAuthAction}
+          >
+            {user ? "Logout" : "Login"}
           </Button>
-          <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
+          <Button 
+            size="sm" 
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+            onClick={() => {
+              if (!user) {
+                navigate("/auth");
+                // Set signup mode through state or URL parameter if needed
+              }
+            }}
+          >
             Get Started
           </Button>
         </div>
