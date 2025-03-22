@@ -14,7 +14,7 @@ const Index = () => {
       <section id="home" className="pt-32 pb-24 bg-gradient-to-br from-blue-900/70 to-black">
         <div className="container mx-auto text-center">
           <img 
-            src="/lovable-uploads/4ec33c8a-4720-48c1-9f62-02eaa41835cf.png" 
+            src="/lovable-uploads/235fd429-9a7d-4dcc-ae14-854ee92205a0.png" 
             alt="InnovAIte Logo" 
             className="hero-logo mx-auto mb-6" 
           />
@@ -269,9 +269,9 @@ const Index = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-6 md:mb-0 flex items-center">
               <img 
-                src="/lovable-uploads/4ec33c8a-4720-48c1-9f62-02eaa41835cf.png" 
+                src="/lovable-uploads/235fd429-9a7d-4dcc-ae14-854ee92205a0.png" 
                 alt="InnovAIte Logo" 
-                className="h-16 mr-3" 
+                className="h-20 mr-3" 
               />
               <div>
                 <p className="text-xl font-mono font-bold text-white mb-2">InnovAIte</p>

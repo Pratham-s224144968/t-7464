@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -13,9 +12,9 @@ const Navbar = () => {
       <div className="container mx-auto flex items-center justify-between h-16">
         <Link to="/" className="flex items-center font-mono text-xl font-bold text-white">
           <img 
-            src="/lovable-uploads/4ec33c8a-4720-48c1-9f62-02eaa41835cf.png" 
+            src="/lovable-uploads/235fd429-9a7d-4dcc-ae14-854ee92205a0.png" 
             alt="InnovAIte Logo" 
-            className="h-12 mr-2" 
+            className="h-14 mr-2" 
           />
           InnovAIte
         </Link>
