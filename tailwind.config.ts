@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -59,7 +60,8 @@ export default {
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'hero-gradient': 'linear-gradient(to bottom right, #3b82f6, #1d4ed8)',
+        'hero-gradient': 'linear-gradient(to bottom right, #1d4ed8, #000000)',
+        'blue-gradient': 'linear-gradient(to right, #1e40af, #1e3a8a)',
       },
       keyframes: {
         "accordion-down": {

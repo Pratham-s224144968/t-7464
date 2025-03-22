@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -8,44 +9,52 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="relative w-full z-50 border-b border-white/10">
+    <nav className="relative w-full z-50 border-b border-white/10 bg-black/90 backdrop-blur-sm">
       <div className="container mx-auto flex items-center justify-between h-16">
-        <Link to="/" className="font-mono text-xl font-bold">
-          MaxData
+        <Link to="/" className="font-mono text-xl font-bold text-white">
+          InnovAIte
         </Link>
         
         <div className="hidden md:flex items-center space-x-6">
           <button 
-            onClick={() => scrollToSection('features')} 
-            className="text-sm font-medium hover:text-primary"
+            onClick={() => scrollToSection('home')} 
+            className="text-sm font-medium text-white/80 hover:text-primary"
           >
-            Products
+            Home
           </button>
           <button 
-            onClick={() => scrollToSection('integrate')} 
-            className="text-sm font-medium hover:text-primary"
+            onClick={() => scrollToSection('about')} 
+            className="text-sm font-medium text-white/80 hover:text-primary"
           >
-            Solutions
+            About Us
           </button>
           <button 
-            onClick={() => scrollToSection('community')} 
-            className="text-sm font-medium hover:text-primary"
+            onClick={() => scrollToSection('projects')} 
+            className="text-sm font-medium text-white/80 hover:text-primary"
           >
-            Resources
+            Projects
           </button>
           <button 
-            onClick={() => scrollToSection('team')} 
-            className="text-sm font-medium hover:text-primary"
+            onClick={() => scrollToSection('gitlab')} 
+            className="text-sm font-medium text-white/80 hover:text-primary"
           >
-            Team
+            GitLab Repos
+          </button>
+          <button 
+            onClick={() => scrollToSection('contact')} 
+            className="text-sm font-medium text-white/80 hover:text-primary"
+          >
+            Contact
           </button>
         </div>
 
         <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="sm">
-            Sign In
+          <Button variant="ghost" size="sm" className="text-white/80 hover:text-white hover:bg-white/10">
+            Login
           </Button>
-          <Button size="sm">Try Free</Button>
+          <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
+            Get Started
+          </Button>
         </div>
       </div>
     </nav>

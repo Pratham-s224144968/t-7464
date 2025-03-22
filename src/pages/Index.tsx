@@ -1,185 +1,280 @@
-import { Database, Server, Network, Users, Code, Globe } from "lucide-react";
+
+import { Database, Server, Network, Users, Code, Globe, GitBranch, Lightbulb, Webhook, Cpu, Mail, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import FeatureCard from "@/components/FeatureCard";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black text-white">
       <Navbar />
       
       {/* Hero Section */}
-      <section className="pt-32 pb-24 bg-hero-gradient">
-        <div className="container mx-auto text-center text-white">
-          <h1 className="text-5xl md:text-7xl font-mono font-bold mb-6">
-            OPEN SOURCE
-            <br />
-            DATABASE
+      <section id="home" className="pt-32 pb-24 bg-gradient-to-br from-blue-900/70 to-black">
+        <div className="container mx-auto text-center">
+          <h1 className="text-5xl md:text-7xl font-mono font-bold mb-6 text-white">
+            InnovAIte
           </h1>
-          <p className="text-xl md:text-2xl max-w-2xl mx-auto mb-8 text-blue-50">
-            The leading cloud database service on the market, with unmatched data
-            distribution and mobility across AWS, Azure, and Google Cloud.
+          <p className="text-2xl max-w-2xl mx-auto mb-4 text-blue-200 font-medium">
+            Powering the Future of AI-Driven Innovation
+          </p>
+          <p className="text-lg max-w-3xl mx-auto mb-8 text-white/80">
+            InnovAIte is an AI-native innovation platform driven by students and researchers at Deakin University. 
+            We validate, prototype, and explore emerging AI tools to accelerate startup and research development across industries.
           </p>
           <div className="flex justify-center space-x-4">
-            <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
-              Get Started
+            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
+              Explore Our Work
             </Button>
             <Button size="lg" variant="outline" className="text-white border-white bg-transparent hover:bg-white/10">
-              Documentation
+              Learn More
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-24 bg-white">
+      {/* About Us Section */}
+      <section id="about" className="py-24 bg-black">
         <div className="container mx-auto">
-          <h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-600">
-            /CAPABILITIES
+          <h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500">
+            /ABOUT US
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <FeatureCard
-              title="Clustering"
-              description="Horizontal scalability with built-in auto-sharding to millions of nodes with automatic, synchronous replication for high availability."
-              icon={Database}
-            />
-            <FeatureCard
-              title="Persistence"
-              description="Keeps the dataset in memory for fast access, but can persist writes to permanent storage to survive reboots and system failures."
-              icon={Server}
-            />
-            <FeatureCard
-              title="Data structures"
-              description="Well-known as a 'data structure server', supports lists, sets, sorted sets, hashes, bit arrays and more. Fast and efficient."
-              icon={Network}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Community Section */}
-      <section id="community" className="py-24 bg-blue-600">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-mono font-bold text-white mb-12">
-            /COMMUNITY
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-6 rounded-lg bg-white/10 backdrop-blur">
-              <Users className="w-12 h-12 text-white mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">50K+</h3>
-              <p className="text-blue-100">Active Developers</p>
-            </div>
-            <div className="p-6 rounded-lg bg-white/10 backdrop-blur">
-              <Code className="w-12 h-12 text-white mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">1M+</h3>
-              <p className="text-blue-100">Lines of Code</p>
-            </div>
-            <div className="p-6 rounded-lg bg-white/10 backdrop-blur">
-              <Globe className="w-12 h-12 text-white mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">100+</h3>
-              <p className="text-blue-100">Countries</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Integration Section */}
-      <section id="integrate" className="py-24 bg-white">
-        <div className="container mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl font-mono font-bold mb-6 text-blue-600">/INTEGRATE</h2>
-              <p className="text-lg text-blue-600/80 mb-8">
-                Seamlessly integrate with your existing tech stack using our comprehensive API and extensive documentation. Support for multiple programming languages and frameworks.
-              </p>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                  <p className="text-blue-600">RESTful API endpoints</p>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                  <p className="text-blue-600">WebSocket support</p>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                  <p className="text-blue-600">GraphQL integration</p>
-                </div>
+          <div className="max-w-4xl mx-auto text-center">
+            <p className="text-xl text-white/90 mb-8 leading-relaxed">
+              InnovAIte is a student-led research company operating under Deakin University's SPARK 2026 initiative. 
+              Our aim is to identify, validate, and showcase cutting-edge AI tools and workflows that have the potential 
+              to reshape how businesses and academia adopt AI.
+            </p>
+            <p className="text-lg text-white/80 mb-8">
+              We work closely with Deakin staff, researchers, and industry mentors to ensure our projects 
+              have real-world applications and impact. Our collaborative approach brings together diverse 
+              perspectives and expertise to drive innovation in AI.
+            </p>
+            <div className="grid md:grid-cols-3 gap-8 mt-12">
+              <div className="p-6 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30">
+                <Users className="w-12 h-12 text-blue-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-2">Student-Led</h3>
+                <p className="text-white/70">Driven by ambitious students with fresh perspectives</p>
+              </div>
+              <div className="p-6 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30">
+                <Cpu className="w-12 h-12 text-blue-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-2">AI-Focused</h3>
+                <p className="text-white/70">Specializing in cutting-edge AI technologies</p>
+              </div>
+              <div className="p-6 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30">
+                <Globe className="w-12 h-12 text-blue-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-2">Industry Connected</h3>
+                <p className="text-white/70">Working with real businesses for practical solutions</p>
               </div>
             </div>
-            <div className="relative">
-              <img
-                src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7"
-                alt="Code on screen"
-                className="rounded-lg shadow-2xl"
-              />
+          </div>
+        </div>
+      </section>
+
+      {/* Projects Section */}
+      <section id="projects" className="py-24 bg-gradient-to-b from-black to-blue-950/50">
+        <div className="container mx-auto">
+          <h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500">
+            /PROJECTS
+          </h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Lightbulb className="h-6 w-6 text-blue-400" />
+                  <span>AI Prototyping Lab</span>
+                </CardTitle>
+                <CardDescription className="text-white/70">
+                  Exploring AI development platforms
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-white/80">
+                  A hands-on lab where student teams explore AI development platforms and test how AI can build applications rapidly for businesses and startups.
+                </p>
+              </CardContent>
+              <CardFooter>
+                <Button variant="outline" className="text-blue-400 border-blue-500/50 hover:bg-blue-950/50">
+                  <GitBranch className="mr-2 h-4 w-4" />
+                  View GitLab Repository
+                </Button>
+              </CardFooter>
+            </Card>
+            
+            <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Code className="h-6 w-6 text-blue-400" />
+                  <span>AI Generalist Program</span>
+                </CardTitle>
+                <CardDescription className="text-white/70">
+                  Knowledge-sharing for non-technical users
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-white/80">
+                  A knowledge-sharing program that researches AI tools for non-technical users and academics to boost productivity, creativity, and learning.
+                </p>
+              </CardContent>
+              <CardFooter>
+                <Button variant="outline" className="text-blue-400 border-blue-500/50 hover:bg-blue-950/50">
+                  <GitBranch className="mr-2 h-4 w-4" />
+                  View GitLab Repository
+                </Button>
+              </CardFooter>
+            </Card>
+            
+            <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Webhook className="h-6 w-6 text-blue-400" />
+                  <span>Coming Soon</span>
+                </CardTitle>
+                <CardDescription className="text-white/70">
+                  New project under development
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-white/80">
+                  We're working on expanding our project portfolio. Stay tuned for our next innovative AI research initiative.
+                </p>
+              </CardContent>
+              <CardFooter>
+                <Button variant="outline" className="text-blue-400 border-blue-500/50 hover:bg-blue-950/50" disabled>
+                  <GitBranch className="mr-2 h-4 w-4" />
+                  Coming Soon
+                </Button>
+              </CardFooter>
+            </Card>
+            
+            <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Network className="h-6 w-6 text-blue-400" />
+                  <span>Coming Soon</span>
+                </CardTitle>
+                <CardDescription className="text-white/70">
+                  Future innovation project
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-white/80">
+                  Another exciting project is in the pipeline. Check back later for updates on our newest AI research avenue.
+                </p>
+              </CardContent>
+              <CardFooter>
+                <Button variant="outline" className="text-blue-400 border-blue-500/50 hover:bg-blue-950/50" disabled>
+                  <GitBranch className="mr-2 h-4 w-4" />
+                  Coming Soon
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* GitLab Repositories Section */}
+      <section id="gitlab" className="py-24 bg-black">
+        <div className="container mx-auto">
+          <h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500">
+            /GITLAB REPOS
+          </h2>
+          <div className="max-w-4xl mx-auto">
+            <div className="space-y-6">
+              <div className="p-6 rounded-lg bg-blue-900/10 border border-blue-900/30 flex items-center justify-between">
+                <div className="flex items-center">
+                  <GitBranch className="h-8 w-8 text-blue-400 mr-4" />
+                  <div>
+                    <h3 className="text-lg font-medium text-white">AI Prototyping Lab Repository</h3>
+                    <p className="text-sm text-white/70">Source code and documentation for our AI prototyping projects</p>
+                  </div>
+                </div>
+                <Button className="bg-blue-600 hover:bg-blue-700">
+                  View Repo
+                </Button>
+              </div>
+              
+              <div className="p-6 rounded-lg bg-blue-900/10 border border-blue-900/30 flex items-center justify-between">
+                <div className="flex items-center">
+                  <GitBranch className="h-8 w-8 text-blue-400 mr-4" />
+                  <div>
+                    <h3 className="text-lg font-medium text-white">AI Generalist Program Repository</h3>
+                    <p className="text-sm text-white/70">Resources and guides for non-technical AI adoption</p>
+                  </div>
+                </div>
+                <Button className="bg-blue-600 hover:bg-blue-700">
+                  View Repo
+                </Button>
+              </div>
+              
+              <div className="p-6 rounded-lg bg-blue-900/10 border border-blue-900/30 flex items-center justify-between">
+                <div className="flex items-center">
+                  <GitBranch className="h-8 w-8 text-blue-400 mr-4" />
+                  <div>
+                    <h3 className="text-lg font-medium text-white">GitLab Access Guide</h3>
+                    <p className="text-sm text-white/70">How to access and contribute to our repositories</p>
+                  </div>
+                </div>
+                <Button className="bg-blue-600 hover:bg-blue-700">
+                  View Guide
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Team Section */}
-      <section id="team" className="py-24 bg-blue-600">
+      {/* Contact Section */}
+      <section id="contact" className="py-24 bg-gradient-to-t from-blue-950/30 to-black">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-mono font-bold mb-12 text-white">/TEAM</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="p-6">
-              <img
-                src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81"
-                alt="Team collaboration"
-                className="w-full h-48 object-cover rounded-lg mb-4"
-              />
-              <h3 className="text-lg font-semibold mb-2 text-white">Enterprise Support</h3>
-              <p className="text-blue-100">24/7 dedicated team support</p>
-            </div>
-            <div className="p-6">
-              <img
-                src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e"
-                alt="Robot"
-                className="w-full h-48 object-cover rounded-lg mb-4"
-              />
-              <h3 className="text-lg font-semibold mb-2 text-white">AI Integration</h3>
-              <p className="text-blue-100">Advanced ML capabilities</p>
-            </div>
-            <div className="p-6">
-              <img
-                src="https://images.unsplash.com/photo-1483058712412-4245e9b90334"
-                alt="Technology"
-                className="w-full h-48 object-cover rounded-lg mb-4"
-              />
-              <h3 className="text-lg font-semibold mb-2 text-white">Modern Stack</h3>
-              <p className="text-blue-100">Latest tech implementation</p>
-            </div>
-            <div className="p-6">
-              <img
-                src="https://images.unsplash.com/photo-1721322800607-8c38375eef04"
-                alt="Smart living"
-                className="w-full h-48 object-cover rounded-lg mb-4"
-              />
-              <h3 className="text-lg font-semibold mb-2 text-white">Smart Solutions</h3>
-              <p className="text-blue-100">Intelligent automation</p>
+          <h2 className="text-3xl font-mono font-bold mb-12 text-blue-500">
+            /CONTACT US
+          </h2>
+          <div className="max-w-lg mx-auto">
+            <p className="text-lg text-white/80 mb-8">
+              Interested in collaborating with InnovAIte or learning more about our projects? 
+              We'd love to hear from you!
+            </p>
+            <div className="p-8 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30">
+              <Mail className="w-12 h-12 text-blue-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-white mb-4">Get In Touch</h3>
+              <p className="text-white/70 mb-6">
+                Email us at: <a href="mailto:contact@innovaite.ai" className="text-blue-400 hover:underline">contact@innovaite.ai</a>
+              </p>
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 w-full">
+                Send Message
+              </Button>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-blue-100 py-12">
+      <footer className="bg-black border-t border-blue-900/30 py-12">
         <div className="container mx-auto">
-          <div className="flex justify-between items-center">
-            <p className="text-sm text-blue-600">
-              © 2024 MaxData Inc. All rights reserved.
-            </p>
-            <div className="flex space-x-6">
-              <a href="#" className="text-blue-600 hover:text-blue-700">
-                Twitter
-              </a>
-              <a href="#" className="text-blue-600 hover:text-blue-700">
-                GitHub
-              </a>
-              <a href="#" className="text-blue-600 hover:text-blue-700">
-                Discord
-              </a>
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="mb-6 md:mb-0">
+              <p className="text-xl font-mono font-bold text-white mb-2">InnovAIte</p>
+              <p className="text-sm text-white/60">
+                A research initiative under Deakin University's SPARK 2026 program
+              </p>
+            </div>
+            <div className="flex flex-col items-center md:items-end">
+              <div className="flex space-x-6 mb-4">
+                <a href="#" className="text-white/60 hover:text-blue-400 transition-colors">
+                  <Mail className="h-5 w-5" />
+                </a>
+                <a href="#" className="text-white/60 hover:text-blue-400 transition-colors">
+                  <GitBranch className="h-5 w-5" />
+                </a>
+                <a href="#" className="text-white/60 hover:text-blue-400 transition-colors">
+                  <Globe className="h-5 w-5" />
+                </a>
+              </div>
+              <p className="text-sm text-white/60 flex items-center">
+                Made with <Heart className="h-4 w-4 mx-1 text-blue-500" /> by InnovAIte
+              </p>
             </div>
           </div>
         </div>
