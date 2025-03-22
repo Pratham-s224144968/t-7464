@@ -64,6 +64,17 @@ body {
   color: #33C3F0;
 }
 
+/* Logo sizing for specific sections */
+.hero-logo {
+  height: 140px;
+  width: auto;
+}
+
+.footer-logo {
+  height: 14px;
+  width: auto;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

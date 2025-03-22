@@ -1,4 +1,3 @@
-
 import { Database, Server, Network, Users, Code, Globe, GitBranch, Lightbulb, Webhook, Cpu, Mail, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
@@ -15,9 +14,9 @@ const Index = () => {
       <section id="home" className="pt-32 pb-24 bg-gradient-to-br from-blue-900/70 to-black">
         <div className="container mx-auto text-center">
           <img 
-            src="/lovable-uploads/3f33997c-c5f6-4835-b087-7fd5e1060a12.png" 
+            src="/lovable-uploads/4ec33c8a-4720-48c1-9f62-02eaa41835cf.png" 
             alt="InnovAIte Logo" 
-            className="h-32 mx-auto mb-6" 
+            className="hero-logo mx-auto mb-6" 
           />
           <h1 className="text-5xl md:text-7xl font-mono font-bold mb-6 text-white">
             InnovAIte
@@ -270,9 +269,9 @@ const Index = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-6 md:mb-0 flex items-center">
               <img 
-                src="/lovable-uploads/3f33997c-c5f6-4835-b087-7fd5e1060a12.png" 
+                src="/lovable-uploads/4ec33c8a-4720-48c1-9f62-02eaa41835cf.png" 
                 alt="InnovAIte Logo" 
-                className="h-12 mr-3" 
+                className="h-16 mr-3" 
               />
               <div>
                 <p className="text-xl font-mono font-bold text-white mb-2">InnovAIte</p>
