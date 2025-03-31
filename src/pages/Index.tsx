@@ -1,5 +1,4 @@
-
-import { Database, Server, Network, Users, Code, Globe, GitBranch, Lightbulb, Webhook, Cpu, Mail, Heart, CalendarDays, FileText, MessageSquare, GitlabLogo } from "lucide-react";
+import { Database, Server, Network, Users, Code, Globe, GitMerge, Lightbulb, Webhook, Cpu, Mail, Heart, CalendarDays, FileText, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import FeatureCard from "@/components/FeatureCard";
@@ -204,7 +203,7 @@ const Index = () => {
                     className="text-blue-400 border-blue-500/50 hover:bg-blue-950/50"
                     onClick={() => window.open('https://gitlab.deakin.edu.au/innovaite/prototyping', '_blank')}
                   >
-                    <GitBranch className="mr-2 h-4 w-4" />
+                    <GitMerge className="mr-2 h-4 w-4" />
                     View GitLab Repository
                   </Button>
                 </CardFooter>
@@ -241,7 +240,7 @@ const Index = () => {
                     className="text-blue-400 border-blue-500/50 hover:bg-blue-950/50"
                     onClick={() => window.open('https://gitlab.deakin.edu.au/innovaite/generalist', '_blank')}
                   >
-                    <GitBranch className="mr-2 h-4 w-4" />
+                    <GitMerge className="mr-2 h-4 w-4" />
                     View GitLab Repository
                   </Button>
                 </CardFooter>
@@ -274,7 +273,7 @@ const Index = () => {
                 </CardContent>
                 <CardFooter>
                   <Button variant="outline" className="text-blue-400 border-blue-500/50 hover:bg-blue-950/50" disabled>
-                    <GitBranch className="mr-2 h-4 w-4" />
+                    <GitMerge className="mr-2 h-4 w-4" />
                     Coming Soon
                   </Button>
                 </CardFooter>
@@ -307,7 +306,7 @@ const Index = () => {
                 </CardContent>
                 <CardFooter>
                   <Button variant="outline" className="text-blue-400 border-blue-500/50 hover:bg-blue-950/50" disabled>
-                    <GitBranch className="mr-2 h-4 w-4" />
+                    <GitMerge className="mr-2 h-4 w-4" />
                     Coming Soon
                   </Button>
                 </CardFooter>
@@ -347,7 +346,7 @@ const Index = () => {
                 whileHover={{ scale: 1.02 }}
               >
                 <div className="flex items-center">
-                  <GitlabLogo className="h-8 w-8 text-blue-400 mr-4" />
+                  <GitMerge className="h-8 w-8 text-blue-400 mr-4" />
                   <div>
                     <h3 className="text-lg font-medium text-white">AI Prototyping Lab Repository</h3>
                     <p className="text-sm text-white/70">Source code and documentation for our AI prototyping projects</p>
@@ -370,7 +369,7 @@ const Index = () => {
                 whileHover={{ scale: 1.02 }}
               >
                 <div className="flex items-center">
-                  <GitlabLogo className="h-8 w-8 text-blue-400 mr-4" />
+                  <GitMerge className="h-8 w-8 text-blue-400 mr-4" />
                   <div>
                     <h3 className="text-lg font-medium text-white">AI Generalist Program Repository</h3>
                     <p className="text-sm text-white/70">Resources and guides for non-technical AI adoption</p>
@@ -393,7 +392,7 @@ const Index = () => {
                 whileHover={{ scale: 1.02 }}
               >
                 <div className="flex items-center">
-                  <GitlabLogo className="h-8 w-8 text-blue-400 mr-4" />
+                  <GitMerge className="h-8 w-8 text-blue-400 mr-4" />
                   <div>
                     <h3 className="text-lg font-medium text-white">GitLab Access Guide</h3>
                     <p className="text-sm text-white/70">How to access and contribute to our repositories</p>
@@ -601,7 +600,7 @@ const Index = () => {
                   <Mail className="h-5 w-5" />
                 </a>
                 <a href="https://gitlab.deakin.edu.au/innovaite/" className="text-white/60 hover:text-blue-400 transition-colors">
-                  <GitBranch className="h-5 w-5" />
+                  <GitMerge className="h-5 w-5" />
                 </a>
                 <a href="https://teams.microsoft.com/l/team/19%3AcW6v8QDG1uJuK3IebazxDFvL7RLh8SPVLP7ZMK8jCH01%40thread.tacv2/conversations?groupId=64f97721-41a3-47c1-adad-e07a0e609089&tenantId=d02378ec-1688-46d5-8540-1c28b5f470f6" className="text-white/60 hover:text-blue-400 transition-colors">
                   <MessageSquare className="h-5 w-5" />

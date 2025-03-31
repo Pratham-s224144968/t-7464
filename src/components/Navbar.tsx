@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { GitlabLogo, MessageSquare, FileText } from "lucide-react";
+import { GitMerge, MessageSquare, FileText } from "lucide-react";
 import { motion } from "@/components/ui/motion";
 
 const Navbar = () => {
@@ -71,7 +71,7 @@ const Navbar = () => {
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
             <span className="flex items-center">
-              GitLab <GitlabLogo className="ml-1 h-3 w-3" />
+              GitLab <GitMerge className="ml-1 h-3 w-3" />
             </span>
           </motion.button>
           <motion.button 
