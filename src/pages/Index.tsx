@@ -1,4 +1,3 @@
-
 import { Database, Server, Network, Users, Code, Globe, GitMerge, Lightbulb, Webhook, Cpu, Mail, Heart, CalendarDays, FileText, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
@@ -24,7 +23,7 @@ const Index = () => {
           <motion.img 
             src="/lovable-uploads/2ac77590-a08e-4983-bafa-7be5dc24647b.png" 
             alt="InnovAIte Logo" 
-            className="mx-auto mb-6 h-48"
+            className="mx-auto mb-6 h-56"
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
