@@ -34,7 +34,7 @@ const Navbar = () => {
           <img 
             src="/lovable-uploads/2ac77590-a08e-4983-bafa-7be5dc24647b.png" 
             alt="InnovAIte Logo" 
-            className="h-12 mr-2" 
+            className="h-10 mr-2" 
           />
           InnovAIte
         </Link>
