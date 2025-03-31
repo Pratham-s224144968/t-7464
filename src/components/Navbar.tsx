@@ -32,9 +32,9 @@ const Navbar = () => {
       <div className="container mx-auto flex items-center justify-between h-16">
         <Link to="/" className="flex items-center font-mono text-xl font-bold text-white">
           <img 
-            src="/lovable-uploads/3f33997c-c5f6-4835-b087-7fd5e1060a12.png" 
+            src="/lovable-uploads/2ac77590-a08e-4983-bafa-7be5dc24647b.png" 
             alt="InnovAIte Logo" 
-            className="h-14 mr-2" 
+            className="h-10 mr-2" 
           />
           InnovAIte
         </Link>

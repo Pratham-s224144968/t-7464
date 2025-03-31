@@ -1,3 +1,4 @@
+
 import { Database, Server, Network, Users, Code, Globe, GitMerge, Lightbulb, Webhook, Cpu, Mail, Heart, CalendarDays, FileText, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
@@ -21,9 +22,9 @@ const Index = () => {
       >
         <div className="container mx-auto text-center">
           <motion.img 
-            src="/lovable-uploads/3f33997c-c5f6-4835-b087-7fd5e1060a12.png" 
+            src="/lovable-uploads/2ac77590-a08e-4983-bafa-7be5dc24647b.png" 
             alt="InnovAIte Logo" 
-            className="hero-logo mx-auto mb-6"
+            className="mx-auto mb-6 h-36"
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
@@ -398,7 +399,10 @@ const Index = () => {
                     <p className="text-sm text-white/70">How to access and contribute to our repositories</p>
                   </div>
                 </div>
-                <Button className="bg-blue-600 hover:bg-blue-700">
+                <Button 
+                  className="bg-blue-600 hover:bg-blue-700"
+                  onClick={() => window.open('https://gitlab.deakin.edu.au/innovaite', '_blank')}
+                >
                   View Guide
                 </Button>
               </motion.div>
@@ -583,9 +587,9 @@ const Index = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-6 md:mb-0 flex items-center">
               <img 
-                src="/lovable-uploads/3f33997c-c5f6-4835-b087-7fd5e1060a12.png" 
+                src="/lovable-uploads/2ac77590-a08e-4983-bafa-7be5dc24647b.png" 
                 alt="InnovAIte Logo" 
-                className="h-20 mr-3" 
+                className="h-16 mr-3" 
               />
               <div>
                 <p className="text-xl font-mono font-bold text-white mb-2">InnovAIte</p>
@@ -599,10 +603,10 @@ const Index = () => {
                 <a href="mailto:contact@innovaite.ai" className="text-white/60 hover:text-blue-400 transition-colors">
                   <Mail className="h-5 w-5" />
                 </a>
-                <a href="https://gitlab.deakin.edu.au/innovaite/" className="text-white/60 hover:text-blue-400 transition-colors">
+                <a href="https://gitlab.deakin.edu.au/innovaite/" target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-blue-400 transition-colors">
                   <GitMerge className="h-5 w-5" />
                 </a>
-                <a href="https://teams.microsoft.com/l/team/19%3AcW6v8QDG1uJuK3IebazxDFvL7RLh8SPVLP7ZMK8jCH01%40thread.tacv2/conversations?groupId=64f97721-41a3-47c1-adad-e07a0e609089&tenantId=d02378ec-1688-46d5-8540-1c28b5f470f6" className="text-white/60 hover:text-blue-400 transition-colors">
+                <a href="https://teams.microsoft.com/l/team/19%3AcW6v8QDG1uJuK3IebazxDFvL7RLh8SPVLP7ZMK8jCH01%40thread.tacv2/conversations?groupId=64f97721-41a3-47c1-adad-e07a0e609089&tenantId=d02378ec-1688-46d5-8540-1c28b5f470f6" target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-blue-400 transition-colors">
                   <MessageSquare className="h-5 w-5" />
                 </a>
               </div>
