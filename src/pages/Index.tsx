@@ -10,7 +10,7 @@ const Index = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <motion.section id="home" className="pt-32 pb-24 bg-gradient-to-br from-blue-900/70 to-black" initial={{
+      <motion.section id="home" className="pt-28 pb-24 bg-gradient-to-br from-blue-900/70 to-black" initial={{
       opacity: 0
     }} animate={{
       opacity: 1
@@ -27,7 +27,7 @@ const Index = () => {
         }} transition={{
           delay: 0.2,
           duration: 0.5
-        }} className="mx-auto mb-6 h-56 object-contain" />
+        }} className="mx-auto mb-4 h-72 w-auto object-contain" />
           <motion.h1 className="text-5xl md:text-7xl font-mono font-bold mb-6 text-white" initial={{
           y: 30,
           opacity: 0
