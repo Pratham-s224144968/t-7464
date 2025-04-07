@@ -5,6 +5,7 @@ import FeatureCard from "@/components/FeatureCard";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { motion } from "@/components/ui/motion";
+
 const Index = () => {
   return <div className="min-h-screen bg-black text-white">
       <Navbar />
@@ -27,7 +28,7 @@ const Index = () => {
         }} transition={{
           delay: 0.2,
           duration: 0.5
-        }} className="mx-auto mb-4 h-72 w-auto object-contain" />
+        }} className="mx-auto mb-0 h-80 w-auto object-contain" />
           <motion.h1 className="text-5xl md:text-7xl font-mono font-bold mb-6 text-white" initial={{
           y: 30,
           opacity: 0
