@@ -5,7 +5,6 @@ import FeatureCard from "@/components/FeatureCard";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { motion } from "@/components/ui/motion";
-
 const Index = () => {
   return <div className="min-h-screen bg-black text-white">
       <Navbar />
@@ -19,7 +18,7 @@ const Index = () => {
       duration: 0.6
     }}>
         <div className="container mx-auto text-center">
-          <motion.img src="/lovable-uploads/2ac77590-a08e-4983-bafa-7be5dc24647b.png" alt="InnovAIte Logo" initial={{
+          <motion.img alt="InnovAIte Logo" initial={{
           y: -50,
           opacity: 0
         }} animate={{
@@ -28,7 +27,7 @@ const Index = () => {
         }} transition={{
           delay: 0.2,
           duration: 0.5
-        }} className="mx-auto h-120 w-auto object-contain -mb-15" />
+        }} className="mx-auto h-120 w-auto object-contain -mb-15" src="/lovable-uploads/d5b2335e-34cd-4237-baa8-71bf8f1c0ccf.png" />
           <motion.h1 className="text-5xl md:text-7xl font-mono font-bold mb-6 text-white" initial={{
           y: 30,
           opacity: 0
