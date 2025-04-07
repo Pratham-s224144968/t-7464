@@ -28,7 +28,7 @@ const Index = () => {
         }} transition={{
           delay: 0.2,
           duration: 0.5
-        }} className="mx-auto h-120 w-auto object-contain" />
+        }} className="mx-auto h-120 w-auto object-contain -mb-15" />
           <motion.h1 className="text-5xl md:text-7xl font-mono font-bold mb-6 text-white" initial={{
           y: 30,
           opacity: 0
