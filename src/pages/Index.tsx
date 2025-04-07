@@ -27,7 +27,7 @@ const Index = () => {
         }} transition={{
           delay: 0.2,
           duration: 0.5
-        }} className="mx-auto h-120 w-auto object-contain" src="/lovable-uploads/7b9b7ff1-8cf0-4f74-a362-00f0ceaf28e9.png" />
+        }} src="/lovable-uploads/7b9b7ff1-8cf0-4f74-a362-00f0ceaf28e9.png" className="mx-auto h-150 w-auto object-contain" />
           <motion.h1 className="text-5xl md:text-7xl font-mono font-bold mb-6 text-white" initial={{
           y: 30,
           opacity: 0
