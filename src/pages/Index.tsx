@@ -1,13 +1,19 @@
-
-import { Database, Server, Network, Users, Code, Globe, GitMerge, Lightbulb, Webhook, Cpu, Mail, Heart, CalendarDays, FileText, MessageSquare } from "lucide-react";
+import { Database, Server, Network, Users, Code, Globe, GitMerge, Lightbulb, Webhook, Cpu, Mail, Heart, CalendarDays, FileText, MessageSquare, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import FeatureCard from "@/components/FeatureCard";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { motion } from "@/components/ui/motion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { useState } from "react";
 
 const Index = () => {
+  const [isCommsOpen, setIsCommsOpen] = useState(false);
+  const [isSprintOpen, setIsSprintOpen] = useState(false);
+  const [isCodeOpen, setIsCodeOpen] = useState(false);
+
   return <div className="min-h-screen bg-black text-white">
       <Navbar />
       
@@ -291,8 +297,8 @@ const Index = () => {
         </div>
       </motion.section>
 
-      {/* Team Section - NEW */}
-      <motion.section id="team" className="py-20 bg-gradient-to-b from-black to-blue-950/50" initial={{
+      {/* Company Leadership Section - NEW */}
+      <motion.section id="leadership" className="py-20 bg-black" initial={{
       opacity: 0
     }} whileInView={{
       opacity: 1
@@ -314,46 +320,138 @@ const Index = () => {
         }} viewport={{
           once: true
         }}>
-            /OUR TEAM
+            /COMPANY PILLARS
           </motion.h2>
           
-          <div className="max-w-4xl mx-auto">
-            <motion.p className="text-center text-white/80 mb-10" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }} viewport={{ once: true }}>
-              InnovAIte brings together talented students, researchers, and industry mentors who are passionate about AI innovation.
-            </motion.p>
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-20">
+            {/* Key Leadership */}
+            {[
+              { title: "Product Owner", name: "Jesse Mcmeikan", icon: Users },
+              { title: "Company Director", name: "Leon Yang", icon: Briefcase },
+              { title: "Company Mentor", name: "Scott West", icon: Lightbulb }
+            ].map((leader, index) => (
+              <motion.div 
+                key={leader.title}
+                className="p-6 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30 text-center hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + index * 0.1, duration: 0.5 }}
+                viewport={{ once: true }}
+              >
+                <div className="flex justify-center mb-4">
+                  <div className="rounded-full bg-blue-500/10 p-5">
+                    <leader.icon className="w-10 h-10 text-blue-400" />
+                  </div>
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2">{leader.title}</h3>
+                <p className="text-lg text-blue-300">{leader.name}</p>
+              </motion.div>
+            ))}
+          </div>
+          
+          {/* Leadership Teams */}
+          <motion.h3 
+            className="text-2xl font-semibold text-center text-white mb-10" 
+            initial={{ y: 20, opacity: 0 }} 
+            whileInView={{ y: 0, opacity: 1 }} 
+            transition={{ delay: 0.3, duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            Leadership Teams
+          </motion.h3>
+          
+          <div className="max-w-2xl mx-auto space-y-4">
+            {/* Communications Team */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <Collapsible
+                open={isCommsOpen}
+                onOpenChange={setIsCommsOpen}
+                className="w-full"
+              >
+                <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg bg-blue-900/30 p-4 text-left font-medium hover:bg-blue-900/50 transition-colors">
+                  <div className="flex items-center">
+                    <MessageSquare className="mr-3 h-5 w-5 text-blue-400" />
+                    <span className="text-lg text-white">Communications Leads</span>
+                  </div>
+                  <ChevronDown className={`h-5 w-5 text-blue-400 transition-transform duration-200 ${isCommsOpen ? "transform rotate-180" : ""}`} />
+                </CollapsibleTrigger>
+                <CollapsibleContent className="bg-blue-950/30 rounded-b-lg p-4 space-y-2 border-x border-b border-blue-500/30">
+                  <p className="text-white/90">Team Lead: Sarah Johnson</p>
+                  <p className="text-white/90">Members:</p>
+                  <ul className="list-disc list-inside pl-4 text-white/80 space-y-1">
+                    <li>Michael Chen - Social Media</li>
+                    <li>Priya Patel - Internal Communications</li>
+                    <li>David Wilson - External Relations</li>
+                  </ul>
+                </CollapsibleContent>
+              </Collapsible>
+            </motion.div>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {/* These would ideally be populated from a data source */}
-              <TeamMemberCard 
-                name="Team Lead"
-                role="Project Coordinator"
-                imageUrl="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
-                delay={0.3}
-              />
-              <TeamMemberCard 
-                name="AI Researcher"
-                role="ML Specialist"
-                imageUrl="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
-                delay={0.4}
-              />
-              <TeamMemberCard 
-                name="Developer"
-                role="Full Stack Engineer"
-                imageUrl="https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
-                delay={0.5}
-              />
-              <TeamMemberCard 
-                name="Designer"
-                role="UX/UI Specialist"
-                imageUrl="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80"
-                delay={0.6}
-              />
-            </div>
+            {/* Sprint Team */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <Collapsible
+                open={isSprintOpen}
+                onOpenChange={setIsSprintOpen}
+                className="w-full"
+              >
+                <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg bg-blue-900/30 p-4 text-left font-medium hover:bg-blue-900/50 transition-colors">
+                  <div className="flex items-center">
+                    <CalendarDays className="mr-3 h-5 w-5 text-blue-400" />
+                    <span className="text-lg text-white">Sprint Leads</span>
+                  </div>
+                  <ChevronDown className={`h-5 w-5 text-blue-400 transition-transform duration-200 ${isSprintOpen ? "transform rotate-180" : ""}`} />
+                </CollapsibleTrigger>
+                <CollapsibleContent className="bg-blue-950/30 rounded-b-lg p-4 space-y-2 border-x border-b border-blue-500/30">
+                  <p className="text-white/90">Team Lead: Alex Rodriguez</p>
+                  <p className="text-white/90">Members:</p>
+                  <ul className="list-disc list-inside pl-4 text-white/80 space-y-1">
+                    <li>Emma Watson - Planning</li>
+                    <li>Carlos Jimenez - Execution</li>
+                    <li>Sophia Lee - Review & Retrospective</li>
+                  </ul>
+                </CollapsibleContent>
+              </Collapsible>
+            </motion.div>
             
-            <motion.div className="text-center mt-10" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.7, duration: 0.5 }} viewport={{ once: true }}>
-              <Button variant="outline" className="text-blue-400 border-blue-500/50 hover:bg-blue-950/50">
-                Join Our Team
-              </Button>
+            {/* Code Integration Team */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <Collapsible
+                open={isCodeOpen}
+                onOpenChange={setIsCodeOpen}
+                className="w-full"
+              >
+                <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg bg-blue-900/30 p-4 text-left font-medium hover:bg-blue-900/50 transition-colors">
+                  <div className="flex items-center">
+                    <Code className="mr-3 h-5 w-5 text-blue-400" />
+                    <span className="text-lg text-white">Code Integration Leads</span>
+                  </div>
+                  <ChevronDown className={`h-5 w-5 text-blue-400 transition-transform duration-200 ${isCodeOpen ? "transform rotate-180" : ""}`} />
+                </CollapsibleTrigger>
+                <CollapsibleContent className="bg-blue-950/30 rounded-b-lg p-4 space-y-2 border-x border-b border-blue-500/30">
+                  <p className="text-white/90">Team Lead: James Nguyen</p>
+                  <p className="text-white/90">Members:</p>
+                  <ul className="list-disc list-inside pl-4 text-white/80 space-y-1">
+                    <li>Olivia Smith - Frontend</li>
+                    <li>Daniel Kim - Backend</li>
+                    <li>Zoe Martinez - Quality Assurance</li>
+                  </ul>
+                </CollapsibleContent>
+              </Collapsible>
             </motion.div>
           </div>
         </div>
