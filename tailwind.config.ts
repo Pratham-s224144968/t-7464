@@ -65,18 +65,6 @@ export default {
         'vibrant-gradient': 'linear-gradient(to right, #F97316, #8B5CF6)',
         'dark-gradient': 'linear-gradient(to right, #1e293b, #0f172a)',
         'light-gradient': 'linear-gradient(to right, #f0f9ff, #e0f2fe)',
-        'glow-gradient': 'radial-gradient(circle at center, rgba(139, 92, 246, 0.3), transparent 70%)',
-        'accent-gradient': 'linear-gradient(135deg, #F97316 0%, #EC4899 100%)',
-        'cool-gradient': 'linear-gradient(135deg, #0EA5E9 0%, #8B5CF6 100%)',
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        "float": "floating 3s ease-in-out infinite",
-        "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "glow": "glow 2s ease-in-out infinite alternate",
-        "shimmer": "shimmer 3s infinite",
-        "spin-slow": "spin 8s linear infinite",
       },
       keyframes: {
         "accordion-down": {
@@ -87,44 +75,12 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "glow": {
-          "0%": { boxShadow: "0 0 5px rgba(139, 92, 246, 0.5)" },
-          "100%": { boxShadow: "0 0 20px rgba(139, 92, 246, 0.8)" }
-        },
-        "shimmer": {
-          "0%": { transform: "translateX(-100%)" },
-          "100%": { transform: "translateX(100%)" }
-        },
       },
-      boxShadow: {
-        'glow-sm': '0 0 5px rgba(139, 92, 246, 0.5)',
-        'glow': '0 0 15px rgba(139, 92, 246, 0.5)',
-        'glow-lg': '0 0 25px rgba(139, 92, 246, 0.5)',
-        'accent-glow': '0 0 15px rgba(249, 115, 22, 0.5)',
-        'blue-glow': '0 0 15px rgba(59, 130, 246, 0.5)',
-      },
-      textShadow: {
-        'glow': '0 0 10px rgba(139, 92, 246, 0.7)',
-        'accent-glow': '0 0 10px rgba(249, 115, 22, 0.7)',
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },
-  plugins: [
-    require("tailwindcss-animate"),
-    // Add a plugin for text shadow
-    function({ addUtilities }) {
-      const newUtilities = {
-        '.text-shadow-glow': {
-          textShadow: '0 0 10px rgba(139, 92, 246, 0.7)',
-        },
-        '.text-shadow-accent': {
-          textShadow: '0 0 10px rgba(249, 115, 22, 0.7)',
-        },
-        '.text-shadow-blue': {
-          textShadow: '0 0 10px rgba(59, 130, 246, 0.7)',
-        },
-      }
-      addUtilities(newUtilities)
-    }
-  ],
+  plugins: [require("tailwindcss-animate")],
 } satisfies Config;
