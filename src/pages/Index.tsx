@@ -1,3 +1,4 @@
+
 import { Database, Server, Network, Users, Code, Globe, GitMerge, Lightbulb, Webhook, Cpu, Mail, Heart, CalendarDays, FileText, MessageSquare, ChevronDown, BookOpenText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
@@ -10,6 +11,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { blogPosts } from "@/data/blogPosts";
+import YouTubeVideoCarousel from "@/components/YouTubeVideoCarousel";
 
 const Index = () => {
   const [isCommsOpen, setIsCommsOpen] = useState(false);
@@ -22,7 +24,7 @@ const Index = () => {
   return <div className="min-h-screen bg-black text-white">
       <Navbar />
       
-      {/* Hero Section - Simplified */}
+      {/* Hero Section - Updated with Video Carousel */}
       <motion.section id="home" className="pt-5 pb-16 bg-gradient-to-br from-blue-900/70 to-black" initial={{
       opacity: 0
     }} animate={{
@@ -77,6 +79,17 @@ const Index = () => {
         }}>
             We are an AI-focused innovation platform driven by students and researchers at Deakin University.
           </motion.p>
+          
+          {/* YouTube Video Carousel */}
+          <motion.div 
+            className="mt-12 mb-6" 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+          >
+            <h2 className="text-xl font-semibold text-blue-300 mb-6">Featured Videos</h2>
+            <YouTubeVideoCarousel />
+          </motion.div>
         </div>
       </motion.section>
 
