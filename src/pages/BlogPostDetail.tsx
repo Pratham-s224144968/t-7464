@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { format, formatDistanceToNow } from 'date-fns';
-import { ArrowLeft, Copy, Heart, Mail, GitMerge, Share2 } from 'lucide-react';
+import { ArrowLeft, Copy, Heart, Mail, Share2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardHeader, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 
 interface BlogPostDetailParams {
+  [key: string]: string;
   id: string;
 }
 

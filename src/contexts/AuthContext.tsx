@@ -1,13 +1,22 @@
 
 import { createContext, useState, useContext, useEffect, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Session, User } from "@supabase/supabase-js";
+import { Session, User as SupabaseUser } from "@supabase/supabase-js";
+
+// Extended User type to include properties we need
+export interface User extends SupabaseUser {
+  name?: string;
+  avatar?: string;
+  email?: string;
+}
 
 interface AuthContextType {
   session: Session | null;
   user: User | null;
   loading: boolean;
+  isAuthenticated: boolean; // Add this property
   signOut: () => Promise<void>;
+  logout: () => Promise<void>; // Add alias for signOut
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -23,7 +32,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       (event, session) => {
         console.log("Auth state changed:", event);
         setSession(session);
-        setUser(session?.user ?? null);
+        // Add mock data for demo purposes
+        if (session?.user) {
+          const enhancedUser: User = {
+            ...session.user,
+            name: session.user.email ? session.user.email.split('@')[0] : 'User',
+            avatar: `https://source.unsplash.com/random/100x100?face&u=${session.user.id}`,
+            email: session.user.email
+          };
+          setUser(enhancedUser);
+        } else {
+          setUser(null);
+        }
         setLoading(false);
       }
     );
@@ -31,7 +51,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Then check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      setUser(session?.user ?? null);
+      // Add mock data for demo purposes
+      if (session?.user) {
+        const enhancedUser: User = {
+          ...session.user,
+          name: session.user.email ? session.user.email.split('@')[0] : 'User',
+          avatar: `https://source.unsplash.com/random/100x100?face&u=${session.user.id}`,
+          email: session.user.email
+        };
+        setUser(enhancedUser);
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
 
@@ -50,7 +81,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     session,
     user,
     loading,
+    isAuthenticated: !!session,
     signOut,
+    logout: signOut, // Alias for signOut
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
