@@ -60,8 +60,11 @@ export default {
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'hero-gradient': 'linear-gradient(to bottom right, #1d4ed8, #000000)',
-        'blue-gradient': 'linear-gradient(to right, #1e40af, #1e3a8a)',
+        'hero-gradient': 'linear-gradient(to bottom right, #8B5CF6, #3B82F6)',
+        'blue-gradient': 'linear-gradient(to right, #3B82F6, #2563EB)',
+        'vibrant-gradient': 'linear-gradient(to right, #F97316, #8B5CF6)',
+        'dark-gradient': 'linear-gradient(to right, #1e293b, #0f172a)',
+        'light-gradient': 'linear-gradient(to right, #f0f9ff, #e0f2fe)',
       },
       keyframes: {
         "accordion-down": {
