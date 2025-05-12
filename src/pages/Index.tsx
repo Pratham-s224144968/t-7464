@@ -1,3 +1,4 @@
+
 import { Database, Server, Network, Users, Code, Globe, GitMerge, Lightbulb, Webhook, Cpu, Mail, Heart, CalendarDays, FileText, MessageSquare, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
@@ -8,6 +9,7 @@ import { motion } from "@/components/ui/motion";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Index = () => {
   const [isCommsOpen, setIsCommsOpen] = useState(false);
@@ -326,9 +328,24 @@ const Index = () => {
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-20">
             {/* Key Leadership */}
             {[
-              { title: "Product Owner", name: "Jesse Mcmeikan", icon: Users },
-              { title: "Company Director", name: "Leon Yang", icon: Globe },
-              { title: "Company Mentor", name: "Scott West", icon: Lightbulb }
+              { 
+                title: "Product Owner", 
+                name: "Jesse Mcmeikan", 
+                icon: Users,
+                image: "/lovable-uploads/a02fcaad-2d36-456b-8147-27045d090634.png" 
+              },
+              { 
+                title: "Company Director", 
+                name: "Leon Yang", 
+                icon: Globe,
+                image: "/lovable-uploads/56f17cfa-e923-4bfe-8f17-008f082f7ba9.png" 
+              },
+              { 
+                title: "Company Mentor", 
+                name: "Scott West", 
+                icon: Lightbulb,
+                image: "/lovable-uploads/0a9ce17d-8039-45bd-94fa-346bb28ba5bb.png" 
+              }
             ].map((leader, index) => (
               <motion.div 
                 key={leader.title}
@@ -338,10 +355,13 @@ const Index = () => {
                 transition={{ delay: 0.3 + index * 0.1, duration: 0.5 }}
                 viewport={{ once: true }}
               >
-                <div className="flex justify-center mb-4">
-                  <div className="rounded-full bg-blue-500/10 p-5">
-                    <leader.icon className="w-10 h-10 text-blue-400" />
-                  </div>
+                <div className="flex justify-center mb-6">
+                  <Avatar className="w-32 h-32 border-2 border-blue-500/50">
+                    <AvatarImage src={leader.image} alt={leader.name} className="object-cover" />
+                    <AvatarFallback className="bg-blue-500/10">
+                      <leader.icon className="w-10 h-10 text-blue-400" />
+                    </AvatarFallback>
+                  </Avatar>
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-2">{leader.title}</h3>
                 <p className="text-lg text-blue-300">{leader.name}</p>
