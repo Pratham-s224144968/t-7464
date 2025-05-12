@@ -1,3 +1,4 @@
+
 import { useContext, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from './ui/button';
@@ -13,10 +14,11 @@ import {
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import { Moon, Sun, Menu, X, FileText, Users, BookOpenText } from 'lucide-react';
+import { Moon, Sun, Menu, X, FileText, Users, BookOpenText, ExternalLink } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { motion } from './ui/motion';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -91,24 +93,29 @@ const Navbar = () => {
             <NavigationMenuList>
               <NavigationMenuItem>
                 <Link to="/">
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  <NavigationMenuLink className={cn(
+                    navigationMenuTriggerStyle(),
+                    "bg-transparent text-white hover:bg-blue-900/50 dark:hover:bg-blue-950/70"
+                  )}>
                     Home
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
+                <NavigationMenuTrigger className="bg-transparent text-white hover:bg-blue-900/50 dark:hover:bg-blue-950/70">
+                  Resources
+                </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                  <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] bg-black/90 backdrop-blur dark:bg-black/95">
                     {components.map((component) => (
                       <li key={component.title} className="row-span-3">
                         <NavigationMenuLink asChild>
                           <Link
                             to={component.href}
-                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-900/40 hover:text-white focus:bg-blue-900/40 focus:text-white"
                           >
-                            <div className="text-sm font-medium leading-none">{component.title}</div>
-                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                            <div className="text-sm font-medium leading-none text-white">{component.title}</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-white/70">
                               {component.description}
                             </p>
                           </Link>
@@ -120,11 +127,37 @@ const Navbar = () => {
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <Link to="/blog">
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  <NavigationMenuLink className={cn(
+                    navigationMenuTriggerStyle(),
+                    "bg-transparent text-white hover:bg-blue-900/50 dark:hover:bg-blue-950/70"
+                  )}>
                     <BookOpenText className="mr-1 h-4 w-4" />
                     Blog
                   </NavigationMenuLink>
                 </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <a 
+                        href="https://innovate-spark-hackathon-hub.lovable.app" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className={cn(
+                          navigationMenuTriggerStyle(),
+                          "bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+                        )}
+                      >
+                        <ExternalLink className="mr-1 h-4 w-4" />
+                        Hackathon
+                      </a>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-black/90 text-white border-blue-800/30">
+                      Visit InnovAIte Hackathon Hub
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
@@ -133,19 +166,28 @@ const Navbar = () => {
         {/* Theme Toggle & Auth Buttons */}
         <div className="ml-auto flex items-center gap-2">
           {/* Theme Toggle */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleTheme}
-            className="rounded-full hover:bg-blue-950/50"
-          >
-            {theme === 'dark' ? (
-              <Sun className="h-5 w-5 text-white" />
-            ) : (
-              <Moon className="h-5 w-5 text-white" />
-            )}
-            <span className="sr-only">Toggle theme</span>
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={toggleTheme}
+                  className="rounded-full hover:bg-blue-950/50 text-white"
+                >
+                  {theme === 'dark' ? (
+                    <Sun className="h-5 w-5 text-white" />
+                  ) : (
+                    <Moon className="h-5 w-5 text-white" />
+                  )}
+                  <span className="sr-only">Toggle theme</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent className="bg-black/90 text-white border-blue-800/30">
+                Switch to {theme === 'dark' ? 'light' : 'dark'} mode
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           
           {/* Auth Buttons */}
           <div className="hidden md:block">
@@ -165,7 +207,7 @@ const Navbar = () => {
                 </Button>
               </div>
             ) : (
-              <Button asChild className="bg-blue-600 hover:bg-blue-700">
+              <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white">
                 <Link to="/auth">Sign In</Link>
               </Button>
             )}
@@ -177,7 +219,7 @@ const Navbar = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden rounded-full hover:bg-blue-950/50"
+                className="md:hidden rounded-full hover:bg-blue-950/50 text-white"
               >
                 <Menu className="h-5 w-5 text-white" />
                 <span className="sr-only">Toggle menu</span>
@@ -232,6 +274,15 @@ const Navbar = () => {
                     <BookOpenText className="mr-2 h-5 w-5" />
                     Blog & Vlogs
                   </Link>
+                  <a 
+                    href="https://innovate-spark-hackathon-hub.lovable.app"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center text-lg text-blue-400 hover:text-blue-300 py-2 border-b border-blue-900/30"
+                  >
+                    <ExternalLink className="mr-2 h-5 w-5" />
+                    Hackathon Hub
+                  </a>
                 </nav>
                 
                 <div className="mt-auto pt-6">
