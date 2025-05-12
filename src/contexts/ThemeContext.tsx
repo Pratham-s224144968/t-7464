@@ -6,7 +6,11 @@ type ThemeContextType = {
   toggleTheme: () => void;
 };
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+// Create the context with a default value
+const ThemeContext = createContext<ThemeContextType>({
+  theme: "light",
+  toggleTheme: () => {}
+});
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<"light" | "dark">("light"); // Default to light theme
@@ -62,21 +66,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     });
   };
 
-  // Use an explicit value to ensure context is always properly initialized
+  // Create the context value
   const contextValue: ThemeContextType = {
     theme,
     toggleTheme
   };
-
-  // Don't render until mounted to avoid hydration mismatch
-  if (!mounted) {
-    // Provide a default context value even when not mounted
-    return (
-      <ThemeContext.Provider value={contextValue}>
-        {children}
-      </ThemeContext.Provider>
-    );
-  }
 
   return (
     <ThemeContext.Provider value={contextValue}>

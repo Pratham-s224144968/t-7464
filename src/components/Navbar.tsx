@@ -7,17 +7,20 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useState, useEffect } from "react";
 
 const Navbar = () => {
-  // Add a mounted state to ensure we don't try to use theme before it's ready
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState<"light" | "dark">("light");
+  
+  // Get the theme context
+  const themeContext = useTheme();
   
   useEffect(() => {
     setMounted(true);
-  }, []);
-  
-  // Safely access the theme context only when mounted
-  const themeContext = mounted ? useTheme() : { theme: "light", toggleTheme: () => {} };
-  const { theme, toggleTheme } = themeContext;
+    // Set the initial theme from context when mounted
+    if (themeContext) {
+      setCurrentTheme(themeContext.theme);
+    }
+  }, [themeContext]);
   
   // Track scroll position for navbar effects
   useEffect(() => {
@@ -39,7 +42,7 @@ const Navbar = () => {
     });
   };
   
-  // Add safety check - only render the full component when mounted
+  // Wait until mounted before rendering the full component
   if (!mounted) {
     return <div className="h-16"></div>; // Empty placeholder while loading
   }
@@ -139,21 +142,21 @@ const Navbar = () => {
             <Button 
               variant="outline" 
               size="icon" 
-              onClick={toggleTheme} 
+              onClick={themeContext.toggleTheme} 
               className="rounded-full border border-primary/20 hover:bg-primary/10 relative overflow-hidden glow-primary"
               aria-label="Toggle theme"
             >
               <motion.div 
                 className="absolute inset-0 opacity-20"
                 animate={{
-                  background: theme === 'dark' 
+                  background: themeContext.theme === 'dark' 
                     ? ['rgba(139, 92, 246, 0)', 'rgba(139, 92, 246, 0.2)', 'rgba(139, 92, 246, 0)'] 
                     : ['rgba(249, 115, 22, 0)', 'rgba(249, 115, 22, 0.2)', 'rgba(249, 115, 22, 0)']
                 }}
                 transition={{ duration: 3, repeat: Infinity }}
               />
               
-              {theme === "dark" ? (
+              {themeContext.theme === "dark" ? (
                 <motion.div
                   key="sun-icon"
                   initial={{ y: 30, opacity: 0, rotate: 0 }}

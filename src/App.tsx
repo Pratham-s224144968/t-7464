@@ -12,15 +12,22 @@ import Auth from "./pages/Auth";
 
 const queryClient = new QueryClient();
 
+// Create a NavbarWrapper component that will only render on the client side
+const NavbarWrapper = () => {
+  // Only render Navbar in browser environment
+  if (typeof window === 'undefined') return null;
+  
+  return <Navbar />;
+};
+
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <ThemeProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
           <BrowserRouter>
             <AuthProvider>
-              {/* Render Navbar with explicit checks to ensure ThemeProvider is loaded */}
-              {typeof window !== 'undefined' && <Navbar />}
+              <NavbarWrapper />
               <Toaster />
               <Sonner />
               <Routes>
@@ -29,9 +36,9 @@ const App = () => {
               </Routes>
             </AuthProvider>
           </BrowserRouter>
-        </ThemeProvider>
-      </TooltipProvider>
-    </QueryClientProvider>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 };
 
