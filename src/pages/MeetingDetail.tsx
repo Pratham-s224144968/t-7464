@@ -5,6 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, Video, ArrowLeft } from "lucide-react";
+import Navbar from "@/components/Navbar";
+import { motion } from "@/components/ui/motion";
 
 type Meeting = {
   id: string;
@@ -90,117 +92,179 @@ const MeetingDetail: React.FC = () => {
   }, [id]);
 
   if (!meeting) {
-    return <div className="container mx-auto py-8">Meeting not found</div>;
+    return (
+      <div className="min-h-screen bg-black text-white">
+        <Navbar />
+        <div className="container mx-auto py-20">Meeting not found</div>
+      </div>
+    );
   }
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="mb-6">
-        <Button variant="ghost" asChild className="mb-4">
-          <Link to="/meetings">
-            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Meetings
-          </Link>
-        </Button>
-        <h1 className="text-3xl font-bold">{meeting.title}</h1>
-        <p className="text-muted-foreground">
-          {new Date(meeting.date).toLocaleDateString(undefined, {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </p>
-        <div className="mt-2">
-          <strong>Participants:</strong> {meeting.participants.join(", ")}
-        </div>
-      </div>
+    <div className="min-h-screen bg-black text-white">
+      <Navbar />
+      
+      <motion.section className="py-20 bg-gradient-to-b from-black to-blue-950/50" initial={{
+        opacity: 0
+      }} animate={{
+        opacity: 1
+      }} transition={{
+        duration: 0.8
+      }}>
+        <div className="container mx-auto">
+          <motion.h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500" initial={{
+            y: 20,
+            opacity: 0
+          }} animate={{
+            y: 0,
+            opacity: 1
+          }} transition={{
+            delay: 0.2,
+            duration: 0.5
+          }}>
+            /MEETING DETAILS
+          </motion.h2>
+          
+          <motion.div className="mb-6" initial={{
+            y: 20,
+            opacity: 0
+          }} animate={{
+            y: 0,
+            opacity: 1
+          }} transition={{
+            delay: 0.3,
+            duration: 0.5
+          }}>
+            <Button variant="ghost" asChild className="mb-4 text-blue-400 border-blue-500/50 hover:bg-blue-950/50">
+              <Link to="/meetings">
+                <ArrowLeft className="mr-2 h-4 w-4" /> Back to Meetings
+              </Link>
+            </Button>
+            <h1 className="text-3xl font-bold text-white">{meeting.title}</h1>
+            <p className="text-blue-300">
+              {new Date(meeting.date).toLocaleDateString(undefined, {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </p>
+            <div className="mt-2 text-blue-200">
+              <strong>Participants:</strong> {meeting.participants.join(", ")}
+            </div>
+          </motion.div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid grid-cols-3 mb-8">
-          <TabsTrigger value="recording" disabled={!meeting.hasRecording}>
-            <Video className="mr-2 h-4 w-4" /> Recording
-          </TabsTrigger>
-          <TabsTrigger value="minutes" disabled={!meeting.hasMinutes}>
-            <FileText className="mr-2 h-4 w-4" /> Minutes
-          </TabsTrigger>
-          <TabsTrigger value="summary" disabled={!meeting.hasSummary}>
-            <FileText className="mr-2 h-4 w-4" /> AI Summary
-          </TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="recording" className="space-y-4">
-          {meeting.recording ? (
-            <Card>
-              <CardHeader>
-                <CardTitle>Meeting Recording</CardTitle>
-                <CardDescription>Video recording from {meeting.date}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="aspect-video bg-muted rounded-md flex items-center justify-center">
-                  <video 
-                    controls 
-                    className="w-full h-full rounded-md"
-                    poster="https://images.unsplash.com/photo-1556155092-8707de31f9c4?q=80&w=1000"
-                  >
-                    <source src={meeting.recording} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                </div>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="text-center p-8">No recording available</div>
-          )}
-        </TabsContent>
-        
-        <TabsContent value="minutes" className="space-y-4">
-          {meeting.minutes ? (
-            <Card>
-              <CardHeader>
-                <CardTitle>Meeting Minutes</CardTitle>
-                <CardDescription>Notes from the meeting on {meeting.date}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="whitespace-pre-line">{meeting.minutes}</p>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="text-center p-8">No minutes available</div>
-          )}
-        </TabsContent>
-        
-        <TabsContent value="summary" className="space-y-4">
-          {meeting.summary ? (
-            <>
-              <Card>
-                <CardHeader>
-                  <CardTitle>AI Generated Summary</CardTitle>
-                  <CardDescription>Auto-generated summary of the meeting content</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="whitespace-pre-line">{meeting.summary.text}</p>
-                </CardContent>
-              </Card>
+          <motion.div initial={{
+            y: 20,
+            opacity: 0
+          }} animate={{
+            y: 0,
+            opacity: 1
+          }} transition={{
+            delay: 0.4,
+            duration: 0.5
+          }}>
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="grid grid-cols-3 mb-8 bg-blue-900/30">
+                <TabsTrigger 
+                  value="recording" 
+                  disabled={!meeting.hasRecording}
+                  className="data-[state=active]:bg-blue-800/50 data-[state=active]:text-blue-200"
+                >
+                  <Video className="mr-2 h-4 w-4" /> Recording
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="minutes" 
+                  disabled={!meeting.hasMinutes}
+                  className="data-[state=active]:bg-blue-800/50 data-[state=active]:text-blue-200"
+                >
+                  <FileText className="mr-2 h-4 w-4" /> Minutes
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="summary" 
+                  disabled={!meeting.hasSummary}
+                  className="data-[state=active]:bg-blue-800/50 data-[state=active]:text-blue-200"
+                >
+                  <FileText className="mr-2 h-4 w-4" /> AI Summary
+                </TabsTrigger>
+              </TabsList>
               
-              <Card>
-                <CardHeader>
-                  <CardTitle>Key Takeaways</CardTitle>
-                  <CardDescription>Important points from the meeting</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="list-disc pl-6 space-y-2">
-                    {meeting.summary.keyTakeaways.map((item, index) => (
-                      <li key={index}>{item}</li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </>
-          ) : (
-            <div className="text-center p-8">No AI summary available</div>
-          )}
-        </TabsContent>
-      </Tabs>
+              <TabsContent value="recording" className="space-y-4">
+                {meeting.recording ? (
+                  <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
+                    <CardHeader className="bg-blue-900/20">
+                      <CardTitle className="text-white">Meeting Recording</CardTitle>
+                      <CardDescription className="text-blue-300">Video recording from {meeting.date}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="aspect-video bg-blue-900/30 rounded-md flex items-center justify-center">
+                        <video 
+                          controls 
+                          className="w-full h-full rounded-md"
+                          poster="https://images.unsplash.com/photo-1556155092-8707de31f9c4?q=80&w=1000"
+                        >
+                          <source src={meeting.recording} type="video/mp4" />
+                          Your browser does not support the video tag.
+                        </video>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <div className="text-center p-8 text-blue-300">No recording available</div>
+                )}
+              </TabsContent>
+              
+              <TabsContent value="minutes" className="space-y-4">
+                {meeting.minutes ? (
+                  <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
+                    <CardHeader className="bg-blue-900/20">
+                      <CardTitle className="text-white">Meeting Minutes</CardTitle>
+                      <CardDescription className="text-blue-300">Notes from the meeting on {meeting.date}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="whitespace-pre-line text-blue-200">{meeting.minutes}</p>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <div className="text-center p-8 text-blue-300">No minutes available</div>
+                )}
+              </TabsContent>
+              
+              <TabsContent value="summary" className="space-y-4">
+                {meeting.summary ? (
+                  <>
+                    <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
+                      <CardHeader className="bg-blue-900/20">
+                        <CardTitle className="text-white">AI Generated Summary</CardTitle>
+                        <CardDescription className="text-blue-300">Auto-generated summary of the meeting content</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="whitespace-pre-line text-blue-200">{meeting.summary.text}</p>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
+                      <CardHeader className="bg-blue-900/20">
+                        <CardTitle className="text-white">Key Takeaways</CardTitle>
+                        <CardDescription className="text-blue-300">Important points from the meeting</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <ul className="list-disc pl-6 space-y-2 text-blue-200">
+                          {meeting.summary.keyTakeaways.map((item, index) => (
+                            <li key={index}>{item}</li>
+                          ))}
+                        </ul>
+                      </CardContent>
+                    </Card>
+                  </>
+                ) : (
+                  <div className="text-center p-8 text-blue-300">No AI summary available</div>
+                )}
+              </TabsContent>
+            </Tabs>
+          </motion.div>
+        </div>
+      </motion.section>
     </div>
   );
 };
