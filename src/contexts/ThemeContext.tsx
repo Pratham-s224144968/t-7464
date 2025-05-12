@@ -13,22 +13,36 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Initialize theme from localStorage or system preference
   useEffect(() => {
+    // First try to get theme from localStorage
     const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark" || savedTheme === "light") {
-      setTheme(savedTheme);
+    if (savedTheme === "dark") {
+      setTheme("dark");
+      document.documentElement.classList.add("dark");
+    } else if (savedTheme === "light" || !savedTheme) {
+      setTheme("light");
+      document.documentElement.classList.remove("dark");
     } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
       setTheme("dark");
+      document.documentElement.classList.add("dark");
     }
   }, []);
 
-  // Update document class when theme changes
+  // Update document class and localStorage when theme changes
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
     localStorage.setItem("theme", theme);
+    console.log("Theme changed to:", theme);
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === "dark" ? "light" : "dark");
+    setTheme(prevTheme => {
+      const newTheme = prevTheme === "dark" ? "light" : "dark";
+      return newTheme;
+    });
   };
 
   return (

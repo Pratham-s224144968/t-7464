@@ -1,7 +1,6 @@
-
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { SunMoon, Sun, Moon } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 import { motion } from "@/components/ui/motion";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -148,6 +147,7 @@ const Navbar = () => {
               size="icon" 
               onClick={toggleTheme} 
               className="rounded-full border border-primary/20 hover:bg-primary/10 relative overflow-hidden"
+              aria-label="Toggle theme"
             >
               {theme === "dark" ? (
                 <motion.div

@@ -1,12 +1,8 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
   text-align: center;
-}
-
-body {
-  background-color: #000;
-  color: #fff;
 }
 
 .logo {
@@ -52,15 +48,15 @@ body {
 
 /* Text contrast helpers */
 .text-high-contrast {
-  color: #FFFFFF;
+  color: var(--foreground);
 }
 
 .text-medium-contrast {
-  color: #C8C8C9;
+  color: var(--muted-foreground);
 }
 
 .text-blue-contrast {
-  color: #33C3F0;
+  color: var(--accent);
 }
 
 /* Logo sizing for specific sections */
@@ -77,22 +73,4 @@ body {
 .nav-logo {
   height: 50px;
   width: auto;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #111;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #2563eb;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #1d4ed8;
 }
