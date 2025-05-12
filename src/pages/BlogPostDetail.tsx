@@ -1,232 +1,234 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { getBlogPost } from "@/data/blogPosts";
-import Navbar from "@/components/Navbar";
-import { Badge } from "@/components/ui/badge";
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { format, formatDistanceToNow } from 'date-fns';
+import { ArrowLeft, Copy, Heart, Mail, GitMerge, Share2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Youtube, MessageSquare, Share2, BookOpenText } from "lucide-react";
-import { motion } from "@/components/ui/motion";
-import { useEffect } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { format } from "date-fns";
-import { Separator } from "@/components/ui/separator";
-import { useToast } from "@/hooks/use-toast";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardHeader, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
+
+interface BlogPostDetailParams {
+  id: string;
+}
+
+interface Author {
+  name: string;
+  avatar: string;
+  bio: string;
+}
+
+interface Comment {
+  id: string;
+  author: {
+    name: string;
+    avatar: string;
+  };
+  date: Date;
+  text: string;
+}
+
+interface BlogPost {
+  id: string;
+  title: string;
+  content: string;
+  coverImage: string;
+  date: Date;
+  author: Author;
+  category: string;
+  commentCount: number;
+  comments: Comment[];
+}
 
 const BlogPostDetail = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { toast } = useToast();
-  
-  const post = id ? getBlogPost(id) : undefined;
-  
+  const { id } = useParams<BlogPostDetailParams>();
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [commentText, setCommentText] = useState('');
+
   useEffect(() => {
-    if (!post) {
-      toast({
-        title: "Post not found",
-        description: "The blog post you're looking for doesn't exist.",
-        variant: "destructive"
-      });
-      navigate("/blog");
-    }
-  }, [post, navigate, toast]);
-  
+    // Mock data for demonstration
+    const mockPost: BlogPost = {
+      id: id!,
+      title: 'The Future of AI in Web Development',
+      content: `
+        ## Introduction
+        Artificial Intelligence (AI) is rapidly transforming various industries, and web development is no exception. AI-powered tools and techniques are enhancing the way websites are designed, developed, and maintained. This blog post explores the current and future impact of AI on web development.
+
+        ## AI-Powered Design Tools
+        AI is revolutionizing the design process by providing intelligent suggestions and automating repetitive tasks. Tools like Adobe Sensei and Fronty use AI to convert design mockups into functional code, significantly reducing development time.
+
+        ## Automated Testing
+        AI can automate the testing process, identifying bugs and vulnerabilities more efficiently than manual testing. AI-driven testing tools can simulate user behavior and detect potential issues before they affect the end-users.
+
+        ## Personalized User Experiences
+        AI enables web developers to create personalized user experiences by analyzing user data and behavior. AI-powered recommendation engines and chatbots can provide tailored content and support, enhancing user engagement and satisfaction.
+
+        ## Future Trends
+        In the future, AI is expected to play an even greater role in web development. We can anticipate more sophisticated AI-powered tools that can generate entire websites from scratch, optimize website performance in real-time, and provide advanced security features.
+
+        ## Conclusion
+        AI is poised to reshape the landscape of web development, offering numerous benefits such as increased efficiency, improved quality, and enhanced user experiences. As AI technology continues to evolve, web developers must embrace these changes to stay ahead in the industry.
+      `,
+      coverImage: 'https://source.unsplash.com/random/800x400',
+      date: new Date(),
+      author: {
+        name: 'John Doe',
+        avatar: 'https://source.unsplash.com/random/40x40',
+        bio: 'A passionate web developer and AI enthusiast.',
+      },
+      category: 'AI',
+      commentCount: 3,
+      comments: [
+        {
+          id: '1',
+          author: {
+            name: 'Alice Smith',
+            avatar: 'https://source.unsplash.com/random/41x41',
+          },
+          date: new Date(),
+          text: 'Great article! AI is indeed changing web development.',
+        },
+        {
+          id: '2',
+          author: {
+            name: 'Bob Johnson',
+            avatar: 'https://source.unsplash.com/random/42x42',
+          },
+          date: new Date(),
+          text: 'I agree, AI is making our work more efficient.',
+        },
+        {
+          id: '3',
+          author: {
+            name: 'Charlie Brown',
+            avatar: 'https://source.unsplash.com/random/43x43',
+          },
+          date: new Date(),
+          text: 'Looking forward to seeing more AI tools in web dev.',
+        },
+      ],
+    };
+
+    setPost(mockPost);
+  }, [id]);
+
   if (!post) {
-    return null;
+    return <div>Loading...</div>;
   }
-  
+
+  const handleAddComment = () => {
+    if (commentText.trim() !== '') {
+      const newComment: Comment = {
+        id: Math.random().toString(36).substring(7),
+        author: {
+          name: 'Current User', // Replace with actual current user
+          avatar: 'https://source.unsplash.com/random/44x44', // Replace with actual current user avatar
+        },
+        date: new Date(),
+        text: commentText,
+      };
+
+      setPost({
+        ...post,
+        comments: [...post.comments, newComment],
+        commentCount: post.commentCount + 1,
+      });
+
+      setCommentText('');
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-black text-white">
-      <Navbar />
-      
-      {/* Content area */}
-      <div className="container mx-auto py-8">
-        <motion.div 
-          className="mb-8"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Button 
-            variant="outline" 
-            className="text-white/70 border-blue-500/30 hover:bg-blue-950/50"
-            asChild
-          >
-            <Link to="/blog">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Blog
-            </Link>
-          </Button>
-        </motion.div>
-        
-        {/* Hero section */}
-        <motion.div
-          className="max-w-4xl mx-auto"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="mb-6 flex items-center justify-between">
-            <Badge variant="outline" className="bg-blue-600/20 text-blue-300 border-blue-500/50">
-              {post.category}
-            </Badge>
-            <span className="text-sm text-white/60">
-              {format(post.date, "MMMM dd, yyyy")}
-            </span>
-          </div>
-          
-          <h1 className="text-3xl md:text-5xl font-bold text-white mb-6">{post.title}</h1>
-          
-          <div className="flex items-center mb-8">
-            <Avatar className="h-10 w-10 mr-4">
-              <AvatarImage src={post.author.avatar} />
-              <AvatarFallback>{post.author.name.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="text-sm font-medium text-white">{post.author.name}</p>
-              <p className="text-sm text-white/60">InnovAIte Team Member</p>
-            </div>
-          </div>
-          
-          <div className="aspect-video w-full overflow-hidden rounded-lg mb-10">
-            <img
-              src={post.coverImage}
-              alt={post.title}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          
-          {/* YouTube video if available */}
-          {post.youtubeUrl && (
-            <div className="mb-10">
-              <div className="flex items-center gap-2 text-white mb-4">
-                <Youtube className="h-5 w-5 text-red-500" />
-                <h2 className="text-xl font-semibold">Watch the Video</h2>
-              </div>
-              
-              <div className="aspect-video w-full rounded-lg overflow-hidden bg-blue-950/20 flex items-center justify-center">
-                <div className="text-center p-10">
-                  <Youtube className="w-16 h-16 text-red-500 mx-auto mb-4" />
-                  <p className="text-white/80 mb-4">
-                    YouTube video placeholder - replace with actual embed
-                  </p>
-                  <Button 
-                    className="bg-red-600 hover:bg-red-700"
-                    onClick={() => window.open(post.youtubeUrl, "_blank")}
-                  >
-                    Watch on YouTube
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )}
-          
-          {/* Content */}
-          <div className="prose prose-invert max-w-none">
-            <p className="text-xl text-white/90 mb-6">
-              {post.excerpt}
-            </p>
-            
-            <p className="text-white/80 mb-6">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Sed euismod, nisl nec tincidunt lacinia, nunc est ultricies nunc, vitae aliquam nunc nisl vitae nunc. Sed euismod, nisl nec tincidunt lacinia, nunc est ultricies nunc, vitae aliquam nunc nisl vitae nunc.
-            </p>
-            
-            <h2 className="text-2xl font-semibold text-white mt-10 mb-4">Key Insights</h2>
-            
-            <p className="text-white/80 mb-6">
-              Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Donec ullamcorper nulla non metus auctor fringilla.
-            </p>
-            
-            <ul className="list-disc pl-6 mb-6 text-white/80 space-y-2">
-              <li>Nullam quis risus eget urna mollis ornare vel eu leo.</li>
-              <li>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</li>
-              <li>Vestibulum id ligula porta felis euismod semper.</li>
-            </ul>
-            
-            <p className="text-white/80">
-              Aenean lacinia bibendum nulla sed consectetur. Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit. Vestibulum id ligula porta felis euismod semper.
-            </p>
-            
-            <h2 className="text-2xl font-semibold text-white mt-10 mb-4">Conclusion</h2>
-            
-            <p className="text-white/80 mb-6">
-              Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nulla vitae elit libero, a pharetra augue. Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-            </p>
-          </div>
-          
-          <Separator className="my-10 bg-blue-500/30" />
-          
-          {/* Actions */}
-          <div className="flex flex-wrap justify-between items-center">
-            <div className="flex items-center space-x-2">
-              <Button 
-                variant="outline"
-                size="sm"
-                className="text-white/70 border-blue-500/30 hover:bg-blue-950/50"
-              >
-                <MessageSquare className="mr-2 h-4 w-4" />
-                Comments ({post.commentCount})
-              </Button>
-              <Button 
-                variant="outline"
-                size="sm"
-                className="text-white/70 border-blue-500/30 hover:bg-blue-950/50"
-                onClick={() => {
-                  navigator.clipboard.writeText(window.location.href);
-                  toast({
-                    title: "Link copied",
-                    description: "The link to this post has been copied to your clipboard.",
-                  });
-                }}
-              >
-                <Share2 className="mr-2 h-4 w-4" />
-                Share
-              </Button>
-            </div>
-            
-            <Button 
-              asChild
-              className="bg-blue-600 hover:bg-blue-700 mt-4 sm:mt-0"
-            >
-              <Link to="/blog">
-                <BookOpenText className="mr-2 h-4 w-4" />
-                View More Posts
-              </Link>
-            </Button>
-          </div>
-        </motion.div>
-      </div>
-      
-      {/* Footer */}
-      <footer className="bg-black border-t border-blue-900/30 py-12 mt-20">
-        <div className="container mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-6 md:mb-0 flex items-center">
-              <img src="/lovable-uploads/2ac77590-a08e-4983-bafa-7be5dc24647b.png" alt="InnovAIte Logo" className="h-16 mr-3" />
-              <div>
-                <p className="text-xl font-mono font-bold text-white mb-2">InnovAIte</p>
-                <p className="text-sm text-white/60">
-                  A research initiative under Deakin University's SPARK 2026 program
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col items-center md:items-end">
-              <div className="flex space-x-6 mb-4">
-                <a href="mailto:contact@innovaite.ai" className="text-white/60 hover:text-blue-400 transition-colors">
-                  <Mail className="h-5 w-5" />
-                </a>
-                <a href="https://gitlab.deakin.edu.au/innovaite/" target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-blue-400 transition-colors">
-                  <GitMerge className="h-5 w-5" />
-                </a>
-                <a href="https://teams.microsoft.com/l/team/19%3AcW6v8QDG1uJuK3IebazxDFvL7RLh8SPVLP7ZMK8jCH01%40thread.tacv2/conversations?groupId=64f97721-41a3-47c1-adad-e07a0e609089&tenantId=d02378ec-1688-46d5-8540-1c28b5f470f6" target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-blue-400 transition-colors">
-                  <MessageSquare className="h-5 w-5" />
-                </a>
-              </div>
-              <p className="text-sm text-white/60 flex items-center">
-                Made with <Heart className="h-4 w-4 mx-1 text-blue-500" /> by InnovAIte
-              </p>
-            </div>
-          </div>
+    <div className="container mx-auto mt-8 p-4">
+      <Button asChild variant="ghost" className="mb-4">
+        <Link to="/blog" className="flex items-center">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Blog
+        </Link>
+      </Button>
+
+      <div className="relative">
+        <img
+          src={post.coverImage}
+          alt={post.title}
+          className="w-full rounded-md shadow-lg aspect-video object-cover"
+        />
+        <div className="absolute top-4 left-4 bg-black bg-opacity-50 text-white p-2 rounded-md text-sm">
+          {post.category}
         </div>
-      </footer>
+      </div>
+
+      <h1 className="text-3xl font-bold mt-6 text-white">{post.title}</h1>
+      <div className="flex items-center mt-2 text-gray-400">
+        <Avatar className="mr-2 h-8 w-8">
+          <AvatarImage src={post.author.avatar} alt={post.author.name} />
+          <AvatarFallback>{post.author.name?.[0]}</AvatarFallback>
+        </Avatar>
+        <span>
+          By {post.author.name} | {format(post.date, 'MMMM dd, yyyy')} ({formatDistanceToNow(post.date, { addSuffix: true })})
+        </span>
+      </div>
+
+      <div className="mt-6 text-gray-300 leading-relaxed" style={{ whiteSpace: 'pre-line' }}>
+        {post.content}
+      </div>
+
+      <div className="mt-8 flex items-center justify-between">
+        <div className="flex items-center space-x-4 text-gray-400">
+          <button className="flex items-center hover:text-blue-300">
+            <Heart className="mr-1 h-5 w-5" />
+            <span>Like</span>
+          </button>
+          <button className="flex items-center hover:text-blue-300">
+            <Mail className="mr-1 h-5 w-5" />
+            <span>Share</span>
+          </button>
+          <button className="flex items-center hover:text-blue-300">
+            <Copy className="mr-1 h-5 w-5" />
+            <span>Copy Link</span>
+          </button>
+        </div>
+        <Badge variant="secondary">
+          {post.commentCount} Comments
+        </Badge>
+      </div>
+
+      <div className="mt-8">
+        <h2 className="text-2xl font-semibold mb-4 text-white">Comments</h2>
+        {post.comments.map((comment) => (
+          <Card key={comment.id} className="mb-4 bg-blue-950/20 backdrop-blur border-blue-500/30">
+            <CardHeader className="pb-2">
+              <div className="flex items-center space-x-3">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={comment.author.avatar} alt={comment.author.name} />
+                  <AvatarFallback>{comment.author.name?.[0]}</AvatarFallback>
+                </Avatar>
+                <CardTitle className="text-white">{comment.author.name}</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-300">{comment.text}</p>
+            </CardContent>
+            <CardFooter className="text-sm text-gray-400">
+              {formatDistanceToNow(comment.date, { addSuffix: true })}
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+
+      <div className="mt-6">
+        <h3 className="text-xl font-semibold mb-3 text-white">Add a Comment</h3>
+        <Textarea
+          value={commentText}
+          onChange={(e) => setCommentText(e.target.value)}
+          placeholder="Write your comment here..."
+          className="w-full bg-blue-950/10 border-blue-500/30 text-white"
+        />
+        <Button onClick={handleAddComment} className="mt-3 bg-blue-600 hover:bg-blue-700 text-white">
+          Submit Comment
+        </Button>
+      </div>
     </div>
   );
 };

@@ -1,4 +1,3 @@
-
 import { useContext, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from './ui/button';
@@ -12,8 +11,8 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import { cn } from '@/lib/utils';
-import { AuthContext } from '@/contexts/AuthContext';
-import { ThemeContext } from '@/contexts/ThemeContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { Moon, Sun, Menu, X, FileText, Users, BookOpenText } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { motion } from './ui/motion';
@@ -42,8 +41,8 @@ const components: { title: string; href: string; description: string }[] = [
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const { isAuthenticated, user, logout } = useContext(AuthContext);
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { isAuthenticated, user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
 
   useEffect(() => {
