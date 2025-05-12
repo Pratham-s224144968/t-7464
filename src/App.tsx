@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import Navbar from "@/components/Navbar"; // Import the Navbar component
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 
@@ -16,9 +17,10 @@ const App = () => (
     <TooltipProvider>
       <ThemeProvider>
         <AuthProvider>
-          <Toaster />
-          <Sonner />
           <BrowserRouter>
+            <Navbar /> {/* Add Navbar here, inside ThemeProvider and BrowserRouter */}
+            <Toaster />
+            <Sonner />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
