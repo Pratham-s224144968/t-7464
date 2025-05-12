@@ -1,4 +1,3 @@
-
 import { Database, Server, Network, Users, Code, Globe, GitMerge, Lightbulb, Webhook, Cpu, Mail, Heart, CalendarDays, FileText, MessageSquare, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
@@ -401,12 +400,13 @@ const Index = () => {
                   <ChevronDown className={`h-5 w-5 text-blue-400 transition-transform duration-200 ${isCommsOpen ? "transform rotate-180" : ""}`} />
                 </CollapsibleTrigger>
                 <CollapsibleContent className="bg-blue-950/30 rounded-b-lg p-4 space-y-2 border-x border-b border-blue-500/30">
-                  <p className="text-white/90">Team Lead: Sarah Johnson</p>
-                  <p className="text-white/90">Members:</p>
                   <ul className="list-disc list-inside pl-4 text-white/80 space-y-1">
-                    <li>Michael Chen - Social Media</li>
-                    <li>Priya Patel - Internal Communications</li>
-                    <li>David Wilson - External Relations</li>
+                    <li>Thomas John Fleming</li>
+                    <li>Maryam Khazaeepool</li>
+                    <li>Lakshay Lalia</li>
+                    <li>Ahmad Tahir Chaudhry</li>
+                    <li>Ibram Milad Zaki Ghali</li>
+                    <li>Nihar Jalela</li>
                   </ul>
                 </CollapsibleContent>
               </Collapsible>
@@ -432,12 +432,11 @@ const Index = () => {
                   <ChevronDown className={`h-5 w-5 text-blue-400 transition-transform duration-200 ${isSprintOpen ? "transform rotate-180" : ""}`} />
                 </CollapsibleTrigger>
                 <CollapsibleContent className="bg-blue-950/30 rounded-b-lg p-4 space-y-2 border-x border-b border-blue-500/30">
-                  <p className="text-white/90">Team Lead: Alex Rodriguez</p>
-                  <p className="text-white/90">Members:</p>
                   <ul className="list-disc list-inside pl-4 text-white/80 space-y-1">
-                    <li>Emma Watson - Planning</li>
-                    <li>Carlos Jimenez - Execution</li>
-                    <li>Sophia Lee - Review & Retrospective</li>
+                    <li>Aamya Gupta</li>
+                    <li>Negin Pakroohjahromi</li>
+                    <li>Jay Shrimpton</li>
+                    <li>Aryan Sharma</li>
                   </ul>
                 </CollapsibleContent>
               </Collapsible>
@@ -463,12 +462,12 @@ const Index = () => {
                   <ChevronDown className={`h-5 w-5 text-blue-400 transition-transform duration-200 ${isCodeOpen ? "transform rotate-180" : ""}`} />
                 </CollapsibleTrigger>
                 <CollapsibleContent className="bg-blue-950/30 rounded-b-lg p-4 space-y-2 border-x border-b border-blue-500/30">
-                  <p className="text-white/90">Team Lead: James Nguyen</p>
-                  <p className="text-white/90">Members:</p>
                   <ul className="list-disc list-inside pl-4 text-white/80 space-y-1">
-                    <li>Olivia Smith - Frontend</li>
-                    <li>Daniel Kim - Backend</li>
-                    <li>Zoe Martinez - Quality Assurance</li>
+                    <li>Pooja Dissanayake</li>
+                    <li>Aneesh Sameer Pedram</li>
+                    <li>Hariharan Tandullu Ramesh</li>
+                    <li>Pratham Shelar</li>
+                    <li>Jay Shrimpton</li>
                   </ul>
                 </CollapsibleContent>
               </Collapsible>
