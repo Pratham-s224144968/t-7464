@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import TeamMeetings from "./pages/TeamMeetings";
 import MeetingDetail from "./pages/MeetingDetail";
+import TeamMembers from "./pages/TeamMembers";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/meetings" element={<TeamMeetings />} />
               <Route path="/meetings/:id" element={<MeetingDetail />} />
+              <Route path="/team" element={<TeamMembers />} />
             </Routes>
           </BrowserRouter>
         </AuthProvider>
