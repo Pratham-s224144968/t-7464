@@ -16,17 +16,17 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <ThemeProvider>
-        <AuthProvider>
-          <BrowserRouter>
-            <Navbar /> {/* Add Navbar here, inside ThemeProvider and BrowserRouter */}
+        <BrowserRouter>
+          <AuthProvider>
+            <Navbar />
             <Toaster />
             <Sonner />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
             </Routes>
-          </BrowserRouter>
-        </AuthProvider>
+          </AuthProvider>
+        </BrowserRouter>
       </ThemeProvider>
     </TooltipProvider>
   </QueryClientProvider>
