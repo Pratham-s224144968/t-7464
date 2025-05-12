@@ -55,6 +55,15 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     localStorage.setItem("theme", theme);
     console.log("Theme changed to:", theme);
     
+    // Update CSS variables to match logo color scheme better
+    if (theme === "dark") {
+      document.documentElement.style.setProperty('--primary', '262.1 83.3% 57.8%'); // vibrant purple from logo
+      document.documentElement.style.setProperty('--accent', '24 91% 53%'); // vibrant orange from logo
+    } else {
+      document.documentElement.style.setProperty('--primary', '262.1 83.3% 57.8%'); // keep consistent purple
+      document.documentElement.style.setProperty('--accent', '24 91% 53%'); // keep consistent orange
+    }
+    
     // Optional: Trigger a custom event that other components can listen for
     window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme } }));
   }, [theme, mounted]);

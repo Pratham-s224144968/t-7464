@@ -9,18 +9,13 @@ import { useState, useEffect } from "react";
 const Navbar = () => {
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState<"light" | "dark">("light");
   
   // Get the theme context
   const themeContext = useTheme();
   
   useEffect(() => {
     setMounted(true);
-    // Set the initial theme from context when mounted
-    if (themeContext) {
-      setCurrentTheme(themeContext.theme);
-    }
-  }, [themeContext]);
+  }, []);
   
   // Track scroll position for navbar effects
   useEffect(() => {
