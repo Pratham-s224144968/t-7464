@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { SunMoon } from "lucide-react";
+import { SunMoon, Sun, Moon } from "lucide-react";
 import { motion } from "@/components/ui/motion";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -30,8 +30,20 @@ const Navbar = () => {
   >
       <div className="container mx-auto flex items-center justify-between h-16">
         <Link to="/" className="flex items-center font-mono text-xl font-bold">
-          <img alt="InnovAIte Logo" className="h-10 mr-2" src="/lovable-uploads/51cf0d4a-c9a3-4770-aa88-a1c8095ba729.png" />
-          InnovAIte
+          <motion.img 
+            alt="InnovAIte Logo" 
+            className="h-10 mr-2" 
+            src="/lovable-uploads/51cf0d4a-c9a3-4770-aa88-a1c8095ba729.png"
+            whileHover={{ rotate: 10, scale: 1.1 }}
+            transition={{ type: "spring", stiffness: 200 }}
+          />
+          <motion.span
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            InnovAIte
+          </motion.span>
         </Link>
         
         <div className="hidden md:flex items-center space-x-6">
@@ -128,21 +140,36 @@ const Navbar = () => {
 
         <div className="flex items-center">
           <motion.div 
-            whileHover={{
-              scale: 1.05
-            }} 
-            whileTap={{
-              scale: 0.95
-            }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
           >
             <Button 
               variant="outline" 
               size="icon" 
               onClick={toggleTheme} 
-              className="rounded-full border border-primary/20 hover:bg-primary/10"
+              className="rounded-full border border-primary/20 hover:bg-primary/10 relative overflow-hidden"
             >
-              <SunMoon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <SunMoon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              {theme === "dark" ? (
+                <motion.div
+                  key="sun-icon"
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -30, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Sun className="h-[1.2rem] w-[1.2rem]" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="moon-icon"
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -30, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Moon className="h-[1.2rem] w-[1.2rem]" />
+                </motion.div>
+              )}
               <span className="sr-only">Toggle theme</span>
             </Button>
           </motion.div>

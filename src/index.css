@@ -7,6 +7,7 @@
 
 @layer base {
   :root {
+    /* Vibrant light theme */
     --background: 210 50% 98%;
     --foreground: 224 71.4% 4.1%;
     --card: 0 0% 100%;
@@ -30,6 +31,7 @@
   }
  
   .dark {
+    /* More vibrant dark theme */
     --background: 240 10% 10%;
     --foreground: 210 20% 98%;
     --card: 240 10% 13%;
@@ -62,21 +64,63 @@
   }
 }
 
-/* Custom classes */
+/* Animated background gradient */
+.animated-bg {
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Enhanced glass morphism */
 .glass-morphism {
   @apply backdrop-blur-sm bg-white/10 border border-white/20 dark:bg-white/5 dark:border-white/10;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
 }
 
 .neo-blur {
   @apply backdrop-blur-md bg-primary/10 border border-primary/20 dark:bg-primary/5;
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.15);
 }
 
+/* Enhanced gradient text */
 .gradient-text {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
+  animation: hue-rotate 10s infinite linear;
+}
+
+@keyframes hue-rotate {
+  from { filter: hue-rotate(0deg); }
+  to { filter: hue-rotate(360deg); }
 }
 
 .code-block {
   @apply font-mono text-sm bg-card rounded-lg p-4 text-primary dark:text-accent;
+}
+
+/* Hover card effect */
+.hover-card {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.hover-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Pulse animation */
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
 /* Smooth scrolling */
@@ -99,4 +143,43 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-primary/60;
+}
+
+/* Floating animation */
+.floating {
+  animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Shimmer effect */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0.5) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
 }
