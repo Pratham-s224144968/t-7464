@@ -42,6 +42,21 @@ const videos: YouTubeVideo[] = [
     id: "jOTf4qqcwmQ",
     title: "InnovAIte: Rapid Prototyping with AI",
     thumbnail: "https://img.youtube.com/vi/jOTf4qqcwmQ/maxresdefault.jpg",
+  },
+  {
+    id: "N8JWiuVLi9E",
+    title: "InnovAIte: AI Ethics Workshop",
+    thumbnail: "https://img.youtube.com/vi/N8JWiuVLi9E/maxresdefault.jpg",
+  },
+  {
+    id: "zxCHEJACAI8",
+    title: "InnovAIte: Introduction to Large Language Models",
+    thumbnail: "https://img.youtube.com/vi/zxCHEJACAI8/maxresdefault.jpg",
+  },
+  {
+    id: "JMBqw2SkuRw",
+    title: "InnovAIte: Future of AI in Education",
+    thumbnail: "https://img.youtube.com/vi/JMBqw2SkuRw/maxresdefault.jpg",
   }
 ];
 
