@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    /* Vibrant light theme */
+    /* More vibrant light theme */
     --background: 210 50% 98%;
     --foreground: 224 71.4% 4.1%;
     --card: 0 0% 100%;
@@ -28,10 +28,15 @@
     --input: 220 13% 91%;
     --ring: 262.1 83.3% 57.8%;
     --radius: 0.5rem;
+
+    /* Glow effects */
+    --glow-primary: 0 0 15px rgba(139, 92, 246, 0.5);
+    --glow-accent: 0 0 15px rgba(249, 115, 22, 0.5);
+    --glow-blue: 0 0 20px rgba(59, 130, 246, 0.6);
   }
  
   .dark {
-    /* More vibrant dark theme */
+    /* Much more vibrant dark theme */
     --background: 240 10% 10%;
     --foreground: 210 20% 98%;
     --card: 240 10% 13%;
@@ -51,6 +56,11 @@
     --border: 240 3.7% 25%;
     --input: 240 3.7% 25%;
     --ring: 262.1 83.3% 57.8%;
+    
+    /* Glow effects - more intense for dark mode */
+    --glow-primary: 0 0 20px rgba(139, 92, 246, 0.7);
+    --glow-accent: 0 0 20px rgba(249, 115, 22, 0.7);
+    --glow-blue: 0 0 25px rgba(59, 130, 246, 0.8);
   }
 }
 
@@ -64,7 +74,7 @@
   }
 }
 
-/* Animated background gradient */
+/* Enhanced animated background gradient */
 .animated-bg {
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
@@ -102,17 +112,17 @@
   @apply font-mono text-sm bg-card rounded-lg p-4 text-primary dark:text-accent;
 }
 
-/* Hover card effect */
+/* Enhanced hover card effect */
 .hover-card {
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .hover-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--glow-primary);
 }
 
-/* Pulse animation */
+/* Enhanced pulse animation */
 .pulse {
   animation: pulse 2s infinite;
 }
@@ -156,7 +166,7 @@ html {
   100% { transform: translateY(0px); }
 }
 
-/* Shimmer effect */
+/* Enhanced shimmer effect */
 .shimmer {
   position: relative;
   overflow: hidden;
@@ -182,4 +192,80 @@ html {
 
 @keyframes shimmer {
   100% { transform: translateX(100%); }
+}
+
+/* Glowing elements */
+.glow-primary {
+  box-shadow: var(--glow-primary);
+}
+
+.glow-accent {
+  box-shadow: var(--glow-accent);
+}
+
+.glow-blue {
+  box-shadow: var(--glow-blue);
+}
+
+/* New magnetic button effect */
+.magnetic-btn {
+  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* New text reveal effect */
+.reveal-text {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s, transform 0.8s;
+}
+
+.reveal-text.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Perspective hover effect */
+.perspective-card {
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+}
+
+.perspective-card:hover {
+  transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
+}
+
+/* Text glow effect */
+.text-glow {
+  text-shadow: 0 0 10px rgba(139, 92, 246, 0.7);
+}
+
+.text-glow-accent {
+  text-shadow: 0 0 10px rgba(249, 115, 22, 0.7);
+}
+
+/* Radial gradient background */
+.radial-gradient {
+  background: radial-gradient(circle at center, rgba(139, 92, 246, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+}
+
+/* Animate border */
+.animate-border {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-border::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, var(--accent), var(--primary));
+  transform: translateX(-100%);
+  animation: border-flow 3s infinite alternate;
+}
+
+@keyframes border-flow {
+  to { transform: translateX(100%); }
 }
