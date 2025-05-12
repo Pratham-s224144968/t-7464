@@ -1,3 +1,4 @@
+
 import { Database, Server, Network, Users, Code, Globe, GitMerge, Lightbulb, Webhook, Cpu, Mail, Heart, CalendarDays, FileText, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
@@ -5,12 +6,13 @@ import FeatureCard from "@/components/FeatureCard";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { motion } from "@/components/ui/motion";
+
 const Index = () => {
   return <div className="min-h-screen bg-black text-white">
       <Navbar />
       
-      {/* Hero Section */}
-      <motion.section id="home" className="pt-5 pb-24 bg-gradient-to-br from-blue-900/70 to-black" initial={{
+      {/* Hero Section - Simplified */}
+      <motion.section id="home" className="pt-5 pb-16 bg-gradient-to-br from-blue-900/70 to-black" initial={{
       opacity: 0
     }} animate={{
       opacity: 1
@@ -50,7 +52,7 @@ const Index = () => {
           delay: 0.4,
           duration: 0.5
         }}>
-            Powering the Future of AI-Driven Innovation
+            AI Innovation Hub at Deakin University
           </motion.p>
           <motion.p className="text-lg max-w-3xl mx-auto mb-8 text-white/80" initial={{
           y: 30,
@@ -62,31 +64,98 @@ const Index = () => {
           delay: 0.5,
           duration: 0.5
         }}>
-            InnovAIte is an AI-native innovation platform driven by students and researchers at Deakin University. 
-            We validate, prototype, and explore emerging AI tools to accelerate startup and research development across industries.
+            We are an AI-focused innovation platform driven by students and researchers at Deakin University.
           </motion.p>
-          <motion.div className="flex flex-wrap justify-center gap-4" initial={{
-          y: 30,
-          opacity: 0
-        }} animate={{
-          y: 0,
-          opacity: 1
-        }} transition={{
-          delay: 0.6,
-          duration: 0.5
-        }}>
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
-              Explore Our Work
-            </Button>
-            <Button size="lg" variant="outline" className="text-white border-white bg-transparent hover:bg-white/10">
-              Learn More
-            </Button>
-          </motion.div>
         </div>
       </motion.section>
 
-      {/* About Us Section */}
-      <motion.section id="about" className="py-24 bg-black" initial={{
+      {/* Portfolio Showcase Section - NEW */}
+      <motion.section id="portfolio" className="py-20 bg-black" initial={{
+      opacity: 0
+    }} whileInView={{
+      opacity: 1
+    }} transition={{
+      duration: 0.8
+    }} viewport={{
+      once: true
+    }}>
+        <div className="container mx-auto">
+          <motion.h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500" initial={{
+          y: 20,
+          opacity: 0
+        }} whileInView={{
+          y: 0,
+          opacity: 1
+        }} transition={{
+          delay: 0.2,
+          duration: 0.5
+        }} viewport={{
+          once: true
+        }}>
+            /PORTFOLIO
+          </motion.h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <motion.div className="col-span-3 md:col-span-2" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }} viewport={{ once: true }}>
+              <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur h-full hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300">
+                <CardHeader>
+                  <CardTitle className="text-white text-2xl">Featured Project: AI Prototyping Lab</CardTitle>
+                  <CardDescription className="text-blue-200">Revolutionizing application development</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <img 
+                    src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d" 
+                    alt="Person working on AI development" 
+                    className="w-full h-64 object-cover rounded-md"
+                  />
+                  <p className="text-white/80">
+                    Our flagship project explores how AI can dramatically accelerate application development for startups and businesses. 
+                    Student teams test various AI development platforms and document their findings to help organizations choose 
+                    the right tools for their needs.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="px-2 py-1 bg-blue-900/50 rounded-full text-xs text-blue-200">AI Development</span>
+                    <span className="px-2 py-1 bg-blue-900/50 rounded-full text-xs text-blue-200">LLMs</span>
+                    <span className="px-2 py-1 bg-blue-900/50 rounded-full text-xs text-blue-200">Research</span>
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={() => window.open('https://gitlab.deakin.edu.au/innovaite/prototyping', '_blank')}>
+                    <GitMerge className="mr-2 h-4 w-4" />
+                    View Project Repository
+                  </Button>
+                </CardFooter>
+              </Card>
+            </motion.div>
+
+            <motion.div className="col-span-3 md:col-span-1" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.5 }} viewport={{ once: true }}>
+              <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur h-full hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300">
+                <CardHeader>
+                  <CardTitle className="text-white">AI Generalist Program</CardTitle>
+                  <CardDescription className="text-blue-200">Knowledge-sharing initiative</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <img 
+                    src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158" 
+                    alt="Person learning about AI" 
+                    className="w-full h-40 object-cover rounded-md"
+                  />
+                  <p className="text-white/80">
+                    A program designed to research and share AI tools that can boost productivity and creativity for non-technical users.
+                  </p>
+                </CardContent>
+                <CardFooter>
+                  <Button variant="outline" className="text-blue-400 border-blue-500/50 hover:bg-blue-950/50" onClick={() => window.open('https://gitlab.deakin.edu.au/innovaite/generalist', '_blank')}>
+                    Learn More
+                  </Button>
+                </CardFooter>
+              </Card>
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* About Us Section - Simplified */}
+      <motion.section id="about" className="py-20 bg-gradient-to-b from-black to-blue-950/50" initial={{
       opacity: 0
     }} whileInView={{
       opacity: 1
@@ -110,399 +179,51 @@ const Index = () => {
         }}>
             /ABOUT US
           </motion.h2>
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.p className="text-xl text-white/90 mb-8 leading-relaxed" initial={{
-            y: 20,
-            opacity: 0
-          }} whileInView={{
-            y: 0,
-            opacity: 1
-          }} transition={{
-            delay: 0.3,
-            duration: 0.5
-          }} viewport={{
-            once: true
-          }}>
-              InnovAIte is a student-led research company operating under Deakin University's SPARK 2026 initiative. 
-              Our aim is to identify, validate, and showcase cutting-edge AI tools and workflows that have the potential 
-              to reshape how businesses and academia adopt AI.
-            </motion.p>
-            <motion.p className="text-lg text-white/80 mb-8" initial={{
-            y: 20,
-            opacity: 0
-          }} whileInView={{
-            y: 0,
-            opacity: 1
-          }} transition={{
-            delay: 0.4,
-            duration: 0.5
-          }} viewport={{
-            once: true
-          }}>
-              We work closely with Deakin staff, researchers, and industry mentors to ensure our projects 
-              have real-world applications and impact. Our collaborative approach brings together diverse 
-              perspectives and expertise to drive innovation in AI.
-            </motion.p>
-            <div className="grid md:grid-cols-3 gap-8 mt-12">
-              <motion.div className="p-6 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300" initial={{
-              y: 20,
-              opacity: 0
-            }} whileInView={{
-              y: 0,
-              opacity: 1
-            }} transition={{
-              delay: 0.5,
-              duration: 0.5
-            }} viewport={{
-              once: true
-            }} whileHover={{
-              y: -5
-            }}>
-                <Users className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-white mb-2">Student-Led</h3>
-                <p className="text-white/70">Driven by ambitious students with fresh perspectives</p>
-              </motion.div>
-              <motion.div className="p-6 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300" initial={{
-              y: 20,
-              opacity: 0
-            }} whileInView={{
-              y: 0,
-              opacity: 1
-            }} transition={{
-              delay: 0.6,
-              duration: 0.5
-            }} viewport={{
-              once: true
-            }} whileHover={{
-              y: -5
-            }}>
-                <Cpu className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-white mb-2">AI-Focused</h3>
-                <p className="text-white/70">Specializing in cutting-edge AI technologies</p>
-              </motion.div>
-              <motion.div className="p-6 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300" initial={{
-              y: 20,
-              opacity: 0
-            }} whileInView={{
-              y: 0,
-              opacity: 1
-            }} transition={{
-              delay: 0.7,
-              duration: 0.5
-            }} viewport={{
-              once: true
-            }} whileHover={{
-              y: -5
-            }}>
-                <Globe className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-white mb-2">Industry Connected</h3>
-                <p className="text-white/70">Working with real businesses for practical solutions</p>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Projects Section */}
-      <motion.section id="projects" className="py-24 bg-gradient-to-b from-black to-blue-950/50" initial={{
-      opacity: 0
-    }} whileInView={{
-      opacity: 1
-    }} transition={{
-      duration: 0.8
-    }} viewport={{
-      once: true
-    }}>
-        <div className="container mx-auto">
-          <motion.h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500" initial={{
-          y: 20,
-          opacity: 0
-        }} whileInView={{
-          y: 0,
-          opacity: 1
-        }} transition={{
-          delay: 0.2,
-          duration: 0.5
-        }} viewport={{
-          once: true
-        }}>
-            /PROJECTS
-          </motion.h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <motion.div initial={{
-            x: -30,
-            opacity: 0
-          }} whileInView={{
-            x: 0,
-            opacity: 1
-          }} transition={{
-            delay: 0.3,
-            duration: 0.5
-          }} viewport={{
-            once: true
-          }} whileHover={{
-            y: -5
-          }}>
-              <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-white">
-                    <Lightbulb className="h-6 w-6 text-blue-400" />
-                    <Link to="/projects/ai-prototyping-lab" className="hover:text-blue-400 transition-colors">
-                      AI Prototyping Lab
-                    </Link>
-                  </CardTitle>
-                  <CardDescription className="text-blue-200">
-                    Exploring AI development platforms
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-white/90">
-                    A hands-on lab where student teams explore AI development platforms and test how AI can build applications rapidly for businesses and startups.
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Button variant="outline" className="text-blue-400 border-blue-500/50 hover:bg-blue-950/50" onClick={() => window.open('https://gitlab.deakin.edu.au/innovaite/prototyping', '_blank')}>
-                    <GitMerge className="mr-2 h-4 w-4" />
-                    View GitLab Repository
-                  </Button>
-                </CardFooter>
-              </Card>
-            </motion.div>
-            
-            <motion.div initial={{
-            x: 30,
-            opacity: 0
-          }} whileInView={{
-            x: 0,
-            opacity: 1
-          }} transition={{
-            delay: 0.4,
-            duration: 0.5
-          }} viewport={{
-            once: true
-          }} whileHover={{
-            y: -5
-          }}>
-              <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-white">
-                    <Code className="h-6 w-6 text-blue-400" />
-                    <Link to="/projects/ai-generalist-program" className="hover:text-blue-400 transition-colors">
-                      AI Generalist Program
-                    </Link>
-                  </CardTitle>
-                  <CardDescription className="text-blue-200">
-                    Knowledge-sharing for non-technical users
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-white/90">
-                    A knowledge-sharing program that researches AI tools for non-technical users and academics to boost productivity, creativity, and learning.
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Button variant="outline" className="text-blue-400 border-blue-500/50 hover:bg-blue-950/50" onClick={() => window.open('https://gitlab.deakin.edu.au/innovaite/generalist', '_blank')}>
-                    <GitMerge className="mr-2 h-4 w-4" />
-                    View GitLab Repository
-                  </Button>
-                </CardFooter>
-              </Card>
-            </motion.div>
-            
-            <motion.div initial={{
-            x: -30,
-            opacity: 0
-          }} whileInView={{
-            x: 0,
-            opacity: 1
-          }} transition={{
-            delay: 0.5,
-            duration: 0.5
-          }} viewport={{
-            once: true
-          }} whileHover={{
-            y: -5
-          }}>
-              <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-white">
-                    <Webhook className="h-6 w-6 text-blue-400" />
-                    <Link to="/projects/coming-soon-1" className="hover:text-blue-400 transition-colors">
-                      Coming Soon
-                    </Link>
-                  </CardTitle>
-                  <CardDescription className="text-blue-200">
-                    New project under development
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-white/90">
-                    We're working on expanding our project portfolio. Stay tuned for our next innovative AI research initiative.
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Button variant="outline" className="text-blue-400 border-blue-500/50 hover:bg-blue-950/50" disabled>
-                    <GitMerge className="mr-2 h-4 w-4" />
-                    Coming Soon
-                  </Button>
-                </CardFooter>
-              </Card>
-            </motion.div>
-            
-            <motion.div initial={{
-            x: 30,
-            opacity: 0
-          }} whileInView={{
-            x: 0,
-            opacity: 1
-          }} transition={{
-            delay: 0.6,
-            duration: 0.5
-          }} viewport={{
-            once: true
-          }} whileHover={{
-            y: -5
-          }}>
-              <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-white">
-                    <Network className="h-6 w-6 text-blue-400" />
-                    <Link to="/projects/coming-soon-2" className="hover:text-blue-400 transition-colors">
-                      Coming Soon
-                    </Link>
-                  </CardTitle>
-                  <CardDescription className="text-blue-200">
-                    Future innovation project
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-white/90">
-                    Another exciting project is in the pipeline. Check back later for updates on our newest AI research avenue.
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Button variant="outline" className="text-blue-400 border-blue-500/50 hover:bg-blue-950/50" disabled>
-                    <GitMerge className="mr-2 h-4 w-4" />
-                    Coming Soon
-                  </Button>
-                </CardFooter>
-              </Card>
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* GitLab Repositories Section */}
-      <motion.section id="gitlab" className="py-24 bg-black" initial={{
-      opacity: 0
-    }} whileInView={{
-      opacity: 1
-    }} transition={{
-      duration: 0.8
-    }} viewport={{
-      once: true
-    }}>
-        <div className="container mx-auto">
-          <motion.h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500" initial={{
-          y: 20,
-          opacity: 0
-        }} whileInView={{
-          y: 0,
-          opacity: 1
-        }} transition={{
-          delay: 0.2,
-          duration: 0.5
-        }} viewport={{
-          once: true
-        }}>
-            /GITLAB REPOS
-          </motion.h2>
           <div className="max-w-4xl mx-auto">
-            <div className="space-y-6">
-              <motion.div className="p-6 rounded-lg bg-blue-900/10 border border-blue-900/30 flex items-center justify-between hover:bg-blue-900/20 transition-all duration-300" initial={{
-              y: 20,
-              opacity: 0
-            }} whileInView={{
-              y: 0,
-              opacity: 1
-            }} transition={{
-              delay: 0.3,
-              duration: 0.5
-            }} viewport={{
-              once: true
-            }} whileHover={{
-              scale: 1.02
-            }}>
-                <div className="flex items-center">
-                  <GitMerge className="h-8 w-8 text-blue-400 mr-4" />
-                  <div>
-                    <h3 className="text-lg font-medium text-white">AI Prototyping Lab Repository</h3>
-                    <p className="text-sm text-white/70">Source code and documentation for our AI prototyping projects</p>
-                  </div>
-                </div>
-                <Button className="bg-blue-600 hover:bg-blue-700" onClick={() => window.open('https://gitlab.deakin.edu.au/innovaite/prototyping', '_blank')}>
-                  View Repo
-                </Button>
+            <div className="flex flex-col md:flex-row gap-8">
+              <motion.div className="md:w-1/2" initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }} viewport={{ once: true }}>
+                <h3 className="text-2xl font-semibold text-white mb-4">Our Mission</h3>
+                <p className="text-white/80 mb-6 leading-relaxed">
+                  InnovAIte identifies, validates, and showcases cutting-edge AI tools and workflows 
+                  that reshape how businesses and academia adopt artificial intelligence.
+                </p>
+                <p className="text-white/80 mb-6 leading-relaxed">
+                  Operating under Deakin University's SPARK 2026 initiative, we bring together 
+                  students, researchers, and industry partners to create practical AI solutions.
+                </p>
               </motion.div>
               
-              <motion.div className="p-6 rounded-lg bg-blue-900/10 border border-blue-900/30 flex items-center justify-between hover:bg-blue-900/20 transition-all duration-300" initial={{
-              y: 20,
-              opacity: 0
-            }} whileInView={{
-              y: 0,
-              opacity: 1
-            }} transition={{
-              delay: 0.4,
-              duration: 0.5
-            }} viewport={{
-              once: true
-            }} whileHover={{
-              scale: 1.02
-            }}>
-                <div className="flex items-center">
-                  <GitMerge className="h-8 w-8 text-blue-400 mr-4" />
-                  <div>
-                    <h3 className="text-lg font-medium text-white">AI Generalist Program Repository</h3>
-                    <p className="text-sm text-white/70">Resources and guides for non-technical AI adoption</p>
+              <motion.div className="md:w-1/2" initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.5 }} viewport={{ once: true }}>
+                <div className="grid grid-cols-2 gap-4 h-full">
+                  <div className="p-4 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30 flex flex-col items-center justify-center">
+                    <Users className="w-10 h-10 text-blue-400 mb-2" />
+                    <h3 className="text-lg font-medium text-white">Student-Led</h3>
+                    <p className="text-sm text-white/70 text-center">Fresh perspectives driving innovation</p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30 flex flex-col items-center justify-center">
+                    <Cpu className="w-10 h-10 text-blue-400 mb-2" />
+                    <h3 className="text-lg font-medium text-white">AI-Focused</h3>
+                    <p className="text-sm text-white/70 text-center">Cutting-edge AI technology</p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30 flex flex-col items-center justify-center">
+                    <Globe className="w-10 h-10 text-blue-400 mb-2" />
+                    <h3 className="text-lg font-medium text-white">Connected</h3>
+                    <p className="text-sm text-white/70 text-center">Strong industry partnerships</p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30 flex flex-col items-center justify-center">
+                    <Lightbulb className="w-10 h-10 text-blue-400 mb-2" />
+                    <h3 className="text-lg font-medium text-white">Innovative</h3>
+                    <p className="text-sm text-white/70 text-center">Creating new possibilities</p>
                   </div>
                 </div>
-                <Button className="bg-blue-600 hover:bg-blue-700" onClick={() => window.open('https://gitlab.deakin.edu.au/innovaite/generalist', '_blank')}>
-                  View Repo
-                </Button>
-              </motion.div>
-              
-              <motion.div className="p-6 rounded-lg bg-blue-900/10 border border-blue-900/30 flex items-center justify-between hover:bg-blue-900/20 transition-all duration-300" initial={{
-              y: 20,
-              opacity: 0
-            }} whileInView={{
-              y: 0,
-              opacity: 1
-            }} transition={{
-              delay: 0.5,
-              duration: 0.5
-            }} viewport={{
-              once: true
-            }} whileHover={{
-              scale: 1.02
-            }}>
-                <div className="flex items-center">
-                  <GitMerge className="h-8 w-8 text-blue-400 mr-4" />
-                  <div>
-                    <h3 className="text-lg font-medium text-white">GitLab Access Guide</h3>
-                    <p className="text-sm text-white/70">How to access and contribute to our repositories</p>
-                  </div>
-                </div>
-                <Button className="bg-blue-600 hover:bg-blue-700" onClick={() => window.open('https://gitlab.deakin.edu.au/innovaite', '_blank')}>
-                  View Guide
-                </Button>
               </motion.div>
             </div>
           </div>
         </div>
       </motion.section>
 
-      {/* MS Teams Section */}
-      <motion.section id="teams" className="py-24 bg-gradient-to-b from-black to-blue-950/50" initial={{
+      {/* Resources Section - NEW */}
+      <motion.section id="resources" className="py-20 bg-black" initial={{
       opacity: 0
     }} whileInView={{
       opacity: 1
@@ -524,39 +245,54 @@ const Index = () => {
         }} viewport={{
           once: true
         }}>
-            /MS TEAMS
+            /RESOURCES
           </motion.h2>
-          <div className="max-w-3xl mx-auto">
-            <motion.div className="p-8 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30 text-center hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300" initial={{
-            y: 20,
-            opacity: 0
-          }} whileInView={{
-            y: 0,
-            opacity: 1
-          }} transition={{
-            delay: 0.3,
-            duration: 0.5
-          }} viewport={{
-            once: true
-          }} whileHover={{
-            y: -5
-          }}>
-              <MessageSquare className="w-16 h-16 text-blue-400 mx-auto mb-6" />
-              <h3 className="text-2xl font-semibold text-white mb-4">Join Our MS Teams Channel</h3>
-              <p className="text-lg text-white/80 mb-6">
-                Connect with the InnovAIte team and participate in our discussions, meetings, and collaborative work.
+          
+          <div className="grid md:grid-cols-3 gap-6">
+            <motion.div className="p-6 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }} viewport={{ once: true }}>
+              <div className="flex items-center mb-4">
+                <GitMerge className="w-8 h-8 text-blue-400 mr-3" />
+                <h3 className="text-xl font-semibold text-white">GitLab Repositories</h3>
+              </div>
+              <p className="text-white/70 mb-4">
+                Access our open-source code repositories, documentation, and project materials.
               </p>
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto" onClick={() => window.open('https://teams.microsoft.com/l/team/19%3AcW6v8QDG1uJuK3IebazxDFvL7RLh8SPVLP7ZMK8jCH01%40thread.tacv2/conversations?groupId=64f97721-41a3-47c1-adad-e07a0e609089&tenantId=d02378ec-1688-46d5-8540-1c28b5f470f6', '_blank')}>
-                <MessageSquare className="mr-2 h-5 w-5" />
-                Join MS Teams Channel
+              <Button className="w-full bg-blue-600 hover:bg-blue-700" onClick={() => window.open('https://gitlab.deakin.edu.au/innovaite', '_blank')}>
+                View Repositories
+              </Button>
+            </motion.div>
+            
+            <motion.div className="p-6 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.5 }} viewport={{ once: true }}>
+              <div className="flex items-center mb-4">
+                <MessageSquare className="w-8 h-8 text-blue-400 mr-3" />
+                <h3 className="text-xl font-semibold text-white">MS Teams Channel</h3>
+              </div>
+              <p className="text-white/70 mb-4">
+                Join our Microsoft Teams channel for discussions, announcements, and collaboration.
+              </p>
+              <Button className="w-full bg-blue-600 hover:bg-blue-700" onClick={() => window.open('https://teams.microsoft.com/l/team/19%3AcW6v8QDG1uJuK3IebazxDFvL7RLh8SPVLP7ZMK8jCH01%40thread.tacv2/conversations?groupId=64f97721-41a3-47c1-adad-e07a0e609089&tenantId=d02378ec-1688-46d5-8540-1c28b5f470f6', '_blank')}>
+                Join Teams Channel
+              </Button>
+            </motion.div>
+            
+            <motion.div className="p-6 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.5 }} viewport={{ once: true }}>
+              <div className="flex items-center mb-4">
+                <FileText className="w-8 h-8 text-blue-400 mr-3" />
+                <h3 className="text-xl font-semibold text-white">Meeting Notes</h3>
+              </div>
+              <p className="text-white/70 mb-4">
+                Browse our weekly meeting summaries and project updates.
+              </p>
+              <Button className="w-full bg-blue-600 hover:bg-blue-700" onClick={() => window.open('#', '_blank')}>
+                View Meeting Notes
               </Button>
             </motion.div>
           </div>
         </div>
       </motion.section>
 
-      {/* Weekly Meeting Summary Section */}
-      <motion.section id="meetings" className="py-24 bg-gradient-to-t from-black to-blue-950/50" initial={{
+      {/* Team Section - NEW */}
+      <motion.section id="team" className="py-20 bg-gradient-to-b from-black to-blue-950/50" initial={{
       opacity: 0
     }} whileInView={{
       opacity: 1
@@ -578,67 +314,53 @@ const Index = () => {
         }} viewport={{
           once: true
         }}>
-            /WEEKLY MEETING SUMMARIES
+            /OUR TEAM
           </motion.h2>
+          
           <div className="max-w-4xl mx-auto">
-            <motion.div className="p-8 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300" initial={{
-            y: 20,
-            opacity: 0
-          }} whileInView={{
-            y: 0,
-            opacity: 1
-          }} transition={{
-            delay: 0.3,
-            duration: 0.5
-          }} viewport={{
-            once: true
-          }} whileHover={{
-            y: -5
-          }}>
-              <div className="flex flex-col md:flex-row items-center justify-between mb-8">
-                <div className="flex items-center mb-4 md:mb-0">
-                  <CalendarDays className="w-12 h-12 text-blue-400 mr-4" />
-                  <div>
-                    <h3 className="text-xl font-semibold text-white">Meeting Summaries</h3>
-                    <p className="text-white/70">Records of our weekly progress and discussions</p>
-                  </div>
-                </div>
-                <Button className="bg-blue-600 hover:bg-blue-700" onClick={() => window.open('#', '_blank')}>
-                  <FileText className="mr-2 h-5 w-5" />
-                  View Document
-                </Button>
-              </div>
-              
-              <div className="space-y-4">
-                <div className="p-4 rounded-lg bg-blue-900/30 border border-blue-500/20">
-                  <div className="flex justify-between items-center mb-2">
-                    <h4 className="font-medium text-white">Meeting - June 20, 2024</h4>
-                    <span className="text-xs bg-blue-600 rounded-full px-2 py-1">Latest</span>
-                  </div>
-                  <p className="text-white/70 text-sm">Discussion on AI prototyping progress and next sprint planning</p>
-                </div>
-                
-                <div className="p-4 rounded-lg bg-blue-900/20 border border-blue-500/20">
-                  <div className="flex justify-between items-center mb-2">
-                    <h4 className="font-medium text-white">Meeting - June 13, 2024</h4>
-                  </div>
-                  <p className="text-white/70 text-sm">Review of AI generalist program materials and community engagement</p>
-                </div>
-                
-                <div className="p-4 rounded-lg bg-blue-900/20 border border-blue-500/20">
-                  <div className="flex justify-between items-center mb-2">
-                    <h4 className="font-medium text-white">Meeting - June 6, 2024</h4>
-                  </div>
-                  <p className="text-white/70 text-sm">Introduction of new team members and project roadmap discussion</p>
-                </div>
-              </div>
+            <motion.p className="text-center text-white/80 mb-10" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }} viewport={{ once: true }}>
+              InnovAIte brings together talented students, researchers, and industry mentors who are passionate about AI innovation.
+            </motion.p>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {/* These would ideally be populated from a data source */}
+              <TeamMemberCard 
+                name="Team Lead"
+                role="Project Coordinator"
+                imageUrl="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
+                delay={0.3}
+              />
+              <TeamMemberCard 
+                name="AI Researcher"
+                role="ML Specialist"
+                imageUrl="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
+                delay={0.4}
+              />
+              <TeamMemberCard 
+                name="Developer"
+                role="Full Stack Engineer"
+                imageUrl="https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
+                delay={0.5}
+              />
+              <TeamMemberCard 
+                name="Designer"
+                role="UX/UI Specialist"
+                imageUrl="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80"
+                delay={0.6}
+              />
+            </div>
+            
+            <motion.div className="text-center mt-10" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.7, duration: 0.5 }} viewport={{ once: true }}>
+              <Button variant="outline" className="text-blue-400 border-blue-500/50 hover:bg-blue-950/50">
+                Join Our Team
+              </Button>
             </motion.div>
           </div>
         </div>
       </motion.section>
 
-      {/* Contact Section */}
-      <motion.section id="contact" className="py-24 bg-gradient-to-t from-blue-950/30 to-black" initial={{
+      {/* Contact Section - Simplified */}
+      <motion.section id="contact" className="py-20 bg-black" initial={{
       opacity: 0
     }} whileInView={{
       opacity: 1
@@ -647,8 +369,8 @@ const Index = () => {
     }} viewport={{
       once: true
     }}>
-        <div className="container mx-auto text-center">
-          <motion.h2 className="text-3xl font-mono font-bold mb-12 text-blue-500" initial={{
+        <div className="container mx-auto">
+          <motion.h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500" initial={{
           y: 20,
           opacity: 0
         }} whileInView={{
@@ -662,50 +384,39 @@ const Index = () => {
         }}>
             /CONTACT US
           </motion.h2>
-          <div className="max-w-lg mx-auto">
-            <motion.p className="text-lg text-white/80 mb-8" initial={{
-            y: 20,
-            opacity: 0
-          }} whileInView={{
-            y: 0,
-            opacity: 1
-          }} transition={{
-            delay: 0.3,
-            duration: 0.5
-          }} viewport={{
-            once: true
-          }}>
-              Interested in collaborating with InnovAIte or learning more about our projects? 
-              We'd love to hear from you!
-            </motion.p>
-            <motion.div className="p-8 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300" initial={{
-            y: 20,
-            opacity: 0
-          }} whileInView={{
-            y: 0,
-            opacity: 1
-          }} transition={{
-            delay: 0.4,
-            duration: 0.5
-          }} viewport={{
-            once: true
-          }} whileHover={{
-            y: -5
-          }}>
-              <Mail className="w-12 h-12 text-blue-400 mx-auto mb-4" />
+          
+          <div className="flex flex-col md:flex-row gap-8 max-w-4xl mx-auto">
+            <motion.div className="md:w-1/2 p-6 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30" initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }} viewport={{ once: true }}>
               <h3 className="text-xl font-semibold text-white mb-4">Get In Touch</h3>
-              <p className="text-white/70 mb-6">
-                Email us at: <a href="mailto:contact@innovaite.ai" className="text-blue-400 hover:underline">contact@innovaite.ai</a>
+              <p className="text-white/80 mb-4">
+                Have questions or want to collaborate? Reach out to our team.
               </p>
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 w-full">
-                Send Message
+              <div className="space-y-3">
+                <div className="flex items-center">
+                  <Mail className="w-5 h-5 text-blue-400 mr-2" />
+                  <span className="text-white/80">contact@innovaite.ai</span>
+                </div>
+                <div className="flex items-center">
+                  <MessageSquare className="w-5 h-5 text-blue-400 mr-2" />
+                  <span className="text-white/80">MS Teams Channel</span>
+                </div>
+              </div>
+            </motion.div>
+            
+            <motion.div className="md:w-1/2 p-6 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30" initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.5 }} viewport={{ once: true }}>
+              <h3 className="text-xl font-semibold text-white mb-4">Visit Us</h3>
+              <p className="text-white/80 mb-4">
+                We're located at Deakin University's Burwood Campus.
+              </p>
+              <Button className="bg-blue-600 hover:bg-blue-700 w-full" onClick={() => window.open('https://goo.gl/maps/9Z9Z9Z9Z9Z9Z9Z9Z9', '_blank')}>
+                View Map
               </Button>
             </motion.div>
           </div>
         </div>
       </motion.section>
 
-      {/* Footer */}
+      {/* Footer - Kept similar */}
       <footer className="bg-black border-t border-blue-900/30 py-12">
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center">
@@ -739,4 +450,24 @@ const Index = () => {
       </footer>
     </div>;
 };
+
+// TeamMemberCard Component
+const TeamMemberCard = ({ name, role, imageUrl, delay = 0.3 }) => {
+  return (
+    <motion.div 
+      className="flex flex-col items-center" 
+      initial={{ opacity: 0, y: 20 }} 
+      whileInView={{ opacity: 1, y: 0 }} 
+      transition={{ delay, duration: 0.5 }} 
+      viewport={{ once: true }}
+    >
+      <div className="w-full aspect-square rounded-full overflow-hidden mb-4 border-2 border-blue-500/30">
+        <img src={imageUrl} alt={name} className="w-full h-full object-cover" />
+      </div>
+      <h4 className="text-lg font-medium text-white">{name}</h4>
+      <p className="text-sm text-blue-300">{role}</p>
+    </motion.div>
+  );
+};
+
 export default Index;
