@@ -1,6 +1,7 @@
+
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Sun, Moon } from "lucide-react";
+import { Sun, Moon, CalendarDays } from "lucide-react";
 import { motion } from "@/components/ui/motion";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -135,6 +136,20 @@ const Navbar = () => {
           >
             Contact
           </motion.button>
+          
+          {/* Add Team Meetings Link */}
+          <motion.div
+            whileHover={{ y: -2 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+          >
+            <Link 
+              to="/meetings" 
+              className="flex items-center text-sm font-medium hover:text-primary transition-colors relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left"
+            >
+              <CalendarDays className="mr-1 h-4 w-4" />
+              Meetings
+            </Link>
+          </motion.div>
         </div>
 
         <div className="flex items-center">

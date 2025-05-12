@@ -283,8 +283,8 @@ const Index = () => {
               <p className="text-white/70 mb-4">
                 Browse our weekly meeting summaries and project updates.
               </p>
-              <Button className="w-full bg-blue-600 hover:bg-blue-700" onClick={() => window.open('#', '_blank')}>
-                View Meeting Notes
+              <Button className="w-full bg-blue-600 hover:bg-blue-700" asChild>
+                <Link to="/meetings">View Team Meetings</Link>
               </Button>
             </motion.div>
           </div>
