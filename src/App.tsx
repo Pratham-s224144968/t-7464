@@ -8,6 +8,8 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import TeamMeetings from "./pages/TeamMeetings";
+import MeetingDetail from "./pages/MeetingDetail";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +24,8 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/meetings" element={<TeamMeetings />} />
+              <Route path="/meetings/:id" element={<MeetingDetail />} />
             </Routes>
           </BrowserRouter>
         </AuthProvider>
