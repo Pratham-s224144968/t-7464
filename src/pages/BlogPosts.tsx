@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
@@ -34,100 +35,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Search, Filter, X, RefreshCcw, Heart } from 'lucide-react';
+import { Search, Filter, RefreshCcw, ExternalLink } from 'lucide-react';
 import BlogPostCard, { BlogPost } from '@/components/BlogPostCard';
-
-const dummyBlogPosts: BlogPost[] = [
-  {
-    id: "1",
-    title: "The Future of AI in Healthcare",
-    excerpt: "Explore how artificial intelligence is revolutionizing healthcare, from diagnostics to personalized medicine.",
-    coverImage: "https://source.unsplash.com/800x600/?artificialintelligence",
-    date: new Date(),
-    author: {
-      name: "Dr. Emily Carter",
-      avatar: "https://source.unsplash.com/50x50/?woman"
-    },
-    commentCount: 25,
-    category: "AI in Medicine",
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-  },
-  {
-    id: "2",
-    title: "Sustainable Energy Solutions for Tomorrow",
-    excerpt: "Discover innovative approaches to sustainable energy that can help combat climate change.",
-    coverImage: "https://source.unsplash.com/800x600/?sustainableenergy",
-    date: new Date(),
-    author: {
-      name: "Alex Johnson",
-      avatar: "https://source.unsplash.com/50x50/?man"
-    },
-    commentCount: 15,
-    category: "Renewable Energy",
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-  },
-  {
-    id: "3",
-    title: "The Art of Minimalist Living",
-    excerpt: "Learn how to declutter your life and embrace minimalism for a more fulfilling existence.",
-    coverImage: "https://source.unsplash.com/800x600/?minimalism",
-    date: new Date(),
-    author: {
-      name: "Sophia Lee",
-      avatar: "https://source.unsplash.com/50x50/?woman"
-    },
-    commentCount: 30,
-    category: "Lifestyle",
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-  },
-  {
-    id: "4",
-    title: "Coding Best Practices for Beginners",
-    excerpt: "A comprehensive guide to writing clean, efficient, and maintainable code for novice programmers.",
-    coverImage: "https://source.unsplash.com/800x600/?coding",
-    date: new Date(),
-    author: {
-      name: "David Brown",
-      avatar: "https://source.unsplash.com/50x50/?man"
-    },
-    commentCount: 40,
-    category: "Programming",
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-  },
-  {
-    id: "5",
-    title: "The Impact of Social Media on Society",
-    excerpt: "Analyze the profound effects of social media platforms on communication, culture, and politics.",
-    coverImage: "https://source.unsplash.com/800x600/?socialmedia",
-    date: new Date(),
-    author: {
-      name: "Olivia Wilson",
-      avatar: "https://source.unsplash.com/50x50/?woman"
-    },
-    commentCount: 20,
-    category: "Social Issues",
-    youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-  },
-];
+import { blogPosts } from '@/data/blogPosts';
 
 const BlogPosts = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
-  const [blogPosts, setBlogPosts] = useState(dummyBlogPosts);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  useEffect(() => {
-    // Simulate fetching blog posts from an API
-    // In a real application, you would replace this with an actual API call
-    const fetchBlogPosts = async () => {
-      // Simulate a delay to mimic network request
-      await new Promise(resolve => setTimeout(resolve, 500));
-      // In a real scenario, you would set the fetched data here
-      // setBlogPosts(fetchedPosts);
-    };
-
-    fetchBlogPosts();
-  }, []);
+  const categories = Array.from(new Set(blogPosts.map(post => post.category))).sort();
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -151,9 +68,27 @@ const BlogPosts = () => {
 
   return (
     <div className="container py-12">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-white">Blog & Vlogs</h1>
-        <div className="flex items-center space-x-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div className="flex items-center">
+          <h1 className="text-3xl font-bold text-white">InnovAIte Blog & Vlogs</h1>
+          <a 
+            href="https://www.youtube.com/@innovAIteDeakin" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="ml-4 flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors bg-blue-950/30 px-3 py-1 rounded-full text-sm"
+          >
+            YouTube Channel <ExternalLink size={14} />
+          </a>
+          <a 
+            href="https://innovate-spark-hackathon-hub.lovable.app" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="ml-2 flex items-center gap-1 text-amber-400 hover:text-amber-300 transition-colors bg-amber-950/30 px-3 py-1 rounded-full text-sm"
+          >
+            Hackathon Hub <ExternalLink size={14} />
+          </a>
+        </div>
+        <div className="flex items-center space-x-4 w-full md:w-auto">
           <Input
             type="text"
             placeholder="Search blog posts..."
@@ -168,25 +103,19 @@ const BlogPosts = () => {
                 Filter
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-blue-950/80 backdrop-blur border-blue-500/30 text-white">
+            <DropdownMenuContent align="end" className="bg-blue-950/80 backdrop-blur border-blue-500/30 text-white max-h-[300px] overflow-y-auto">
               <DropdownMenuItem onClick={() => handleCategoryChange('')} className="hover:bg-blue-950/50 focus:bg-blue-950/50">
                 All Categories
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleCategoryChange('AI in Medicine')} className="hover:bg-blue-950/50 focus:bg-blue-950/50">
-                AI in Medicine
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleCategoryChange('Renewable Energy')} className="hover:bg-blue-950/50 focus:bg-blue-950/50">
-                Renewable Energy
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleCategoryChange('Lifestyle')} className="hover:bg-blue-950/50 focus:bg-blue-950/50">
-                Lifestyle
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleCategoryChange('Programming')} className="hover:bg-blue-950/50 focus:bg-blue-950/50">
-                Programming
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleCategoryChange('Social Issues')} className="hover:bg-blue-950/50 focus:bg-blue-950/50">
-                Social Issues
-              </DropdownMenuItem>
+              {categories.map(category => (
+                <DropdownMenuItem 
+                  key={category}
+                  onClick={() => handleCategoryChange(category)} 
+                  className="hover:bg-blue-950/50 focus:bg-blue-950/50"
+                >
+                  {category}
+                </DropdownMenuItem>
+              ))}
             </DropdownMenuContent>
           </DropdownMenu>
           {searchQuery || filterCategory ? (
@@ -197,10 +126,29 @@ const BlogPosts = () => {
           ) : null}
         </div>
       </div>
+      
+      {filterCategory && (
+        <div className="mb-6 py-2 px-4 bg-blue-500/10 border border-blue-500/20 rounded-md">
+          <p className="text-blue-300">
+            <span className="font-semibold">Category:</span> {filterCategory}
+          </p>
+        </div>
+      )}
+      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredPosts.map(post => (
-          <BlogPostCard key={post.id} post={post} />
-        ))}
+        {filteredPosts.length > 0 ? (
+          filteredPosts.map(post => (
+            <BlogPostCard key={post.id} post={post} />
+          ))
+        ) : (
+          <div className="col-span-full text-center py-12">
+            <p className="text-white/70 text-lg">No blog posts found matching your search criteria.</p>
+            <Button variant="outline" onClick={clearFilters} className="mt-4 text-blue-400 border-blue-500/50 hover:bg-blue-950/50">
+              <RefreshCcw className="w-4 h-4 mr-2" />
+              Clear filters
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
