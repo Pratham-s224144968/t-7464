@@ -6,11 +6,7 @@ type ThemeContextType = {
   toggleTheme: () => void;
 };
 
-// Create the context with a default value
-const ThemeContext = createContext<ThemeContextType>({
-  theme: "light",
-  toggleTheme: () => {}
-});
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<"light" | "dark">("light"); // Default to light theme
@@ -55,15 +51,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     localStorage.setItem("theme", theme);
     console.log("Theme changed to:", theme);
     
-    // Update CSS variables to match logo color scheme better
-    if (theme === "dark") {
-      document.documentElement.style.setProperty('--primary', '262.1 83.3% 57.8%'); // vibrant purple from logo
-      document.documentElement.style.setProperty('--accent', '24 91% 53%'); // vibrant orange from logo
-    } else {
-      document.documentElement.style.setProperty('--primary', '262.1 83.3% 57.8%'); // keep consistent purple
-      document.documentElement.style.setProperty('--accent', '24 91% 53%'); // keep consistent orange
-    }
-    
     // Optional: Trigger a custom event that other components can listen for
     window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme } }));
   }, [theme, mounted]);
@@ -75,14 +62,13 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     });
   };
 
-  // Create the context value
-  const contextValue: ThemeContextType = {
-    theme,
-    toggleTheme
-  };
+  // Don't render until mounted to avoid hydration mismatch
+  if (!mounted) {
+    return <>{children}</>;
+  }
 
   return (
-    <ThemeContext.Provider value={contextValue}>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

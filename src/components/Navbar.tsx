@@ -1,21 +1,14 @@
 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Sun, Moon } from "lucide-react";
+import { Sun, Moon, Sparkles } from "lucide-react";
 import { motion } from "@/components/ui/motion";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useState, useEffect } from "react";
 
 const Navbar = () => {
-  const [mounted, setMounted] = useState(false);
+  const { theme, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
-  
-  // Get the theme context
-  const themeContext = useTheme();
-  
-  useEffect(() => {
-    setMounted(true);
-  }, []);
   
   // Track scroll position for navbar effects
   useEffect(() => {
@@ -36,11 +29,6 @@ const Navbar = () => {
       behavior: "smooth"
     });
   };
-  
-  // Wait until mounted before rendering the full component
-  if (!mounted) {
-    return <div className="h-16"></div>; // Empty placeholder while loading
-  }
   
   return (
     <motion.nav 
@@ -137,21 +125,21 @@ const Navbar = () => {
             <Button 
               variant="outline" 
               size="icon" 
-              onClick={themeContext.toggleTheme} 
+              onClick={toggleTheme} 
               className="rounded-full border border-primary/20 hover:bg-primary/10 relative overflow-hidden glow-primary"
               aria-label="Toggle theme"
             >
               <motion.div 
                 className="absolute inset-0 opacity-20"
                 animate={{
-                  background: themeContext.theme === 'dark' 
+                  background: theme === 'dark' 
                     ? ['rgba(139, 92, 246, 0)', 'rgba(139, 92, 246, 0.2)', 'rgba(139, 92, 246, 0)'] 
                     : ['rgba(249, 115, 22, 0)', 'rgba(249, 115, 22, 0.2)', 'rgba(249, 115, 22, 0)']
                 }}
                 transition={{ duration: 3, repeat: Infinity }}
               />
               
-              {themeContext.theme === "dark" ? (
+              {theme === "dark" ? (
                 <motion.div
                   key="sun-icon"
                   initial={{ y: 30, opacity: 0, rotate: 0 }}
