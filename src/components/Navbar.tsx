@@ -1,14 +1,23 @@
 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Sun, Moon, Sparkles } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 import { motion } from "@/components/ui/motion";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useState, useEffect } from "react";
 
 const Navbar = () => {
-  const { theme, toggleTheme } = useTheme();
+  // Add a mounted state to ensure we don't try to use theme before it's ready
+  const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  // Safely access the theme context only when mounted
+  const themeContext = mounted ? useTheme() : { theme: "light", toggleTheme: () => {} };
+  const { theme, toggleTheme } = themeContext;
   
   // Track scroll position for navbar effects
   useEffect(() => {
@@ -29,6 +38,11 @@ const Navbar = () => {
       behavior: "smooth"
     });
   };
+  
+  // Add safety check - only render the full component when mounted
+  if (!mounted) {
+    return <div className="h-16"></div>; // Empty placeholder while loading
+  }
   
   return (
     <motion.nav 

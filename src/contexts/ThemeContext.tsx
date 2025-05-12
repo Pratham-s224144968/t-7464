@@ -62,13 +62,24 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     });
   };
 
+  // Use an explicit value to ensure context is always properly initialized
+  const contextValue: ThemeContextType = {
+    theme,
+    toggleTheme
+  };
+
   // Don't render until mounted to avoid hydration mismatch
   if (!mounted) {
-    return <>{children}</>;
+    // Provide a default context value even when not mounted
+    return (
+      <ThemeContext.Provider value={contextValue}>
+        {children}
+      </ThemeContext.Provider>
+    );
   }
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={contextValue}>
       {children}
     </ThemeContext.Provider>
   );
