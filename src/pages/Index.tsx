@@ -1,5 +1,4 @@
-
-import { Database, Server, Network, Users, Code, Globe, GitMerge, Lightbulb, Webhook, Cpu, Mail, Heart, CalendarDays, FileText, MessageSquare, ChevronDown, Briefcase } from "lucide-react";
+import { Database, Server, Network, Users, Code, Globe, GitMerge, Lightbulb, Webhook, Cpu, Mail, Heart, CalendarDays, FileText, MessageSquare, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import FeatureCard from "@/components/FeatureCard";
@@ -328,7 +327,7 @@ const Index = () => {
             {/* Key Leadership */}
             {[
               { title: "Product Owner", name: "Jesse Mcmeikan", icon: Users },
-              { title: "Company Director", name: "Leon Yang", icon: Briefcase },
+              { title: "Company Director", name: "Leon Yang", icon: Globe },
               { title: "Company Mentor", name: "Scott West", icon: Lightbulb }
             ].map((leader, index) => (
               <motion.div 
