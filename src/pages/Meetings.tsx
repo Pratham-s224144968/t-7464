@@ -1,11 +1,11 @@
 
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import RestrictedContent from '@/components/MeetingDetails/RestrictedContent';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { Calendar, FileText, Video, Plus, Lock, Users } from 'lucide-react';
+import { Calendar, FileText, Video, Plus, Lock } from 'lucide-react';
 import MeetingUploadForm from '@/components/MeetingUploadForm';
 import { Meeting } from '@/services/types';
 import { useQuery } from '@tanstack/react-query';
@@ -37,29 +37,12 @@ const Meetings = () => {
           <h1 className="text-3xl font-bold">Meetings</h1>
           
           {isAuthenticated && isDeakinUser && (
-            <div className="flex gap-2">
-              <Dialog open={uploadDialogOpen} onOpenChange={setUploadDialogOpen}>
-                <Button 
-                  onClick={() => setUploadDialogOpen(true)} 
-                  className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
-                >
-                  <Plus size={16} /> Upload Meeting
-                </Button>
-                <DialogContent className="sm:max-w-[600px]">
-                  <MeetingUploadForm onClose={() => setUploadDialogOpen(false)} />
-                </DialogContent>
-              </Dialog>
-              
-              <Button 
-                variant="outline" 
-                className="border-blue-500/30 text-blue-300 hover:bg-blue-900/30"
-                asChild
-              >
-                <Link to="/meetings/admin">
-                  <Users size={16} className="mr-2" /> Manage Meetings
-                </Link>
-              </Button>
-            </div>
+            <Button 
+              onClick={() => setUploadDialogOpen(true)} 
+              className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
+            >
+              <Plus size={16} /> Upload Meeting
+            </Button>
           )}
         </div>
         
@@ -137,6 +120,12 @@ const Meetings = () => {
             </div>
           </div>
         )}
+        
+        <Dialog open={uploadDialogOpen} onOpenChange={setUploadDialogOpen}>
+          <DialogContent className="sm:max-w-[600px]">
+            <MeetingUploadForm onClose={() => setUploadDialogOpen(false)} />
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

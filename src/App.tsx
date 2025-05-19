@@ -10,7 +10,6 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Meetings from './pages/Meetings';
 import MeetingDetail from './pages/MeetingDetail';
-import MeetingAdmin from './pages/MeetingAdmin';
 import Home from './pages/Home';
 import Auth from './pages/Auth';
 import { useTheme } from './contexts/ThemeContext';
@@ -70,8 +69,6 @@ const DeakinRoute = ({ children }: { children: React.ReactNode }) => {
 
 function App() {
   const { theme } = useTheme();
-  const { isAuthenticated, loading } = useAuth();
-  const location = useLocation();
   
   return (
     <div className={theme}>
@@ -90,14 +87,6 @@ function App() {
               <ProtectedRoute>
                 <MeetingDetail />
               </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/meetings/admin" 
-            element={
-              <DeakinRoute>
-                <MeetingAdmin />
-              </DeakinRoute>
             } 
           />
           <Route path="/auth" element={<Auth />} />

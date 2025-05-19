@@ -39,11 +39,16 @@ export const createMeeting = async (meetingData: MeetingCreateData): Promise<boo
 export const deleteMeeting = async (id: string): Promise<boolean> => {
   try {
     // First, delete any files in storage
-    const { data: meeting } = await supabase
+    const { data: meeting, error: fetchError } = await supabase
       .from('meetings' as any)
       .select('id')
       .eq('id', id)
       .single();
+
+    if (fetchError) {
+      console.error("Error fetching meeting:", fetchError);
+      return false;
+    }
 
     if (meeting) {
       // Delete any files stored in the meeting folder
