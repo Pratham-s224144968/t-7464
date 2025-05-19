@@ -29,4 +29,3 @@ export type MeetingCreateData = {
   transcript_url?: string;
   minutes?: string;
 };
-

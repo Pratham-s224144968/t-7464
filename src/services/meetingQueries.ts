@@ -9,8 +9,7 @@ import { Meeting } from "./types";
  */
 export const getMeetings = async (): Promise<Meeting[]> => {
   try {
-    // Use any type assertion to bypass TypeScript's type checking for Supabase client
-    const { data, error } = await (supabase as any)
+    const { data, error } = await supabase
       .from('meetings')
       .select('*')
       .order('date', { ascending: false });
@@ -19,6 +18,8 @@ export const getMeetings = async (): Promise<Meeting[]> => {
       console.error("Error fetching meetings:", error);
       throw error;
     }
+
+    if (!data) return [];
 
     // Transform the data to match our frontend Meeting type
     return data.map((item: any) => ({
@@ -50,8 +51,7 @@ export const getMeetings = async (): Promise<Meeting[]> => {
  */
 export const getMeetingById = async (id: string): Promise<Meeting | null> => {
   try {
-    // Use any type assertion to bypass TypeScript's type checking for Supabase client
-    const { data, error } = await (supabase as any)
+    const { data, error } = await supabase
       .from('meetings')
       .select('*')
       .eq('id', id)
@@ -88,4 +88,3 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
     return null;
   }
 };
-

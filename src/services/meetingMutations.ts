@@ -9,7 +9,7 @@ import { MeetingCreateData } from "./types";
  */
 export const createMeeting = async (meetingData: MeetingCreateData): Promise<boolean> => {
   try {
-    const { error } = await (supabase as any)
+    const { error } = await supabase
       .from('meetings')
       .insert({
         id: meetingData.id,
@@ -38,7 +38,7 @@ export const createMeeting = async (meetingData: MeetingCreateData): Promise<boo
 export const deleteMeeting = async (id: string): Promise<boolean> => {
   try {
     // First, delete any files in storage
-    const { data: meeting } = await (supabase as any)
+    const { data: meeting } = await supabase
       .from('meetings')
       .select('id')
       .eq('id', id)
@@ -46,7 +46,7 @@ export const deleteMeeting = async (id: string): Promise<boolean> => {
 
     if (meeting) {
       // Delete any files stored in the meeting folder
-      const { error: storageError } = await (supabase.storage as any)
+      const { error: storageError } = await supabase.storage
         .from('meeting-files')
         .remove([`meetings/${meeting.id}`]);
         
@@ -57,7 +57,7 @@ export const deleteMeeting = async (id: string): Promise<boolean> => {
     }
 
     // Delete the database record
-    const { error } = await (supabase as any)
+    const { error } = await supabase
       .from('meetings')
       .delete()
       .eq('id', id);
@@ -73,4 +73,3 @@ export const deleteMeeting = async (id: string): Promise<boolean> => {
     return false;
   }
 };
-

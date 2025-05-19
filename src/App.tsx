@@ -9,6 +9,8 @@ import Navbar from './components/Navbar';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Meetings from './pages/Meetings';
+import MeetingDetail from './pages/MeetingDetail';
+import MeetingAdmin from './pages/MeetingAdmin';
 import Home from './pages/Home';
 import Auth from './pages/Auth';
 import { useTheme } from './contexts/ThemeContext';
@@ -81,12 +83,21 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<BlogPost />} />
+          <Route path="/meetings" element={<Meetings />} />
           <Route 
-            path="/meetings" 
+            path="/meetings/:id" 
             element={
               <ProtectedRoute>
-                <Meetings />
+                <MeetingDetail />
               </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/meetings/admin" 
+            element={
+              <DeakinRoute>
+                <MeetingAdmin />
+              </DeakinRoute>
             } 
           />
           <Route path="/auth" element={<Auth />} />
