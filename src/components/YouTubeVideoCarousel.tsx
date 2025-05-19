@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -15,7 +15,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface YouTubeVideo {
   id: string;
-  title?: string;
   thumbnail: string;
 }
 
@@ -31,7 +30,8 @@ const YouTubeVideoCarousel = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [currentPlayingId, setCurrentPlayingId] = useState<string | null>(null);
   const [muted, setMuted] = useState<boolean>(true);
-  const [videoTitles, setVideoTitles] = useState<Record<string, string>>({});
+  const [videos, setVideos] = useState<YouTubeVideo[]>([]);
+  const [autoScrollIndex, setAutoScrollIndex] = useState<number>(0);
   
   // All video URLs
   const videoUrls = [
@@ -42,72 +42,56 @@ const YouTubeVideoCarousel = () => {
     "https://youtu.be/COgf8DAEH24"
   ];
   
-  // Create the videos array with unique IDs
-  const videos: YouTubeVideo[] = videoUrls
-    .map(url => {
-      const id = getVideoId(url);
-      return {
-        id,
-        thumbnail: `https://img.youtube.com/vi/${id}/maxresdefault.jpg`,
-      };
-    })
-    .filter((video, index, self) => 
-      // Remove duplicates
-      index === self.findIndex((v) => v.id === video.id)
-    );
-
-  // Fetch video titles from YouTube API
+  // Initialize videos with shuffled order
   useEffect(() => {
-    const fetchVideoTitles = async () => {
-      try {
-        // Instead of making real API calls, we'll use placeholder titles for now
-        // In a real implementation, you'd fetch from YouTube API with your API key
-        const placeholderTitles: Record<string, string> = {};
-        videos.forEach((video) => {
-          placeholderTitles[video.id] = `InnovAIte Video - ${video.id.substring(0, 5)}`;
-        });
-        
-        setVideoTitles(placeholderTitles);
-      } catch (error) {
-        console.error("Error fetching video titles:", error);
-      }
-    };
-
-    fetchVideoTitles();
+    // Create the videos array with unique IDs
+    const uniqueVideos: YouTubeVideo[] = videoUrls
+      .map(url => {
+        const id = getVideoId(url);
+        return {
+          id,
+          thumbnail: `https://img.youtube.com/vi/${id}/maxresdefault.jpg`,
+        };
+      })
+      .filter((video, index, self) => 
+        // Remove duplicates
+        index === self.findIndex((v) => v.id === video.id)
+      );
+    
+    // Shuffle the videos array
+    const shuffled = [...uniqueVideos].sort(() => Math.random() - 0.5);
+    setVideos(shuffled);
+    
+    // Set first video as active
+    if (shuffled.length > 0) {
+      setActiveVideo(shuffled[0]);
+    }
   }, []);
 
-  // Set the first video as active by default
+  // Auto-scroll effect
   useEffect(() => {
-    if (videos.length > 0 && !activeVideo) {
-      setActiveVideo({
-        ...videos[0],
-        title: videoTitles[videos[0].id] || "Loading title..."
-      });
-    }
-  }, [videos, activeVideo, videoTitles]);
-
-  // Update active video title when titles are loaded
-  useEffect(() => {
-    if (activeVideo && videoTitles[activeVideo.id]) {
-      setActiveVideo(prev => prev ? {
-        ...prev,
-        title: videoTitles[prev.id] || prev.title
-      } : null);
-    }
-  }, [videoTitles, activeVideo]);
+    const interval = setInterval(() => {
+      if (videos.length > 0) {
+        const nextIndex = (autoScrollIndex + 1) % videos.length;
+        setAutoScrollIndex(nextIndex);
+        
+        // Only change the active video if no video is currently playing
+        if (!currentPlayingId) {
+          setActiveVideo(videos[nextIndex]);
+        }
+      }
+    }, 5000); // Change video every 5 seconds
+    
+    return () => clearInterval(interval);
+  }, [autoScrollIndex, videos, currentPlayingId]);
 
   const handleVideoPlay = (video: YouTubeVideo) => {
-    const videoWithTitle = {
-      ...video,
-      title: videoTitles[video.id] || "Loading title..."
-    };
-    
     if (currentPlayingId === video.id) {
       // Toggle play/pause for current video
       setIsPlaying(!isPlaying);
     } else {
       // Switch to new video
-      setActiveVideo(videoWithTitle);
+      setActiveVideo(video);
       setCurrentPlayingId(video.id);
       setIsPlaying(true);
     }
@@ -126,11 +110,12 @@ const YouTubeVideoCarousel = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
+          key={activeVideo.id}
         >
           <div className="aspect-video w-full relative">
             <iframe
               src={`https://www.youtube.com/embed/${activeVideo.id}?autoplay=${isPlaying ? 1 : 0}&mute=${muted ? 1 : 0}&modestbranding=1&rel=0`}
-              title={activeVideo.title || "YouTube video"}
+              title="YouTube video"
               className="absolute inset-0 w-full h-full"
               allowFullScreen
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -142,9 +127,6 @@ const YouTubeVideoCarousel = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.5 }}
             >
-              <div>
-                <h3 className="text-white font-semibold text-lg md:text-xl truncate pr-4">{activeVideo.title || "Loading title..."}</h3>
-              </div>
               <div className="flex gap-2">
                 <Button 
                   variant="ghost" 
@@ -205,13 +187,10 @@ const YouTubeVideoCarousel = () => {
                       <div className="aspect-video relative overflow-hidden">
                         <img
                           src={video.thumbnail}
-                          alt={videoTitles[video.id] || "YouTube video thumbnail"}
+                          alt="YouTube video thumbnail"
                           className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-300"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-4">
-                          <h3 className="text-white font-semibold line-clamp-1 text-sm">
-                            {videoTitles[video.id] || "Loading..."}
-                          </h3>
                         </div>
                         <motion.div 
                           className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity"
