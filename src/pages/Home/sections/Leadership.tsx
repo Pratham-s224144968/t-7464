@@ -22,7 +22,12 @@ const Leadership = () => {
     }} viewport={{
       once: true
     }}>
-      <ParticleBackground variant="purple" density="low" speed="slow" className="opacity-20" />
+      <ParticleBackground 
+        variant="purple" 
+        density="low" 
+        speed="slow" 
+        className="absolute inset-0 opacity-20" 
+      />
       
       <motion.div 
         className="absolute inset-0 bg-gradient-radial from-purple-500/10 via-transparent to-transparent pointer-events-none"
