@@ -5,11 +5,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import RestrictedContent from '@/components/MeetingDetails/RestrictedContent';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { Calendar, FileText, Video, Plus, Lock } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import MeetingUploadForm from '@/components/MeetingUploadForm';
 import { Meeting } from '@/services/types';
 import { useQuery } from '@tanstack/react-query';
 import { getMeetings } from '@/services/meetingService';
+import { toast } from '@/hooks/use-toast';
 
 const Meetings = () => {
   const { isAuthenticated, isDeakinUser } = useAuth();
@@ -20,7 +21,8 @@ const Meetings = () => {
   const { 
     data: meetings = [], 
     isLoading, 
-    error
+    error,
+    refetch
   } = useQuery({
     queryKey: ['meetings'],
     queryFn: getMeetings,
@@ -29,6 +31,37 @@ const Meetings = () => {
   const handleMeetingClick = (id: string) => {
     navigate(`/meetings/${id}`);
   };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-black text-white pt-28 pb-8 px-8">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-3xl font-bold mb-6">Meetings</h1>
+          <RestrictedContent 
+            title="Authentication Required"
+            description="Please sign in to view meeting notes and recordings."
+            buttonText="Sign In to Access"
+          />
+        </div>
+      </div>
+    );
+  }
+  
+  if (!isDeakinUser) {
+    return (
+      <div className="min-h-screen bg-black text-white pt-28 pb-8 px-8">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-3xl font-bold mb-6">Meetings</h1>
+          <RestrictedContent 
+            title="Deakin Access Required"
+            description="These meeting notes are restricted to Deakin University members."
+            buttonText="Return to Home"
+            isDeakinSpecific={true}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-black text-white pt-28 pb-8 px-8">
@@ -46,26 +79,19 @@ const Meetings = () => {
           )}
         </div>
         
-        {!isAuthenticated ? (
-          <RestrictedContent 
-            title="Authentication Required"
-            description="Please sign in to view meeting notes and recordings."
-            buttonText="Sign In to Access"
-          />
-        ) : !isDeakinUser ? (
-          <RestrictedContent 
-            title="Deakin Access Required"
-            description="These meeting notes are restricted to Deakin University members."
-            buttonText="Return to Home"
-            isDeakinSpecific={true}
-          />
-        ) : isLoading ? (
+        {isLoading ? (
           <div className="flex justify-center py-20">
             <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
           </div>
         ) : error ? (
           <div className="text-center py-20 text-red-300">
-            There was an error loading meetings. Please try again.
+            <p>There was an error loading meetings. Please try again.</p>
+            <Button 
+              onClick={() => refetch()} 
+              className="mt-4 bg-blue-600 hover:bg-blue-700"
+            >
+              Retry
+            </Button>
           </div>
         ) : meetings.length === 0 ? (
           <div className="text-center py-20">
@@ -97,17 +123,17 @@ const Meetings = () => {
                     <div className="flex gap-2 mt-4">
                       {meeting.hasRecording && (
                         <span className="inline-flex items-center text-xs bg-blue-900/30 text-blue-300 px-2 py-1 rounded">
-                          <Video className="mr-1 h-3 w-3" />
+                          Recording
                         </span>
                       )}
                       {meeting.hasMinutes && (
                         <span className="inline-flex items-center text-xs bg-blue-900/30 text-blue-300 px-2 py-1 rounded">
-                          <FileText className="mr-1 h-3 w-3" />
+                          Minutes
                         </span>
                       )}
                       {meeting.hasSummary && (
                         <span className="inline-flex items-center text-xs bg-purple-900/30 text-purple-300 px-2 py-1 rounded">
-                          <FileText className="mr-1 h-3 w-3" /> AI
+                          AI Summary
                         </span>
                       )}
                     </div>
@@ -123,7 +149,10 @@ const Meetings = () => {
         
         <Dialog open={uploadDialogOpen} onOpenChange={setUploadDialogOpen}>
           <DialogContent className="sm:max-w-[600px]">
-            <MeetingUploadForm onClose={() => setUploadDialogOpen(false)} />
+            <MeetingUploadForm onClose={() => {
+              setUploadDialogOpen(false);
+              refetch(); // Refetch meetings after upload
+            }} />
           </DialogContent>
         </Dialog>
       </div>

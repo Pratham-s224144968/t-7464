@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './components/theme-provider';
 import { ScrollToTop } from './components/utils';
@@ -12,8 +12,6 @@ import Meetings from './pages/Meetings';
 import MeetingDetail from './pages/MeetingDetail';
 import Home from './pages/Home';
 import Auth from './pages/Auth';
-import { useTheme } from './contexts/ThemeContext';
-import { toast } from '@/hooks/use-toast';
 
 // Protected Route wrapper component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -56,11 +54,6 @@ const DeakinRoute = ({ children }: { children: React.ReactNode }) => {
   }
   
   if (!isDeakinUser) {
-    toast({
-      title: "Access Restricted",
-      description: "This page is only available to Deakin University members.",
-      variant: "destructive"
-    });
     return <Navigate to="/" replace />;
   }
   
@@ -68,34 +61,33 @@ const DeakinRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
-  const { theme } = useTheme();
-  
   return (
-    <div className={theme}>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <ScrollToTop />
-        <Navbar />
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <ScrollToTop />
+      <Navbar />
+      
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:id" element={<BlogPost />} />
         
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:id" element={<BlogPost />} />
-          <Route path="/meetings" element={<Meetings />} />
-          <Route 
-            path="/meetings/:id" 
-            element={
-              <ProtectedRoute>
-                <MeetingDetail />
-              </ProtectedRoute>
-            } 
-          />
-          <Route path="/auth" element={<Auth />} />
-        </Routes>
+        {/* Meetings routes */}
+        <Route path="/meetings" element={<Meetings />} />
+        <Route 
+          path="/meetings/:id" 
+          element={
+            <ProtectedRoute>
+              <MeetingDetail />
+            </ProtectedRoute>
+          } 
+        />
         
-        {/* Toast notifications */}
-        <Toaster />
-      </ThemeProvider>
-    </div>
+        <Route path="/auth" element={<Auth />} />
+      </Routes>
+      
+      {/* Toast notifications */}
+      <Toaster />
+    </ThemeProvider>
   );
 }
 

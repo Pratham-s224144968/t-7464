@@ -38,7 +38,7 @@ export const createMeeting = async (meetingData: MeetingCreateData): Promise<boo
 export const deleteMeeting = async (id: string): Promise<boolean> => {
   try {
     // First, fetch the meeting to check if it exists
-    const { data: meetingData, error: fetchError } = await supabase
+    const { data, error: fetchError } = await supabase
       .from('meetings' as any)
       .select('*')
       .eq('id', id)
@@ -50,10 +50,13 @@ export const deleteMeeting = async (id: string): Promise<boolean> => {
     }
 
     // Ensure we have the meeting data before proceeding
-    if (!meetingData) {
+    if (!data) {
       console.error("Meeting not found:", id);
       return false;
     }
+
+    // Type assertion to avoid TypeScript errors
+    const meetingData = data as any;
 
     // Delete any files stored in the meeting folder
     const { error: storageError } = await supabase.storage

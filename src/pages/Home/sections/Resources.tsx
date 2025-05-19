@@ -2,7 +2,7 @@
 import React from "react";
 import { motion } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { GitMerge, MessageSquare, FileText } from "lucide-react";
 import { ParticleBackground } from "@/components/ui/motion/particles";
 import { useAuth } from "@/contexts/AuthContext";
