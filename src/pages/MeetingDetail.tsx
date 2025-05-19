@@ -9,7 +9,6 @@ import MeetingHeader from "@/components/MeetingDetails/MeetingHeader";
 import MeetingTabs from "@/components/MeetingDetails/MeetingTabs";
 import { useQuery } from "@tanstack/react-query";
 import { getMeetingById } from "@/services/meetingQueries";
-import { type Meeting } from "@/services/types";
 
 const MeetingDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -31,21 +30,19 @@ const MeetingDetail: React.FC = () => {
       
       try {
         const meeting = await getMeetingById(id);
-        console.log("Meeting data fetched:", meeting);
         
         if (!meeting) {
           console.error("No meeting found with ID:", id);
           return null;
         }
         
-        console.log("Meeting details:", {
+        console.log("Meeting fetched successfully:", {
           id: meeting.id,
           title: meeting.title,
           hasMinutes: meeting.hasMinutes,
-          minutesPresent: !!meeting.minutes,
-          minutesLength: meeting.minutes ? meeting.minutes.length : 0,
           minutesType: typeof meeting.minutes,
-          minutesContent: meeting.minutes ? (typeof meeting.minutes === 'string' ? meeting.minutes.substring(0, 100) + '...' : 'Not a string') : null
+          minutesLength: meeting.minutes ? meeting.minutes.length : 0,
+          minutesPreview: meeting.minutes ? meeting.minutes.substring(0, 100) + '...' : 'No minutes'
         });
         
         return meeting;
@@ -58,12 +55,7 @@ const MeetingDetail: React.FC = () => {
   });
 
   useEffect(() => {
-    console.log("Meeting data in MeetingDetail effect:", meeting);
-    
     if (meeting) {
-      console.log("Meeting minutes:", meeting.minutes);
-      console.log("Has minutes:", meeting.hasMinutes);
-      
       // Set the active tab based on available content
       if (meeting.hasMinutes) {
         setActiveTab("minutes");
@@ -108,8 +100,34 @@ const MeetingDetail: React.FC = () => {
     );
   }
 
-  if (error || !meeting) {
+  if (error) {
     console.error("Error fetching meeting:", error);
+    toast({
+      title: "Error",
+      description: "Failed to load meeting details. Please try again.",
+      variant: "destructive",
+    });
+    return (
+      <div className="min-h-screen bg-black text-white pt-28 pb-8 px-8">
+        <div className="container mx-auto">
+          <h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500">
+            /ERROR LOADING MEETING
+          </h2>
+          <div className="text-center">
+            <p className="text-white/70 mb-6">There was an error loading the meeting details.</p>
+            <Button 
+              onClick={() => navigate('/meetings')} 
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              Back to Meetings
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!meeting) {
     return (
       <div className="min-h-screen bg-black text-white pt-28 pb-8 px-8">
         <div className="container mx-auto">
@@ -134,18 +152,6 @@ const MeetingDetail: React.FC = () => {
   const canAccessRestrictedContent = isAuthenticated && isDeakinUser;
   // Recordings now require basic authentication (any user)
   const canAccessRecordings = isAuthenticated;
-
-  console.log("Meeting details ready for rendering:", {
-    id: meeting.id,
-    title: meeting.title,
-    activeTab,
-    canAccessRestrictedContent,
-    hasMinutes: meeting.hasMinutes,
-    minutesAvailable: !!meeting.minutes,
-    minutesType: typeof meeting.minutes,
-    minutesContent: meeting.minutes ? (typeof meeting.minutes === 'string' ? 
-      meeting.minutes.substring(0, 50) + '...' : 'Not a string') : 'null'
-  });
 
   return (
     <div className="min-h-screen bg-black text-white pt-28 pb-8 px-8">

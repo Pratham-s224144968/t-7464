@@ -12,7 +12,7 @@ export const getMeetings = async (): Promise<Meeting[]> => {
     console.log("Fetching all meetings");
     // Use generic type for from() to bypass TypeScript's strict checking
     const { data, error } = await supabase
-      .from('meetings' as any)
+      .from('meetings')
       .select('*')
       .order('date', { ascending: false });
 
@@ -21,18 +21,21 @@ export const getMeetings = async (): Promise<Meeting[]> => {
       throw error;
     }
 
-    if (!data) return [];
+    if (!data) {
+      console.log("No meetings data returned");
+      return [];
+    }
 
-    console.log("Raw meetings data count:", data.length);
+    console.log(`Found ${data.length} meetings`);
 
     // Transform the data to match our frontend Meeting type
-    return (data as any[]).map((item) => {
-      console.log(`Processing meeting ${item.id}, minutes:`, {
-        hasMinutes: !!item.minutes,
-        minutesType: typeof item.minutes,
-        minutesPreview: item.minutes ? `${String(item.minutes).substring(0, 30)}...` : 'null'
-      });
-
+    return data.map((item: any) => {
+      // Extract and process the minutes field
+      let processedMinutes = undefined;
+      if (item.minutes !== null) {
+        processedMinutes = String(item.minutes);
+      }
+      
       return {
         id: item.id,
         title: item.title,
@@ -44,7 +47,7 @@ export const getMeetings = async (): Promise<Meeting[]> => {
         hasSummary: item.has_summary || false,
         recording: item.recording_url,
         transcript_url: item.transcript_url,
-        minutes: item.minutes ? String(item.minutes) : undefined,
+        minutes: processedMinutes,
         summary: item.summary ? {
           text: item.summary.text || "",
           keyTakeaways: item.summary.key_takeaways || []
@@ -70,9 +73,9 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
       return null;
     }
     
-    // Use generic type for from() to bypass TypeScript's strict checking
+    // Fetch meeting from database
     const { data, error } = await supabase
-      .from('meetings' as any)
+      .from('meetings')
       .select('*')
       .eq('id', id)
       .single();
@@ -87,35 +90,44 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
       return null;
     }
     
-    // Cast data to any to bypass TypeScript checking
-    const item = data as any;
-    console.log("Raw meeting data:", item);
-    console.log("Meeting minutes:", {
-      hasMinutes: !!item.minutes,
-      minutesValue: item.minutes,
-      minutesType: typeof item.minutes,
-      minutesLength: item.minutes ? String(item.minutes).length : 0,
-      minutesPreview: item.minutes ? `${String(item.minutes).substring(0, 30)}...` : 'null'
+    console.log("Raw meeting data:", {
+      id: data.id,
+      title: data.title, 
+      hasMinutes: data.has_minutes,
+      minutesType: typeof data.minutes,
+      minutes: data.minutes
     });
+    
+    // Extract and process the minutes field
+    let processedMinutes = undefined;
+    if (data.minutes !== null) {
+      processedMinutes = String(data.minutes);
+      console.log("Processed minutes:", {
+        length: processedMinutes.length,
+        preview: processedMinutes.substring(0, 50) + "..."
+      });
+    } else {
+      console.log("No minutes data found");
+    }
 
     // Transform the data to match our frontend Meeting type
     return {
-      id: item.id,
-      title: item.title,
-      date: item.date,
-      time: item.time,
-      participants: item.participants || [],
-      hasRecording: item.has_recording || false,
-      hasMinutes: !!item.minutes,
-      hasSummary: item.has_summary || false,
-      recording: item.recording_url,
-      transcript_url: item.transcript_url,
-      minutes: item.minutes ? String(item.minutes) : undefined,
-      summary: item.summary ? {
-        text: item.summary.text || "",
-        keyTakeaways: item.summary.key_takeaways || []
+      id: data.id,
+      title: data.title,
+      date: data.date,
+      time: data.time,
+      participants: data.participants || [],
+      hasRecording: data.has_recording || false,
+      hasMinutes: !!data.minutes,
+      hasSummary: data.has_summary || false,
+      recording: data.recording_url,
+      transcript_url: data.transcript_url,
+      minutes: processedMinutes,
+      summary: data.summary ? {
+        text: data.summary.text || "",
+        keyTakeaways: data.summary.key_takeaways || []
       } : undefined,
-      created_at: item.created_at
+      created_at: data.created_at
     };
   } catch (error) {
     console.error("Error in getMeetingById:", error);

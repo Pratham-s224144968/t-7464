@@ -1,5 +1,5 @@
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,17 +18,16 @@ const MeetingMinutes: React.FC<MeetingMinutesProps> = ({
 }) => {
   const navigate = useNavigate();
   
-  useEffect(() => {
-    console.log("MeetingMinutes rendered with:", {
-      hasMinutes: !!minutes,
-      minutesType: typeof minutes,
-      minutesLength: minutes ? minutes.length : 0,
-      minutesSample: minutes ? (typeof minutes === 'string' ? 
-        minutes.substring(0, 50) + (minutes.length > 50 ? '...' : '') : 'Not a string') : 'null',
-      canAccessRestrictedContent
-    });
-  }, [minutes, canAccessRestrictedContent]);
+  // Debug the minutes prop
+  console.log("MeetingMinutes rendering with:", {
+    minutes: minutes,
+    minutesType: typeof minutes,
+    minutesExists: !!minutes,
+    date,
+    canAccess: canAccessRestrictedContent
+  });
 
+  // If the user doesn't have access, show restricted content message
   if (!canAccessRestrictedContent) {
     return (
       <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
@@ -49,8 +48,8 @@ const MeetingMinutes: React.FC<MeetingMinutesProps> = ({
     );
   }
 
-  // If minutes is undefined, null, or an empty string, or not a string
-  if (!minutes || typeof minutes !== 'string' || minutes.trim() === '') {
+  // If there are no minutes available
+  if (!minutes || minutes.trim() === '') {
     return (
       <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
         <CardContent className="flex flex-col items-center justify-center p-8 text-center">
@@ -64,6 +63,7 @@ const MeetingMinutes: React.FC<MeetingMinutesProps> = ({
     );
   }
 
+  // If minutes content exists
   return (
     <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
       <CardHeader className="bg-blue-900/20">
