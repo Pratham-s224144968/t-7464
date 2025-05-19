@@ -1,6 +1,6 @@
 
 import { animate, AnimationOptions, motion as m, MotionProps, useInView, Variants } from "framer-motion";
-import { ElementType, forwardRef, ReactElement, ReactNode, Ref, RefAttributes } from "react";
+import { ElementType, forwardRef, ReactNode, Ref, RefAttributes } from "react";
 
 type MotionComponentProps = MotionProps & {
   children?: ReactNode;
@@ -37,6 +37,10 @@ export const motion = {
   textarea: (props: MotionComponentProps) => <m.textarea {...props} />,
   select: (props: MotionComponentProps) => <m.select {...props} />,
   label: (props: MotionComponentProps) => <m.label {...props} />,
+  path: (props: MotionComponentProps) => <m.path {...props} />,
+  svg: (props: MotionComponentProps) => <m.svg {...props} />,
+  rect: (props: MotionComponentProps) => <m.rect {...props} />,
+  circle: (props: MotionComponentProps) => <m.circle {...props} />,
 };
 
 // Export the inView hook for use outside this file
@@ -91,4 +95,138 @@ export const rotateIn = {
 export const slideFromRight = {
   hidden: { x: 100, opacity: 0 },
   visible: { x: 0, opacity: 1, transition: { duration: 0.5 } },
+};
+
+// New animation variants
+export const pulseAnimation = {
+  initial: { scale: 1 },
+  animate: { 
+    scale: [1, 1.05, 1],
+    transition: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+  }
+};
+
+export const floatAnimation = {
+  initial: { y: 0 },
+  animate: { 
+    y: [-10, 10, -10], 
+    transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+  }
+};
+
+export const spinAnimation = {
+  initial: { rotate: 0 },
+  animate: { 
+    rotate: 360, 
+    transition: { duration: 8, repeat: Infinity, ease: "linear" }
+  }
+};
+
+export const breatheAnimation = {
+  initial: { opacity: 0.7, scale: 0.95 },
+  animate: { 
+    opacity: [0.7, 1, 0.7], 
+    scale: [0.95, 1, 0.95],
+    transition: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+  }
+};
+
+export const glowAnimation = {
+  initial: { boxShadow: "0 0 0 rgba(59, 130, 246, 0)" },
+  animate: { 
+    boxShadow: ["0 0 0 rgba(59, 130, 246, 0)", "0 0 20px rgba(59, 130, 246, 0.8)", "0 0 0 rgba(59, 130, 246, 0)"],
+    transition: { duration: 2, repeat: Infinity }
+  }
+};
+
+export const shimmerAnimation = {
+  initial: { backgroundPosition: "-200% 0" },
+  animate: { 
+    backgroundPosition: ["200% 0", "-200% 0"],
+    transition: { duration: 3, repeat: Infinity, ease: "linear" }
+  }
+};
+
+export const bounceAnimation = {
+  initial: { y: 0 },
+  animate: { 
+    y: [0, -15, 0],
+    transition: { duration: 1, repeat: Infinity, ease: "easeOut" }
+  }
+};
+
+export const waveAnimation = {
+  initial: { rotate: 0 },
+  animate: { 
+    rotate: [0, 15, -15, 0],
+    transition: { duration: 1.5, repeat: Infinity, ease: "easeInOut" }
+  }
+};
+
+export const staggerFadeIn = (staggerChildren = 0.2, delayChildren = 0) => ({
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren,
+      delayChildren
+    }
+  }
+});
+
+export const typingAnimation = {
+  hidden: { width: "0%" },
+  visible: { 
+    width: "100%",
+    transition: { duration: 1.5, ease: "easeInOut" }
+  }
+};
+
+export const backgroundShift = {
+  hidden: { backgroundPosition: "0% 50%" },
+  visible: {
+    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+    transition: { duration: 10, repeat: Infinity, ease: "linear" }
+  }
+};
+
+// Add particle effects for backgrounds
+export const createParticleEffect = (count = 20, baseSize = 4) => {
+  const generateParticle = (index: number) => {
+    const size = Math.random() * baseSize + 2;
+    const x = Math.random() * 100;
+    const y = Math.random() * 100;
+    const duration = Math.random() * 15 + 10;
+    const delay = Math.random() * 5;
+    
+    return `
+      .particle-${index} {
+        position: absolute;
+        top: ${y}%;
+        left: ${x}%;
+        width: ${size}px;
+        height: ${size}px;
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        animation: float ${duration}s infinite ease-in-out ${delay}s;
+        pointer-events: none;
+      }
+    `;
+  };
+  
+  let styles = `
+    @keyframes float {
+      0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+      25% { opacity: 0.5; }
+      50% { transform: translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px) rotate(${Math.random() * 360}deg); opacity: 0.8; }
+      75% { opacity: 0.5; }
+      100% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+    }
+  `;
+  
+  for (let i = 0; i < count; i++) {
+    styles += generateParticle(i);
+  }
+  
+  return styles;
 };
