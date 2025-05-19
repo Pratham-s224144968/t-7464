@@ -54,7 +54,7 @@ const Contact = () => {
         </motion.h2>
         
         <div className="flex flex-col md:flex-row gap-8 max-w-4xl mx-auto">
-          <motion.div className="md:w-1/2 p-6 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30" initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }} viewport={{ once: true }}>
+          <motion.div className="md:w-1/2 p-6 rounded-lg bg-blue-900/50 backdrop-blur-md border border-blue-500/30" initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }} viewport={{ once: true }}>
             <h3 className="text-xl font-semibold text-white mb-4">Get In Touch</h3>
             <p className="text-white/80 mb-4">
               Have questions or want to collaborate? Reach out to our team.
@@ -71,7 +71,7 @@ const Contact = () => {
             </div>
           </motion.div>
           
-          <motion.div className="md:w-1/2 p-6 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30" initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.5 }} viewport={{ once: true }}>
+          <motion.div className="md:w-1/2 p-6 rounded-lg bg-blue-900/50 backdrop-blur-md border border-blue-500/30" initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.5 }} viewport={{ once: true }}>
             <h3 className="text-xl font-semibold text-white mb-4">Visit Us</h3>
             <p className="text-white/80 mb-4">
               We're located at Deakin University's Burwood Campus.
