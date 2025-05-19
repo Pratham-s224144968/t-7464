@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "@/components/ui/motion";
 import YouTubeVideoCarousel from "@/components/YouTubeVideoCarousel";
@@ -33,7 +32,6 @@ const Hero = () => {
             opacity: 0
           }} 
           animate={{
-            y: 0,
             opacity: 1,
             scale: [1, 1.02, 1],
             rotate: [-1, 1, -1],
