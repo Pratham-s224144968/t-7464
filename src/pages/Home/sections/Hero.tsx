@@ -9,7 +9,7 @@ const Hero = () => {
   return (
     <motion.section 
       id="home" 
-      className="relative pt-5 pb-16 bg-gradient-to-br from-blue-900/70 to-black overflow-hidden" 
+      className="relative pt-5 pb-24 bg-gradient-to-br from-blue-900/70 to-black overflow-hidden" 
       initial={{
         opacity: 0
       }} 
@@ -29,7 +29,7 @@ const Hero = () => {
         {...backgroundShift}
       />
       
-      <div className="container mx-auto text-center relative z-10">
+      <div className="container mx-auto text-center relative z-10 px-4">
         <motion.img 
           alt="InnovAIte Logo" 
           initial={{
@@ -106,12 +106,12 @@ const Hero = () => {
         
         {/* YouTube Video Carousel */}
         <motion.div 
-          className="mt-12 mb-6 w-full" 
+          className="mt-16 mb-8 w-full" 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.5 }}
         >
-          <h2 className="text-xl font-semibold text-blue-300 mb-6 relative inline-block">
+          <h2 className="text-2xl font-semibold text-blue-300 mb-8 relative inline-block">
             Featured Videos
             <motion.span 
               className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500"
