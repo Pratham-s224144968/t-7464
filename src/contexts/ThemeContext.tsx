@@ -13,7 +13,17 @@ const ThemeContext = createContext<ThemeContextType>({
   toggleTheme: () => {},
 });
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ThemeProvider: React.FC<{ 
+  children: React.ReactNode; 
+  defaultTheme?: string;
+  attribute?: string;
+  enableSystem?: boolean;
+}> = ({ 
+  children,
+  defaultTheme = "system",
+  attribute = "class",
+  enableSystem = true
+}) => {
   const [theme, setTheme] = useState<"light" | "dark">("light"); // Default to light theme
   const [mounted, setMounted] = useState(false);
 
@@ -64,5 +74,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
 export const useTheme = (): ThemeContextType => {
   const context = useContext(ThemeContext);
+  if (context === undefined) {
+    throw new Error("useTheme must be used within a ThemeProvider");
+  }
   return context;
 };
