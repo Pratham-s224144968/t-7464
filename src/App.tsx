@@ -5,6 +5,7 @@ import { ThemeProvider } from './components/theme-provider';
 import { ScrollToTop } from './components/utils';
 import { Toaster } from './components/ui/toaster';
 import { useAuth } from './contexts/AuthContext';
+import Navbar from './components/Navbar';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Meetings from './pages/Meetings';
@@ -68,6 +69,7 @@ function App() {
     <div className={theme}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <ScrollToTop />
+        <Navbar />
         
         <Routes>
           <Route path="/" element={<Home />} />
