@@ -135,17 +135,19 @@ const MeetingRecording: React.FC<MeetingRecordingProps> = ({ recording, date }) 
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <motion.svg 
+                  <svg 
                     xmlns="http://www.w3.org/2000/svg"
                     width="32"
                     height="32"
                     viewBox="0 0 24 24"
                     fill="white"
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
+                    className="motion-svg"
+                    style={{
+                      animation: "pulse 2s infinite"
+                    }}
                   >
                     <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                  </motion.svg>
+                  </svg>
                 </motion.div>
               </motion.div>
             )}

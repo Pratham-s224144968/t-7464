@@ -9,6 +9,7 @@ type MotionComponentProps = MotionProps & {
   onClick?: () => void;
   src?: string;
   alt?: string;
+  [key: string]: any; // Add this to accept any additional props
 };
 
 // Basic motion components with extended props
@@ -41,6 +42,7 @@ export const motion = {
   svg: (props: MotionComponentProps) => <m.svg {...props} />,
   rect: (props: MotionComponentProps) => <m.rect {...props} />,
   circle: (props: MotionComponentProps) => <m.circle {...props} />,
+  polygon: (props: MotionComponentProps) => <m.polygon {...props} />,
 };
 
 // Export the inView hook for use outside this file

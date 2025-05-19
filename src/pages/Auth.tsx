@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -101,25 +100,29 @@ const Auth = () => {
       <div className="auth-container flex min-h-screen bg-black items-center justify-center px-4 py-24 relative overflow-hidden animated-gradient">
         <div className="absolute inset-0 opacity-20">
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <motion.path
+            <path
               d="M0,100 C30,50 70,50 100,100"
               stroke="rgba(59, 130, 246, 0.5)"
               strokeWidth="0.5"
               fill="none"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 2, ease: "easeInOut" }}
               className="path-animation"
+              style={{
+                animation: "dash 2s ease-in-out forwards",
+                strokeDasharray: "1000",
+                strokeDashoffset: "1000"
+              }}
             />
-            <motion.path
+            <path
               d="M0,80 C20,60 50,100 100,80"
               stroke="rgba(139, 92, 246, 0.5)"
               strokeWidth="0.5"
               fill="none"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 2.5, ease: "easeInOut", delay: 0.3 }}
               className="path-animation"
+              style={{
+                animation: "dash 2.5s ease-in-out 0.3s forwards",
+                strokeDasharray: "1000",
+                strokeDashoffset: "1000"
+              }}
             />
           </svg>
         </div>
