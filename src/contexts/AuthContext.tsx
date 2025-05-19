@@ -2,6 +2,7 @@
 import { createContext, useState, useContext, useEffect, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Session, User as SupabaseUser } from "@supabase/supabase-js";
+import { toast } from "@/hooks/use-toast";
 
 // Extended User type to include properties we need
 export interface User extends SupabaseUser {
@@ -51,6 +52,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             isDeakinUser: isUserDeakin
           };
           setUser(enhancedUser);
+          
+          // Show a welcome toast with Deakin recognition if applicable
+          if (event === 'SIGNED_IN') {
+            toast({
+              title: `Welcome ${enhancedUser.name}!`,
+              description: isUserDeakin ? 
+                "You've been recognized as a Deakin University member." : 
+                "Successfully signed in.",
+              variant: "default"
+            });
+          }
         } else {
           setUser(null);
         }
@@ -87,6 +99,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut();
     setSession(null);
     setUser(null);
+    toast({
+      title: "Signed out successfully",
+      description: "You've been logged out of your account.",
+    });
   };
 
   const value = {
