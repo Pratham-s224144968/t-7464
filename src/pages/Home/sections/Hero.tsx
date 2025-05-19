@@ -20,12 +20,18 @@ const Hero = () => {
         duration: 0.6
       }}
     >
-      {/* Interactive Particle Background */}
-      <ParticleBackground variant="blue" density="medium" className="opacity-40" />
+      {/* Enhanced Interactive Particle Background */}
+      <ParticleBackground 
+        variant="blue" 
+        density="medium" 
+        interactive={true}
+        speed="normal" 
+        className="opacity-70" 
+      />
       
       {/* Dynamic gradient overlay */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-radial from-blue-500/10 to-transparent pointer-events-none"
+        className="absolute inset-0 bg-gradient-radial from-blue-500/20 to-transparent pointer-events-none"
         {...backgroundShift}
       />
       

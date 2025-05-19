@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import { ExternalLink, Play, Pause, Volume, VolumeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { motion } from "@/components/ui/motion";
+import { motion, AnimatePresence } from "@/components/ui/motion";
 import { pulseAnimation, glowAnimation } from "@/components/ui/motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -32,6 +32,7 @@ const YouTubeVideoCarousel = () => {
   const [muted, setMuted] = useState<boolean>(true);
   const [videos, setVideos] = useState<YouTubeVideo[]>([]);
   const [autoScrollIndex, setAutoScrollIndex] = useState<number>(0);
+  const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   
   // All video URLs
   const videoUrls = [
@@ -68,6 +69,14 @@ const YouTubeVideoCarousel = () => {
     }
   }, []);
 
+  const changeActiveVideo = useCallback((video: YouTubeVideo) => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setActiveVideo(video);
+      setIsTransitioning(false);
+    }, 300); // Matches the exit animation duration
+  }, []);
+
   // Auto-scroll effect
   useEffect(() => {
     const interval = setInterval(() => {
@@ -77,13 +86,13 @@ const YouTubeVideoCarousel = () => {
         
         // Only change the active video if no video is currently playing
         if (!currentPlayingId) {
-          setActiveVideo(videos[nextIndex]);
+          changeActiveVideo(videos[nextIndex]);
         }
       }
     }, 5000); // Change video every 5 seconds
     
     return () => clearInterval(interval);
-  }, [autoScrollIndex, videos, currentPlayingId]);
+  }, [autoScrollIndex, videos, currentPlayingId, changeActiveVideo]);
 
   const handleVideoPlay = (video: YouTubeVideo) => {
     if (currentPlayingId === video.id) {
@@ -91,7 +100,7 @@ const YouTubeVideoCarousel = () => {
       setIsPlaying(!isPlaying);
     } else {
       // Switch to new video
-      setActiveVideo(video);
+      changeActiveVideo(video);
       setCurrentPlayingId(video.id);
       setIsPlaying(true);
     }
@@ -104,51 +113,54 @@ const YouTubeVideoCarousel = () => {
   return (
     <div className="w-full">
       {/* Featured Video Player */}
-      {activeVideo && (
-        <motion.div 
-          className="mb-8 rounded-xl overflow-hidden shadow-2xl relative bg-blue-950/20 backdrop-blur border border-blue-500/30"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          key={activeVideo.id}
-        >
-          <div className="aspect-video w-full relative">
-            <iframe
-              src={`https://www.youtube.com/embed/${activeVideo.id}?autoplay=${isPlaying ? 1 : 0}&mute=${muted ? 1 : 0}&modestbranding=1&rel=0`}
-              title="YouTube video"
-              className="absolute inset-0 w-full h-full"
-              allowFullScreen
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            ></iframe>
-            
-            <motion.div 
-              className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 flex justify-between items-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-            >
-              <div className="flex gap-2">
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  className="text-white bg-black/40 backdrop-blur hover:bg-black/60"
-                  onClick={toggleMute}
-                >
-                  {muted ? <VolumeOff className="h-5 w-5" /> : <Volume className="h-5 w-5" />}
-                </Button>
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  className="text-white bg-black/40 backdrop-blur hover:bg-black/60"
-                  onClick={() => setIsPlaying(!isPlaying)}
-                >
-                  {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
-                </Button>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
-      )}
+      <AnimatePresence mode="wait">
+        {activeVideo && (
+          <motion.div 
+            key={activeVideo.id}
+            className="mb-8 rounded-xl overflow-hidden shadow-2xl relative bg-blue-950/20 backdrop-blur border border-blue-500/30"
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -20 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            <div className="aspect-video w-full relative">
+              <iframe
+                src={`https://www.youtube.com/embed/${activeVideo.id}?autoplay=${isPlaying ? 1 : 0}&mute=${muted ? 1 : 0}&modestbranding=1&rel=0`}
+                title="YouTube video"
+                className="absolute inset-0 w-full h-full"
+                allowFullScreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              ></iframe>
+              
+              <motion.div 
+                className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 flex justify-between items-center"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+              >
+                <div className="flex gap-2">
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    className="text-white bg-black/40 backdrop-blur hover:bg-black/60"
+                    onClick={toggleMute}
+                  >
+                    {muted ? <VolumeOff className="h-5 w-5" /> : <Volume className="h-5 w-5" />}
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    className="text-white bg-black/40 backdrop-blur hover:bg-black/60"
+                    onClick={() => setIsPlaying(!isPlaying)}
+                  >
+                    {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+                  </Button>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Video Carousel */}
       <div className="relative">
@@ -185,10 +197,12 @@ const YouTubeVideoCarousel = () => {
                       onClick={() => handleVideoPlay(video)}
                     >
                       <div className="aspect-video relative overflow-hidden">
-                        <img
+                        <motion.img
                           src={video.thumbnail}
                           alt="YouTube video thumbnail"
-                          className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-300"
+                          className="w-full h-full object-cover"
+                          whileHover={{ scale: 1.05 }}
+                          transition={{ duration: 0.3 }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-4">
                         </div>

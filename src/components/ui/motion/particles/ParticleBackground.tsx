@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from 'react';
 import { motion } from '@/components/ui/motion';
 
 interface ParticleProps {
-  variant?: 'default' | 'blue' | 'purple' | 'cyber';
+  variant?: 'default' | 'blue' | 'purple' | 'cyber' | 'neural';
   density?: 'low' | 'medium' | 'high';
   speed?: 'slow' | 'normal' | 'fast';
   interactive?: boolean;
@@ -20,8 +20,8 @@ const ParticleBackground: React.FC<ParticleProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mousePosition = useRef({ x: 0, y: 0 });
   const isMouseMoving = useRef(false);
-  const particleCountMap = { low: 25, medium: 50, high: 100 };
-  const speedFactorMap = { slow: 0.5, normal: 1, fast: 2 };
+  const particleCountMap = { low: 40, medium: 70, high: 120 };
+  const speedFactorMap = { slow: 0.3, normal: 0.7, fast: 1.5 };
   
   const getParticleColor = () => {
     switch(variant) {
@@ -35,6 +35,12 @@ const ParticleBackground: React.FC<ParticleProps> = ({
           'rgba(139, 92, 246, 0.7)', 
           'rgba(236, 72, 153, 0.6)', 
           'rgba(16, 185, 129, 0.6)'
+        ];
+      case 'neural':
+        return [
+          'rgba(59, 130, 246, 0.8)', 
+          'rgba(96, 165, 250, 0.7)',
+          'rgba(147, 197, 253, 0.6)'
         ];
       default:
         return ['rgba(255, 255, 255, 0.7)', 'rgba(255, 255, 255, 0.5)', 'rgba(255, 255, 255, 0.3)'];
@@ -63,13 +69,17 @@ const ParticleBackground: React.FC<ParticleProps> = ({
     const particleCount = particleCountMap[density];
     const speedFactor = speedFactorMap[speed];
     const colors = getParticleColor();
+    const isNeuralNetwork = variant === 'neural';
+    const connectionDistance = isNeuralNetwork ? 150 : 100;
+    const connectionOpacity = isNeuralNetwork ? 0.6 : 0.2;
+    const lineWidth = isNeuralNetwork ? 0.8 : 0.5;
 
     // Create particles
     const particles = Array.from({ length: particleCount }, () => {
       return {
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        radius: Math.random() * 2 + 1,
+        radius: Math.random() * 2 + (isNeuralNetwork ? 1.5 : 1),
         color: colors[Math.floor(Math.random() * colors.length)],
         vx: (Math.random() - 0.5) * speedFactor,
         vy: (Math.random() - 0.5) * speedFactor,
@@ -102,6 +112,28 @@ const ParticleBackground: React.FC<ParticleProps> = ({
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      // First pass: draw all connections
+      for (let i = 0; i < particles.length; i++) {
+        const particle1 = particles[i];
+        
+        for (let j = i + 1; j < particles.length; j++) {
+          const particle2 = particles[j];
+          const dx = particle1.x - particle2.x;
+          const dy = particle1.y - particle2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          
+          if (dist < connectionDistance) {
+            ctx.beginPath();
+            ctx.strokeStyle = particle1.color.replace('0.8', `${connectionOpacity * (1 - dist / connectionDistance)}`);
+            ctx.lineWidth = lineWidth;
+            ctx.moveTo(particle1.x, particle1.y);
+            ctx.lineTo(particle2.x, particle2.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Second pass: draw and update all particles
       particles.forEach((particle) => {
         // If mouse is moving and interactive, apply gentle force towards cursor
         if (isMouseMoving.current && interactive) {
@@ -110,7 +142,7 @@ const ParticleBackground: React.FC<ParticleProps> = ({
           const distance = Math.sqrt(dx * dx + dy * dy);
           
           if (distance < 150) { // Cursor influence radius
-            const force = 0.1; 
+            const force = isNeuralNetwork ? 0.15 : 0.1;
             particle.vx += (dx / distance) * force;
             particle.vy += (dy / distance) * force;
           }
@@ -136,22 +168,14 @@ const ParticleBackground: React.FC<ParticleProps> = ({
         ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
         ctx.fillStyle = particle.color;
         ctx.fill();
-
-        // Connect nearby particles with lines
-        particles.forEach((p2) => {
-          const dx = particle.x - p2.x;
-          const dy = particle.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          
-          if (dist < 100) { // Connection distance threshold
-            ctx.beginPath();
-            ctx.strokeStyle = particle.color.replace('0.8', `${0.2 * (1 - dist / 100)}`);
-            ctx.lineWidth = 0.5;
-            ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
-          }
-        });
+        
+        // Add glow effect for neural network style
+        if (isNeuralNetwork) {
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particle.radius * 2, 0, Math.PI * 2);
+          ctx.fillStyle = particle.color.replace('0.8', '0.1');
+          ctx.fill();
+        }
       });
 
       animationId = requestAnimationFrame(animate);
