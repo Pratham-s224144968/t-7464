@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -564,53 +563,55 @@ const Auth = () => {
         </motion.div>
       </div>
 
-      {/* Additional global styles */}
-      <style jsx global>{`
-        @keyframes float-particle {
-          0%, 100% {
-            transform: translateY(0) translateX(0);
+      {/* Fix for the TypeScript error - change the style element to use standard attributes */}
+      <style>
+        {`
+          @keyframes float-particle {
+            0%, 100% {
+              transform: translateY(0) translateX(0);
+            }
+            50% {
+              transform: translateY(-20px) translateX(10px);
+            }
           }
-          50% {
-            transform: translateY(-20px) translateX(10px);
+          
+          @keyframes dash {
+            to {
+              stroke-dashoffset: 0;
+            }
           }
-        }
-        
-        @keyframes dash {
-          to {
-            stroke-dashoffset: 0;
+          
+          .animated-gradient {
+            background: linear-gradient(135deg, rgba(10,10,20,1) 0%, rgba(20,20,40,1) 100%);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
           }
-        }
-        
-        .animated-gradient {
-          background: linear-gradient(135deg, rgba(10,10,20,1) 0%, rgba(20,20,40,1) 100%);
-          background-size: 400% 400%;
-          animation: gradient 15s ease infinite;
-        }
-        
-        @keyframes gradient {
-          0% {
-            background-position: 0% 50%;
+          
+          @keyframes gradient {
+            0% {
+              background-position: 0% 50%;
+            }
+            50% {
+              background-position: 100% 50%;
+            }
+            100% {
+              background-position: 0% 50%;
+            }
           }
-          50% {
-            background-position: 100% 50%;
+          
+          .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.6;
           }
-          100% {
-            background-position: 0% 50%;
+          
+          .glass-effect {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
           }
-        }
-        
-        .particle {
-          position: absolute;
-          border-radius: 50%;
-          pointer-events: none;
-          opacity: 0.6;
-        }
-        
-        .glass-effect {
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
-        }
-      `}</style>
+        `}
+      </style>
     </>
   );
 };
