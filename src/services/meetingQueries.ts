@@ -26,24 +26,32 @@ export const getMeetings = async (): Promise<Meeting[]> => {
     console.log("Raw meetings data:", data);
 
     // Transform the data to match our frontend Meeting type
-    return (data as any[]).map((item) => ({
-      id: item.id,
-      title: item.title,
-      date: item.date,
-      time: item.time,
-      participants: item.participants || [],
-      hasRecording: item.has_recording || false,
-      hasMinutes: !!item.minutes,
-      hasSummary: item.has_summary || false,
-      recording: item.recording_url, // Map to recording property
-      transcript_url: item.transcript_url,
-      minutes: item.minutes,
-      summary: item.summary ? {
-        text: item.summary.text || "",
-        keyTakeaways: item.summary.key_takeaways || []
-      } : undefined,
-      created_at: item.created_at
-    }));
+    return (data as any[]).map((item) => {
+      console.log(`Processing meeting ${item.id}, minutes:`, {
+        hasMinutes: !!item.minutes,
+        minutesType: typeof item.minutes,
+        minutesPreview: item.minutes ? `${item.minutes.substring(0, 30)}...` : 'null'
+      });
+
+      return {
+        id: item.id,
+        title: item.title,
+        date: item.date,
+        time: item.time,
+        participants: item.participants || [],
+        hasRecording: item.has_recording || false,
+        hasMinutes: !!item.minutes,
+        hasSummary: item.has_summary || false,
+        recording: item.recording_url,
+        transcript_url: item.transcript_url,
+        minutes: item.minutes,
+        summary: item.summary ? {
+          text: item.summary.text || "",
+          keyTakeaways: item.summary.key_takeaways || []
+        } : undefined,
+        created_at: item.created_at
+      };
+    });
   } catch (error) {
     console.error("Error in getMeetings:", error);
     return [];
@@ -68,12 +76,21 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
       return null;
     }
 
-    if (!data) return null;
+    if (!data) {
+      console.error("No meeting found with ID:", id);
+      return null;
+    }
     
     // Cast data to any to bypass TypeScript checking
     const item = data as any;
     console.log("Raw meeting data:", item);
-    console.log("Meeting minutes:", item.minutes);
+    console.log("Meeting minutes:", {
+      hasMinutes: !!item.minutes,
+      minutesValue: item.minutes,
+      minutesType: typeof item.minutes,
+      minutesLength: item.minutes ? item.minutes.length : 0,
+      minutesPreview: item.minutes ? `${item.minutes.substring(0, 30)}...` : 'null'
+    });
 
     // Transform the data to match our frontend Meeting type
     return {
@@ -85,7 +102,7 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
       hasRecording: item.has_recording || false,
       hasMinutes: !!item.minutes,
       hasSummary: item.has_summary || false,
-      recording: item.recording_url, // Map to recording property
+      recording: item.recording_url,
       transcript_url: item.transcript_url,
       minutes: item.minutes,
       summary: item.summary ? {

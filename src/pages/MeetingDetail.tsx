@@ -13,46 +13,63 @@ import { type Meeting } from "@/services/types";
 
 const MeetingDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [activeTab, setActiveTab] = useState("recording");
+  const [activeTab, setActiveTab] = useState("minutes"); // Default to minutes tab
   const { isAuthenticated, isDeakinUser } = useAuth();
   const navigate = useNavigate();
+  
+  // Add more verbose debugging of the query process
+  console.log("Starting meeting detail page with ID:", id);
   
   const { data: meeting, isLoading, error } = useQuery({
     queryKey: ['meeting', id],
     queryFn: async () => {
-      if (!id) return null;
-      const meeting = await getMeetingById(id);
+      console.log("Fetching meeting with ID:", id);
       
-      // Add extra console logging for debugging
-      if (meeting) {
-        console.log("Meeting fetched successfully:", {
+      if (!id) {
+        console.error("No meeting ID provided");
+        return null;
+      }
+      
+      try {
+        const meeting = await getMeetingById(id);
+        console.log("Meeting data fetched:", meeting);
+        
+        if (!meeting) {
+          console.error("No meeting found with ID:", id);
+          return null;
+        }
+        
+        console.log("Meeting details:", {
           id: meeting.id,
           title: meeting.title,
           hasMinutes: meeting.hasMinutes,
-          minutes: meeting.minutes,
+          minutesPresent: !!meeting.minutes,
+          minutesLength: meeting.minutes ? meeting.minutes.length : 0,
           minutesType: typeof meeting.minutes,
-          minutesLength: meeting.minutes ? meeting.minutes.length : 0
+          minutesContent: meeting.minutes?.substring(0, 100) + '...'
         });
+        
+        return meeting;
+      } catch (err) {
+        console.error("Error fetching meeting:", err);
+        throw err;
       }
-      
-      return meeting;
     },
-    // Make sure we refetch when authentication status changes
     enabled: !!id
   });
 
   useEffect(() => {
-    console.log("Meeting data in MeetingDetail:", meeting);
+    console.log("Meeting data in MeetingDetail effect:", meeting);
     
     if (meeting) {
       console.log("Meeting minutes:", meeting.minutes);
       console.log("Has minutes:", meeting.hasMinutes);
       
       // Set the active tab based on available content
-      if (meeting.hasRecording) {
-        setActiveTab("recording");
-      } else if (meeting.hasMinutes) {
+      if (meeting.hasMinutes) {
         setActiveTab("minutes");
+      } else if (meeting.hasRecording) {
+        setActiveTab("recording");
       } else if (meeting.hasSummary) {
         setActiveTab("summary");
       }
@@ -119,13 +136,14 @@ const MeetingDetail: React.FC = () => {
   // Recordings now require basic authentication (any user)
   const canAccessRecordings = isAuthenticated;
 
-  console.log("Meeting details for rendering:", {
-    meeting,
+  console.log("Meeting details ready for rendering:", {
+    id: meeting.id,
+    title: meeting.title,
     activeTab,
     canAccessRestrictedContent,
-    canAccessRecordings,
+    hasMinutes: meeting.hasMinutes,
     minutesAvailable: !!meeting.minutes,
-    minutesContent: meeting.minutes
+    minutesContent: meeting.minutes?.substring(0, 50) + (meeting.minutes && meeting.minutes.length > 50 ? '...' : '')
   });
 
   return (
