@@ -159,6 +159,29 @@ const Navbar = () => {
                   </Tooltip>
                 </TooltipProvider>
               </NavigationMenuItem>
+              <NavigationMenuItem>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <a 
+                        href="https://creative-caramel-881abb.netlify.app/" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className={cn(
+                          navigationMenuTriggerStyle(),
+                          "bg-purple-600 text-white hover:bg-purple-700 dark:bg-purple-700 dark:hover:bg-purple-800"
+                        )}
+                      >
+                        <ExternalLink className="mr-1 h-4 w-4" />
+                        No Code Jam
+                      </a>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-black/90 text-white border-blue-800/30">
+                      Visit No Code Jam Platform
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
         </div>
@@ -282,6 +305,15 @@ const Navbar = () => {
                   >
                     <ExternalLink className="mr-2 h-5 w-5" />
                     Hackathon Hub
+                  </a>
+                  <a 
+                    href="https://creative-caramel-881abb.netlify.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center text-lg text-purple-400 hover:text-purple-300 py-2 border-b border-blue-900/30"
+                  >
+                    <ExternalLink className="mr-2 h-5 w-5" />
+                    No Code Jam
                   </a>
                 </nav>
                 
