@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion, AnimatePresence } from "@/components/ui/motion";
 import { ParticleBackground } from "@/components/ui/motion/particles";
@@ -44,14 +43,19 @@ const Hero = () => {
           }} 
           animate={{
             y: 0,
-            opacity: 1
+            opacity: 1,
+            scale: [1, 1.02, 1],
+            rotate: [-1, 1, -1],
           }} 
           transition={{
             delay: 0.2,
-            duration: 0.5
+            duration: 6,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut"
           }} 
           src="/lovable-uploads/7b9b7ff1-8cf0-4f74-a362-00f0ceaf28e9.png" 
-          className="mx-auto h-150 w-auto object-contain" 
+          className="mx-auto h-150 w-auto object-contain filter drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]" 
         />
         
         <motion.h1 

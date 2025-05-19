@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Hero from './sections/Hero';
 import Portfolio from './sections/Portfolio';
@@ -13,18 +14,19 @@ import { motion, AnimatePresence } from "@/components/ui/motion";
 const Home = () => {
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
-      {/* Global particle background for neural network effect */}
+      {/* Enhanced global particle background for neural network effect */}
       <ParticleBackground 
         variant="cyber" 
-        density="low" 
-        speed="slow" 
+        density="medium" 
+        speed="normal" 
+        starEffect={true}
         interactive={true}
-        className="fixed inset-0 opacity-40" 
+        className="fixed inset-0 opacity-60" 
       />
       
-      {/* Additional motion gradient for depth */}
+      {/* Additional motion gradient for depth that persists */}
       <motion.div 
-        className="fixed inset-0 bg-gradient-radial from-blue-900/10 to-transparent pointer-events-none"
+        className="fixed inset-0 bg-gradient-radial from-blue-900/20 via-transparent to-black/80 pointer-events-none"
         animate={{ 
           opacity: [0.3, 0.5, 0.3],
           scale: [1, 1.1, 1],
@@ -36,6 +38,36 @@ const Home = () => {
           repeatType: "reverse"
         }}
       />
+      
+      {/* Distant stars effect */}
+      <motion.div 
+        className="fixed inset-0 pointer-events-none z-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
+        {[...Array(50)].map((_, i) => (
+          <motion.div
+            key={`star-${i}`}
+            className="absolute rounded-full bg-white"
+            style={{
+              width: Math.random() * 3 + 1,
+              height: Math.random() * 3 + 1,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              opacity: [0.2, 0.8, 0.2],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              duration: Math.random() * 3 + 2,
+              repeat: Infinity,
+              delay: Math.random() * 5,
+            }}
+          />
+        ))}
+      </motion.div>
       
       <Hero />
       <Portfolio />

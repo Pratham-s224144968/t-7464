@@ -6,6 +6,7 @@ interface ParticleProps {
   variant?: 'default' | 'blue' | 'purple' | 'cyber' | 'neural';
   density?: 'low' | 'medium' | 'high';
   speed?: 'slow' | 'normal' | 'fast';
+  starEffect?: boolean;
   interactive?: boolean;
   className?: string;
 }
@@ -14,6 +15,7 @@ const ParticleBackground: React.FC<ParticleProps> = ({
   variant = 'default', 
   density = 'medium',
   speed = 'normal',
+  starEffect = false,
   interactive = true,
   className = ''
 }) => {
@@ -22,6 +24,7 @@ const ParticleBackground: React.FC<ParticleProps> = ({
   const isMouseMoving = useRef(false);
   const particleCountMap = { low: 40, medium: 70, high: 120 };
   const speedFactorMap = { slow: 0.3, normal: 0.7, fast: 1.5 };
+  const animationFrameRef = useRef<number | null>(null);
   
   const getParticleColor = () => {
     switch(variant) {
@@ -74,7 +77,7 @@ const ParticleBackground: React.FC<ParticleProps> = ({
     const connectionOpacity = isNeuralNetwork ? 0.6 : 0.2;
     const lineWidth = isNeuralNetwork ? 0.8 : 0.5;
 
-    // Create particles
+    // Create particles with additional properties for star effect
     const particles = Array.from({ length: particleCount }, () => {
       return {
         x: Math.random() * canvas.width,
@@ -83,7 +86,12 @@ const ParticleBackground: React.FC<ParticleProps> = ({
         color: colors[Math.floor(Math.random() * colors.length)],
         vx: (Math.random() - 0.5) * speedFactor,
         vy: (Math.random() - 0.5) * speedFactor,
-        opacity: Math.random() * 0.5 + 0.5
+        opacity: Math.random() * 0.5 + 0.5,
+        // Properties for star twinkling effect
+        twinkleSpeed: Math.random() * 0.02 + 0.01,
+        twinkleDirection: Math.random() > 0.5 ? 1 : -1,
+        baseRadius: Math.random() * 2 + (isNeuralNetwork ? 1.5 : 1),
+        pulsePhase: Math.random() * Math.PI * 2
       };
     });
 
@@ -107,8 +115,6 @@ const ParticleBackground: React.FC<ParticleProps> = ({
     }
 
     // Animation
-    let animationId: number;
-    
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -132,6 +138,9 @@ const ParticleBackground: React.FC<ParticleProps> = ({
           }
         }
       }
+
+      // Update time for animations
+      const now = Date.now() / 1000;
 
       // Second pass: draw and update all particles
       particles.forEach((particle) => {
@@ -163,34 +172,56 @@ const ParticleBackground: React.FC<ParticleProps> = ({
         if (particle.y < 0) particle.y = canvas.height;
         if (particle.y > canvas.height) particle.y = 0;
 
+        // Apply star effect (twinkling/pulsing)
+        if (starEffect) {
+          // Calculate pulsing based on sine wave
+          const pulse = Math.sin(now * particle.twinkleSpeed + particle.pulsePhase);
+          particle.radius = particle.baseRadius * (1 + pulse * 0.5);
+          
+          // Opacity also fluctuates slightly
+          particle.opacity = 0.5 + Math.abs(pulse) * 0.5;
+        }
+
         // Draw particle
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        ctx.fillStyle = particle.color;
+        
+        // Use opacity for twinkling effect
+        const particleColor = particle.color.replace(
+          /rgba\((\d+),\s*(\d+),\s*(\d+),\s*[\d.]+\)/,
+          `rgba($1, $2, $3, ${particle.opacity})`
+        );
+        
+        ctx.fillStyle = particleColor;
         ctx.fill();
         
-        // Add glow effect for neural network style
-        if (isNeuralNetwork) {
+        // Add glow effect for neural network style and stars
+        if (isNeuralNetwork || starEffect) {
+          const glowRadius = starEffect ? particle.radius * 3 : particle.radius * 2;
+          const glowOpacity = starEffect ? particle.opacity * 0.2 : 0.1;
+          
           ctx.beginPath();
-          ctx.arc(particle.x, particle.y, particle.radius * 2, 0, Math.PI * 2);
-          ctx.fillStyle = particle.color.replace('0.8', '0.1');
+          ctx.arc(particle.x, particle.y, glowRadius, 0, Math.PI * 2);
+          ctx.fillStyle = particle.color.replace('0.8', `${glowOpacity}`);
           ctx.fill();
         }
       });
 
-      animationId = requestAnimationFrame(animate);
+      animationFrameRef.current = requestAnimationFrame(animate);
     };
 
     animate();
 
     return () => {
-      cancelAnimationFrame(animationId);
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
       window.removeEventListener('resize', resizeCanvas);
       if (interactive) {
         canvas.removeEventListener('mousemove', handleMouseMove);
       }
     };
-  }, [variant, density, speed, interactive]);
+  }, [variant, density, speed, interactive, starEffect]);
 
   return (
     <motion.div 
