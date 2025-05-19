@@ -110,6 +110,33 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
       console.log("No minutes data found");
     }
 
+    // Process summary data safely with type checking
+    let processedSummary = undefined;
+    if (data.summary) {
+      console.log("Raw summary data:", data.summary);
+      
+      // Check if summary is an object with the expected properties
+      if (
+        typeof data.summary === 'object' && 
+        data.summary !== null &&
+        !Array.isArray(data.summary) &&
+        'text' in data.summary &&
+        'key_takeaways' in data.summary
+      ) {
+        processedSummary = {
+          text: String(data.summary.text || ""),
+          keyTakeaways: Array.isArray(data.summary.key_takeaways) 
+            ? data.summary.key_takeaways.map(String)
+            : []
+        };
+        console.log("Processed summary:", processedSummary);
+      } else {
+        console.log("Summary data found but in unexpected format");
+      }
+    } else {
+      console.log("No summary data found");
+    }
+
     // Transform the data to match our frontend Meeting type
     return {
       id: data.id,
@@ -123,10 +150,7 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
       recording: data.recording_url,
       transcript_url: data.transcript_url,
       minutes: processedMinutes,
-      summary: data.summary ? {
-        text: data.summary.text || "",
-        keyTakeaways: data.summary.key_takeaways || []
-      } : undefined,
+      summary: processedSummary,
       created_at: data.created_at
     };
   } catch (error) {

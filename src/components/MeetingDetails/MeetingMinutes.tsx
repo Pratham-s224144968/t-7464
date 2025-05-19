@@ -23,6 +23,7 @@ const MeetingMinutes: React.FC<MeetingMinutesProps> = ({
     minutes: minutes,
     minutesType: typeof minutes,
     minutesExists: !!minutes,
+    minutesLength: minutes ? minutes.length : 0,
     date,
     canAccess: canAccessRestrictedContent
   });
