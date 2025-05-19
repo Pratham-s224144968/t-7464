@@ -49,8 +49,10 @@ export const getMeetings = async (): Promise<Meeting[]> => {
         transcript_url: item.transcript_url,
         minutes: processedMinutes,
         summary: item.summary ? {
-          text: item.summary.text || "",
-          keyTakeaways: item.summary.key_takeaways || []
+          text: String(item.summary.text || ""),
+          keyTakeaways: Array.isArray(item.summary.key_takeaways) 
+            ? item.summary.key_takeaways.map(String)
+            : []
         } : undefined,
         created_at: item.created_at
       };
@@ -115,18 +117,14 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
     if (data.summary) {
       console.log("Raw summary data:", data.summary);
       
-      // Check if summary is an object with the expected properties
-      if (
-        typeof data.summary === 'object' && 
-        data.summary !== null &&
-        !Array.isArray(data.summary) &&
-        'text' in data.summary &&
-        'key_takeaways' in data.summary
-      ) {
+      // Type checking for summary data
+      if (typeof data.summary === 'object' && data.summary !== null) {
+        const summaryObj = data.summary as Record<string, any>;
+        
         processedSummary = {
-          text: String(data.summary.text || ""),
-          keyTakeaways: Array.isArray(data.summary.key_takeaways) 
-            ? data.summary.key_takeaways.map(String)
+          text: String(summaryObj.text || ""),
+          keyTakeaways: Array.isArray(summaryObj.key_takeaways) 
+            ? summaryObj.key_takeaways.map(String)
             : []
         };
         console.log("Processed summary:", processedSummary);
