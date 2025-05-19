@@ -1,28 +1,167 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { motion } from "@/components/ui/motion";
+import { Loader, Upload, Check } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { v4 as uuidv4 } from "uuid";
 
 type MeetingFormData = {
   title: string;
   date: string;
   participants: string;
   recording: FileList | null;
+  transcript: FileList | null;
   minutes: string;
 };
 
 const MeetingUploadForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const { register, handleSubmit, formState: { errors } } = useForm<MeetingFormData>();
+  const { toast } = useToast();
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState({
+    recording: 0,
+    transcript: 0
+  });
+  
+  const form = useForm<MeetingFormData>({
+    defaultValues: {
+      title: "",
+      date: "",
+      participants: "",
+      recording: null,
+      transcript: null,
+      minutes: "",
+    }
+  });
 
-  const onSubmit = (data: MeetingFormData) => {
-    console.log("Form submitted:", data);
-    // In a real app, you would process the form data here
-    // For example, upload files to storage and save meeting info to a database
-    onClose();
+  const onSubmit = async (data: MeetingFormData) => {
+    try {
+      setIsUploading(true);
+      
+      // Generate a unique folder name for this meeting
+      const meetingId = uuidv4();
+      let recordingUrl = null;
+      let transcriptUrl = null;
+      
+      // Upload recording if provided
+      if (data.recording && data.recording[0]) {
+        const file = data.recording[0];
+        const fileExt = file.name.split('.').pop();
+        const filePath = `meetings/${meetingId}/recording.${fileExt}`;
+        
+        const { error: uploadError, data: uploadData } = await supabase.storage
+          .from('meeting-files')
+          .upload(filePath, file, {
+            cacheControl: '3600',
+            upsert: false,
+            onUploadProgress: (progress) => {
+              const percent = Math.round((progress.loaded / progress.total) * 100);
+              setUploadProgress(prev => ({ ...prev, recording: percent }));
+            }
+          });
+        
+        if (uploadError) throw uploadError;
+        
+        // Get the public URL
+        const { data: publicUrlData } = supabase.storage
+          .from('meeting-files')
+          .getPublicUrl(filePath);
+          
+        recordingUrl = publicUrlData.publicUrl;
+      }
+      
+      // Upload transcript if provided
+      if (data.transcript && data.transcript[0]) {
+        const file = data.transcript[0];
+        const fileExt = file.name.split('.').pop();
+        const filePath = `meetings/${meetingId}/transcript.${fileExt}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from('meeting-files')
+          .upload(filePath, file, {
+            cacheControl: '3600',
+            upsert: false,
+            onUploadProgress: (progress) => {
+              const percent = Math.round((progress.loaded / progress.total) * 100);
+              setUploadProgress(prev => ({ ...prev, transcript: percent }));
+            }
+          });
+          
+        if (uploadError) throw uploadError;
+        
+        // Get the public URL
+        const { data: publicUrlData } = supabase.storage
+          .from('meeting-files')
+          .getPublicUrl(filePath);
+          
+        transcriptUrl = publicUrlData.publicUrl;
+      }
+      
+      // Parse participants from comma-separated string to array
+      const participantsArray = data.participants
+        .split(',')
+        .map(p => p.trim())
+        .filter(p => p !== '');
+      
+      // Save meeting data to the database
+      const { error: dbError } = await supabase
+        .from('meetings')
+        .insert({
+          id: meetingId,
+          title: data.title,
+          date: data.date,
+          participants: participantsArray,
+          recording_url: recordingUrl,
+          transcript_url: transcriptUrl,
+          minutes: data.minutes,
+          has_recording: !!recordingUrl,
+          has_minutes: !!data.minutes,
+          has_summary: false, // Will be updated once summary is generated
+        });
+      
+      if (dbError) throw dbError;
+      
+      // Generate AI summary if transcript is uploaded
+      if (transcriptUrl) {
+        // This would be a call to an edge function that processes the transcript
+        // For now we'll just mark it as needing processing
+        
+        const { error: processingError } = await supabase
+          .from('meeting_processing_queue')
+          .insert({
+            meeting_id: meetingId,
+            status: 'pending',
+            transcript_url: transcriptUrl
+          });
+          
+        if (processingError) throw processingError;
+      }
+      
+      toast({
+        title: "Meeting uploaded successfully",
+        description: "Your meeting has been saved and will be available soon.",
+      });
+      
+      // Close the dialog
+      onClose();
+      
+    } catch (error) {
+      console.error("Error uploading meeting:", error);
+      toast({
+        title: "Upload failed",
+        description: "There was an error uploading your meeting. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return (
@@ -30,77 +169,168 @@ const MeetingUploadForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       <CardHeader>
         <CardTitle>Upload Meeting</CardTitle>
         <CardDescription>
-          Add a new team meeting with recording, minutes, and participants
+          Add a new team meeting with recording, transcript, and minutes
         </CardDescription>
       </CardHeader>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="title">Meeting Title</Label>
-            <Input
-              id="title"
-              placeholder="Enter meeting title"
-              {...register("title", { required: "Title is required" })}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <CardContent className="space-y-4">
+            <FormField
+              control={form.control}
+              name="title"
+              rules={{ required: "Title is required" }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Meeting Title</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter meeting title" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {errors.title && (
-              <p className="text-sm text-destructive">{errors.title.message}</p>
-            )}
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="date">Meeting Date</Label>
-            <Input
-              id="date"
-              type="date"
-              {...register("date", { required: "Date is required" })}
+            <FormField
+              control={form.control}
+              name="date"
+              rules={{ required: "Date is required" }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Meeting Date</FormLabel>
+                  <FormControl>
+                    <Input type="date" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {errors.date && (
-              <p className="text-sm text-destructive">{errors.date.message}</p>
-            )}
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="participants">Participants</Label>
-            <Input
-              id="participants"
-              placeholder="Enter participant names separated by commas"
-              {...register("participants", { required: "Participants are required" })}
+            <FormField
+              control={form.control}
+              name="participants"
+              rules={{ required: "Participants are required" }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Participants</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter participant names separated by commas" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {errors.participants && (
-              <p className="text-sm text-destructive">{errors.participants.message}</p>
-            )}
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="recording">Meeting Recording</Label>
-            <Input
-              id="recording"
-              type="file"
-              accept="video/mp4,video/webm"
-              {...register("recording")}
+            <FormField
+              control={form.control}
+              name="recording"
+              render={({ field: { onChange, value, ...rest } }) => (
+                <FormItem>
+                  <FormLabel>Meeting Recording</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input 
+                        type="file" 
+                        accept="video/mp4,video/webm"
+                        onChange={(e) => onChange(e.target.files)}
+                        disabled={isUploading}
+                        className={isUploading ? "opacity-50" : ""}
+                        {...rest}
+                      />
+                      {isUploading && uploadProgress.recording > 0 && uploadProgress.recording < 100 && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-background/80">
+                          <div className="text-sm text-primary font-medium flex items-center">
+                            <Loader className="animate-spin mr-2 h-4 w-4" />
+                            {uploadProgress.recording}%
+                          </div>
+                        </div>
+                      )}
+                      {isUploading && uploadProgress.recording === 100 && (
+                        <div className="absolute right-2 top-1/2 transform -translate-y-1/2 text-primary">
+                          <Check className="h-4 w-4" />
+                        </div>
+                      )}
+                    </div>
+                  </FormControl>
+                  <FormDescription>
+                    Upload the video recording of your meeting (MP4 or WebM format)
+                  </FormDescription>
+                </FormItem>
+              )}
             />
-            <p className="text-sm text-muted-foreground">
-              Upload the video recording of your meeting (MP4 or WebM format)
-            </p>
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="minutes">Meeting Minutes</Label>
-            <Textarea
-              id="minutes"
-              placeholder="Enter the meeting minutes here..."
-              rows={5}
-              {...register("minutes")}
+            <FormField
+              control={form.control}
+              name="transcript"
+              render={({ field: { onChange, value, ...rest } }) => (
+                <FormItem>
+                  <FormLabel>Meeting Transcript</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input 
+                        type="file" 
+                        accept=".txt,.doc,.docx,.pdf"
+                        onChange={(e) => onChange(e.target.files)}
+                        disabled={isUploading}
+                        className={isUploading ? "opacity-50" : ""}
+                        {...rest}
+                      />
+                      {isUploading && uploadProgress.transcript > 0 && uploadProgress.transcript < 100 && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-background/80">
+                          <div className="text-sm text-primary font-medium flex items-center">
+                            <Loader className="animate-spin mr-2 h-4 w-4" />
+                            {uploadProgress.transcript}%
+                          </div>
+                        </div>
+                      )}
+                      {isUploading && uploadProgress.transcript === 100 && (
+                        <div className="absolute right-2 top-1/2 transform -translate-y-1/2 text-primary">
+                          <Check className="h-4 w-4" />
+                        </div>
+                      )}
+                    </div>
+                  </FormControl>
+                  <FormDescription>
+                    Upload the transcript to generate an AI summary (TXT, DOC, DOCX, or PDF)
+                  </FormDescription>
+                </FormItem>
+              )}
             />
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button type="button" variant="outline" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button type="submit">Upload Meeting</Button>
-        </CardFooter>
-      </form>
+
+            <FormField
+              control={form.control}
+              name="minutes"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Meeting Minutes</FormLabel>
+                  <FormControl>
+                    <Textarea 
+                      placeholder="Enter the meeting minutes here..." 
+                      rows={5} 
+                      {...field} 
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button type="button" variant="outline" onClick={onClose} disabled={isUploading}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isUploading}>
+              {isUploading ? (
+                <motion.div className="flex items-center">
+                  <Loader className="mr-2 h-4 w-4 animate-spin" /> Uploading...
+                </motion.div>
+              ) : (
+                <motion.div className="flex items-center">
+                  <Upload className="mr-2 h-4 w-4" /> Upload Meeting
+                </motion.div>
+              )}
+            </Button>
+          </CardFooter>
+        </form>
+      </Form>
     </Card>
   );
 };

@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,109 +9,49 @@ import { Input } from "@/components/ui/input";
 import MeetingUploadForm from "@/components/MeetingUploadForm";
 import Navbar from "@/components/Navbar";
 import { motion } from "@/components/ui/motion";
+import { fadeIn, slideIn, staggerContainer } from "@/components/ui/motion/basic-animations";
 import MeetingsCalendar from "@/components/MeetingsCalendar";
-
-type Meeting = {
-  id: string;
-  title: string;
-  date: string;
-  time?: string;
-  participants: string[];
-  hasRecording: boolean;
-  hasMinutes: boolean;
-  hasSummary: boolean;
-};
-
-const SAMPLE_MEETINGS: Meeting[] = [
-  {
-    id: "1",
-    title: "Q2 Strategy Planning",
-    date: "2025-04-15",
-    time: "10:00 AM",
-    participants: ["John Doe", "Jane Smith", "Robert Johnson"],
-    hasRecording: true,
-    hasMinutes: true,
-    hasSummary: true,
-  },
-  {
-    id: "2",
-    title: "Product Roadmap Review",
-    date: "2025-04-22",
-    time: "2:00 PM",
-    participants: ["Jane Smith", "Michael Brown", "Emily Davis"],
-    hasRecording: true,
-    hasMinutes: true,
-    hasSummary: false,
-  },
-  {
-    id: "3",
-    title: "Marketing Campaign Kickoff",
-    date: "2025-05-01",
-    time: "11:00 AM",
-    participants: ["Robert Johnson", "Emily Davis", "Sarah Wilson"],
-    hasRecording: true,
-    hasMinutes: false,
-    hasSummary: false,
-  },
-  {
-    id: "4",
-    title: "Weekly Team Sync",
-    date: "2025-05-05",
-    time: "9:30 AM",
-    participants: ["John Doe", "Jane Smith", "Robert Johnson", "Emily Davis"],
-    hasRecording: true,
-    hasMinutes: true,
-    hasSummary: false,
-  },
-  {
-    id: "5",
-    title: "Product Demo",
-    date: "2025-05-10",
-    time: "3:00 PM",
-    participants: ["Jane Smith", "Michael Brown", "Client Team"],
-    hasRecording: true,
-    hasMinutes: true,
-    hasSummary: true,
-  },
-  {
-    id: "6",
-    title: "Q2 Performance Review",
-    date: "2025-05-15",
-    time: "1:00 PM",
-    participants: ["John Doe", "HR Team"],
-    hasRecording: false,
-    hasMinutes: true,
-    hasSummary: false,
-  },
-  {
-    id: "7",
-    title: "Design Sprint Planning",
-    date: "2025-05-18",
-    time: "10:00 AM",
-    participants: ["Jane Smith", "Design Team"],
-    hasRecording: false,
-    hasMinutes: true,
-    hasSummary: false,
-  },
-  {
-    id: "8",
-    title: "Engineering All-Hands",
-    date: "2025-05-20",
-    time: "4:00 PM",
-    participants: ["Engineering Team"],
-    hasRecording: true,
-    hasMinutes: false,
-    hasSummary: true,
-  }
-];
+import { getMeetings, Meeting } from "@/services/meetingService";
+import { useToast } from "@/hooks/use-toast";
+import { useQuery } from "@tanstack/react-query";
 
 type ViewMode = "list" | "calendar";
 
 const TeamMeetings: React.FC = () => {
-  const [meetings] = useState<Meeting[]>(SAMPLE_MEETINGS);
+  const { toast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState<ViewMode>("list");
+
+  // Fetch meetings with react-query
+  const { 
+    data: meetings = [], 
+    isLoading, 
+    error, 
+    refetch 
+  } = useQuery({
+    queryKey: ['meetings'],
+    queryFn: getMeetings,
+  });
+
+  // Handle closing the dialog after successful upload
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+    // Refetch meetings to update the list
+    refetch();
+  };
+
+  // Show error toast if there's an error fetching meetings
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Error fetching meetings",
+        description: "There was a problem loading your meetings. Please try again.",
+        variant: "destructive",
+      });
+      console.error("Error fetching meetings:", error);
+    }
+  }, [error, toast]);
 
   // Filter meetings based on search term
   const filteredMeetings = meetings.filter((meeting) => {
@@ -141,37 +81,26 @@ const TeamMeetings: React.FC = () => {
     <div className="min-h-screen bg-black text-white">
       <Navbar />
       
-      <motion.section className="py-20 bg-gradient-to-b from-black to-blue-950/50" initial={{
-        opacity: 0
-      }} animate={{
-        opacity: 1
-      }} transition={{
-        duration: 0.8
-      }}>
+      <motion.section 
+        className="py-20 bg-gradient-to-b from-black to-blue-950/50" 
+        initial="hidden"
+        animate="visible"
+        variants={fadeIn}
+      >
         <div className="container mx-auto">
-          <motion.h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500" initial={{
-            y: 20,
-            opacity: 0
-          }} animate={{
-            y: 0,
-            opacity: 1
-          }} transition={{
-            delay: 0.2,
-            duration: 0.5
-          }}>
+          <motion.h2 
+            className="text-3xl font-mono font-bold mb-12 text-center text-blue-500"
+            variants={slideIn}
+            transition={{ delay: 0.2 }}
+          >
             /TEAM MEETINGS
           </motion.h2>
           
-          <motion.div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4" initial={{
-            y: 20,
-            opacity: 0
-          }} animate={{
-            y: 0,
-            opacity: 1
-          }} transition={{
-            delay: 0.3,
-            duration: 0.5
-          }}>
+          <motion.div 
+            className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4"
+            variants={slideIn}
+            transition={{ delay: 0.3 }}
+          >
             <div className="flex items-center space-x-2">
               <Button variant="ghost" asChild className="text-blue-400 border-blue-500/50 hover:bg-blue-950/50">
                 <Link to="/">
@@ -219,7 +148,7 @@ const TeamMeetings: React.FC = () => {
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[600px]">
-                <MeetingUploadForm onClose={() => setDialogOpen(false)} />
+                <MeetingUploadForm onClose={handleDialogClose} />
               </DialogContent>
             </Dialog>
           </motion.div>
@@ -228,26 +157,39 @@ const TeamMeetings: React.FC = () => {
             <MeetingsCalendar meetings={filteredMeetings} />
           ) : (
             <>
-              {filteredMeetings.length === 0 ? (
+              {isLoading ? (
+                <div className="flex justify-center py-20">
+                  <div className="flex flex-col items-center">
+                    <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
+                    <p className="mt-4 text-blue-300">Loading meetings...</p>
+                  </div>
+                </div>
+              ) : filteredMeetings.length === 0 ? (
                 <motion.div 
                   className="text-center py-10 text-blue-300"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
                 >
-                  No meetings found matching "{searchTerm}". Try a different search term.
+                  {searchTerm ? (
+                    <>No meetings found matching "{searchTerm}". Try a different search term.</>
+                  ) : (
+                    <>
+                      <p className="mb-4">No meetings have been added yet.</p>
+                      <Button 
+                        onClick={() => setDialogOpen(true)} 
+                        className="bg-blue-600 hover:bg-blue-700"
+                      >
+                        Add Your First Meeting
+                      </Button>
+                    </>
+                  )}
                 </motion.div>
               ) : (
-                <motion.div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3" initial={{
-                  y: 20,
-                  opacity: 0
-                }} animate={{
-                  y: 0,
-                  opacity: 1
-                }} transition={{
-                  delay: 0.4,
-                  duration: 0.5
-                }}>
+                <motion.div 
+                  className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+                  variants={staggerContainer}
+                >
                   {filteredMeetings.map((meeting, index) => (
                     <motion.div 
                       key={meeting.id} 
