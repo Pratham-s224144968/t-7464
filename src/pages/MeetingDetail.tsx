@@ -38,10 +38,12 @@ const MeetingDetail: React.FC = () => {
         // Parse summary data correctly based on its type
         let parsedSummary;
         if (data.summary) {
-          if (typeof data.summary === 'object') {
+          if (typeof data.summary === 'object' && !Array.isArray(data.summary)) {
+            // Use type assertion with a more specific type to access properties safely
+            const summaryObj = data.summary as { [key: string]: any };
             parsedSummary = {
-              text: data.summary.text || "",
-              keyTakeaways: data.summary.key_takeaways || []
+              text: summaryObj.text || "",
+              keyTakeaways: summaryObj.key_takeaways || []
             };
           } else {
             // Fallback if summary is not in expected format
