@@ -10,8 +10,8 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { motion } from "@/components/ui/motion";
 import { Loader, Upload, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from "uuid";
+import { uploadFile, createMeeting, createProcessingQueueItem } from "@/services/meetingService";
 
 type MeetingFormData = {
   title: string;
@@ -56,44 +56,18 @@ const MeetingUploadForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         const fileExt = file.name.split('.').pop();
         const filePath = `meetings/${meetingId}/recording.${fileExt}`;
         
-        // Track upload progress manually
-        const uploadProgressCallback = (progress: { loaded: number; total: number }) => {
-          const percent = Math.round((progress.loaded / progress.total) * 100);
-          setUploadProgress(prev => ({ ...prev, recording: percent }));
-        };
-        
-        // Use XMLHttpRequest for upload with progress
-        await new Promise<void>((resolve, reject) => {
-          const xhr = new XMLHttpRequest();
-          xhr.open('POST', `${supabase.storage.url}/object/upload/meeting-files/${filePath}`);
-          
-          // Add Supabase auth header
-          const token = supabase.auth.session()?.access_token;
-          if (token) {
-            xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+        recordingUrl = await uploadFile(
+          file, 
+          'meeting-files', 
+          filePath,
+          (progress) => {
+            setUploadProgress(prev => ({ ...prev, recording: progress }));
           }
-          
-          xhr.upload.onprogress = uploadProgressCallback;
-          xhr.onload = () => {
-            if (xhr.status >= 200 && xhr.status < 300) {
-              resolve();
-            } else {
-              reject(new Error(`Upload failed with status ${xhr.status}`));
-            }
-          };
-          xhr.onerror = () => reject(new Error('Upload failed'));
-          
-          const formData = new FormData();
-          formData.append('file', file);
-          xhr.send(formData);
-        });
+        );
         
-        // Get the public URL
-        const { data: publicUrlData } = supabase.storage
-          .from('meeting-files')
-          .getPublicUrl(filePath);
-          
-        recordingUrl = publicUrlData.publicUrl;
+        if (!recordingUrl) {
+          throw new Error('Failed to upload recording');
+        }
       }
       
       // Upload transcript if provided
@@ -102,44 +76,18 @@ const MeetingUploadForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         const fileExt = file.name.split('.').pop();
         const filePath = `meetings/${meetingId}/transcript.${fileExt}`;
         
-        // Track upload progress manually
-        const uploadProgressCallback = (progress: { loaded: number; total: number }) => {
-          const percent = Math.round((progress.loaded / progress.total) * 100);
-          setUploadProgress(prev => ({ ...prev, transcript: percent }));
-        };
-        
-        // Use XMLHttpRequest for upload with progress
-        await new Promise<void>((resolve, reject) => {
-          const xhr = new XMLHttpRequest();
-          xhr.open('POST', `${supabase.storage.url}/object/upload/meeting-files/${filePath}`);
-          
-          // Add Supabase auth header
-          const token = supabase.auth.session()?.access_token;
-          if (token) {
-            xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+        transcriptUrl = await uploadFile(
+          file, 
+          'meeting-files', 
+          filePath,
+          (progress) => {
+            setUploadProgress(prev => ({ ...prev, transcript: progress }));
           }
-          
-          xhr.upload.onprogress = uploadProgressCallback;
-          xhr.onload = () => {
-            if (xhr.status >= 200 && xhr.status < 300) {
-              resolve();
-            } else {
-              reject(new Error(`Upload failed with status ${xhr.status}`));
-            }
-          };
-          xhr.onerror = () => reject(new Error('Upload failed'));
-          
-          const formData = new FormData();
-          formData.append('file', file);
-          xhr.send(formData);
-        });
+        );
         
-        // Get the public URL
-        const { data: publicUrlData } = supabase.storage
-          .from('meeting-files')
-          .getPublicUrl(filePath);
-          
-        transcriptUrl = publicUrlData.publicUrl;
+        if (!transcriptUrl) {
+          throw new Error('Failed to upload transcript');
+        }
       }
       
       // Parse participants from comma-separated string to array
@@ -148,38 +96,28 @@ const MeetingUploadForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         .map(p => p.trim())
         .filter(p => p !== '');
       
-      // Save meeting data to the database using any type to bypass TypeScript checking
-      const { error: dbError } = await supabase
-        .from('meetings')
-        .insert({
-          id: meetingId,
-          title: data.title,
-          date: data.date,
-          participants: participantsArray,
-          recording_url: recordingUrl,
-          transcript_url: transcriptUrl,
-          minutes: data.minutes,
-          has_recording: !!recordingUrl,
-          has_minutes: !!data.minutes,
-          has_summary: false, // Will be updated once summary is generated
-        }) as any;
+      // Create meeting in database
+      const meetingCreated = await createMeeting({
+        id: meetingId,
+        title: data.title,
+        date: data.date,
+        participants: participantsArray,
+        recording_url: recordingUrl || undefined,
+        transcript_url: transcriptUrl || undefined,
+        minutes: data.minutes || undefined,
+      });
       
-      if (dbError) throw dbError;
+      if (!meetingCreated) {
+        throw new Error('Failed to create meeting record');
+      }
       
       // Generate AI summary if transcript is uploaded
       if (transcriptUrl) {
-        // This would be a call to an edge function that processes the transcript
-        // For now we'll just mark it as needing processing
+        const queueCreated = await createProcessingQueueItem(meetingId, transcriptUrl);
         
-        const { error: processingError } = await supabase
-          .from('meeting_processing_queue')
-          .insert({
-            meeting_id: meetingId,
-            status: 'pending',
-            transcript_url: transcriptUrl
-          }) as any;
-          
-        if (processingError) throw processingError;
+        if (!queueCreated) {
+          console.error('Failed to create processing queue item, but continuing...');
+        }
       }
       
       toast({

@@ -22,12 +22,11 @@ export type Meeting = {
 };
 
 export const getMeetings = async (): Promise<Meeting[]> => {
-  // Using 'from' with any type to bypass TypeScript checking
-  // since we know this table exists in our Supabase instance
-  const { data, error } = await supabase
+  // Use type assertion to work with the existing Supabase client
+  const { data, error } = await (supabase
     .from('meetings')
     .select('*')
-    .order('date', { ascending: false }) as any;
+    .order('date', { ascending: false }) as any);
 
   if (error) {
     console.error("Error fetching meetings:", error);
@@ -56,12 +55,12 @@ export const getMeetings = async (): Promise<Meeting[]> => {
 };
 
 export const getMeetingById = async (id: string): Promise<Meeting | null> => {
-  // Using 'from' with any type to bypass TypeScript checking
-  const { data, error } = await supabase
+  // Use type assertion to work with the existing Supabase client
+  const { data, error } = await (supabase
     .from('meetings')
     .select('*')
     .eq('id', id)
-    .single() as any;
+    .single() as any);
 
   if (error) {
     console.error("Error fetching meeting:", error);
@@ -93,17 +92,17 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
 
 export const deleteMeeting = async (id: string): Promise<boolean> => {
   // First, delete any files in storage
-  const { data: meeting } = await supabase
+  const { data: meeting } = await (supabase
     .from('meetings')
     .select('id')
     .eq('id', id)
-    .single() as any;
+    .single() as any);
 
   if (meeting) {
     // Delete any files stored in the meeting folder
-    const { error: storageError } = await supabase.storage
+    const { error: storageError } = await (supabase.storage
       .from('meeting-files')
-      .remove([`meetings/${meeting.id}`]);
+      .remove([`meetings/${meeting.id}`]) as any);
       
     if (storageError) {
       console.error("Error deleting meeting files:", storageError);
@@ -112,10 +111,10 @@ export const deleteMeeting = async (id: string): Promise<boolean> => {
   }
 
   // Delete the database record
-  const { error } = await supabase
+  const { error } = await (supabase
     .from('meetings')
     .delete()
-    .eq('id', id) as any;
+    .eq('id', id) as any);
 
   if (error) {
     console.error("Error deleting meeting:", error);
@@ -130,10 +129,10 @@ export const processTranscript = async (meeting_id: string): Promise<boolean> =>
   // For now, we'll just simulate success
   
   // Mark the meeting as processed in the queue
-  const { error: queueError } = await supabase
+  const { error: queueError } = await (supabase
     .from('meeting_processing_queue')
     .update({ status: 'completed' })
-    .eq('meeting_id', meeting_id) as any;
+    .eq('meeting_id', meeting_id) as any);
     
   if (queueError) {
     console.error("Error updating processing queue:", queueError);
@@ -141,7 +140,7 @@ export const processTranscript = async (meeting_id: string): Promise<boolean> =>
   }
   
   // Update the meeting with a placeholder summary
-  const { error: updateError } = await supabase
+  const { error: updateError } = await (supabase
     .from('meetings')
     .update({
       has_summary: true,
@@ -154,7 +153,7 @@ export const processTranscript = async (meeting_id: string): Promise<boolean> =>
         ]
       }
     })
-    .eq('id', meeting_id) as any;
+    .eq('id', meeting_id) as any);
     
   if (updateError) {
     console.error("Error updating meeting with summary:", updateError);
@@ -162,4 +161,109 @@ export const processTranscript = async (meeting_id: string): Promise<boolean> =>
   }
   
   return true;
+};
+
+export const uploadFile = async (
+  file: File, 
+  bucketName: string, 
+  path: string,
+  onProgress?: (progress: number) => void
+): Promise<string | null> => {
+  try {
+    // Create a FormData instance
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // Use fetch for upload with progress tracking
+    const xhr = new XMLHttpRequest();
+    
+    // Create a promise to handle the async operation
+    const uploadPromise = new Promise<string>((resolve, reject) => {
+      xhr.open('POST', `${process.env.SUPABASE_URL || 'https://kiyrtjzwgtqzmkthlkig.supabase.co'}/storage/v1/object/${bucketName}/${path}`);
+      
+      // Set authorization header
+      xhr.setRequestHeader('Authorization', `Bearer ${process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpeXJ0anp3Z3Rxem1rdGhsa2lnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI2MDMxMTksImV4cCI6MjA1ODE3OTExOX0.iBB6MDnvCBXCEbncrQmqn2HyQ74mnVvAhr9JDKyJyLQ'}`);
+      
+      if (onProgress) {
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percentComplete = Math.round((event.loaded / event.total) * 100);
+            onProgress(percentComplete);
+          }
+        };
+      }
+      
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          // Get the public URL
+          const publicUrl = `${process.env.SUPABASE_URL || 'https://kiyrtjzwgtqzmkthlkig.supabase.co'}/storage/v1/object/public/${bucketName}/${path}`;
+          resolve(publicUrl);
+        } else {
+          reject(new Error(`Upload failed with status ${xhr.status}`));
+        }
+      };
+      
+      xhr.onerror = () => reject(new Error('Network error during upload'));
+      xhr.send(formData);
+    });
+
+    return await uploadPromise;
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    return null;
+  }
+};
+
+export const createMeeting = async (meetingData: {
+  id: string;
+  title: string;
+  date: string;
+  participants: string[];
+  recording_url?: string;
+  transcript_url?: string;
+  minutes?: string;
+}): Promise<boolean> => {
+  try {
+    const { error } = await (supabase
+      .from('meetings')
+      .insert({
+        id: meetingData.id,
+        title: meetingData.title,
+        date: meetingData.date,
+        participants: meetingData.participants,
+        recording_url: meetingData.recording_url,
+        transcript_url: meetingData.transcript_url,
+        minutes: meetingData.minutes,
+        has_recording: !!meetingData.recording_url,
+        has_minutes: !!meetingData.minutes,
+        has_summary: false,
+      }) as any);
+
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error('Error creating meeting:', error);
+    return false;
+  }
+};
+
+export const createProcessingQueueItem = async (
+  meeting_id: string, 
+  transcript_url: string
+): Promise<boolean> => {
+  try {
+    const { error } = await (supabase
+      .from('meeting_processing_queue')
+      .insert({
+        meeting_id,
+        status: 'pending',
+        transcript_url
+      }) as any);
+      
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error('Error creating processing queue item:', error);
+    return false;
+  }
 };
