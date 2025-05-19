@@ -17,6 +17,7 @@ const MeetingMinutes: React.FC<MeetingMinutesProps> = ({
   canAccessRestrictedContent,
 }) => {
   const navigate = useNavigate();
+  console.log("MeetingMinutes props:", { minutes, date, canAccessRestrictedContent });
 
   if (!canAccessRestrictedContent) {
     return (

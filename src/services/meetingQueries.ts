@@ -9,6 +9,7 @@ import { Meeting } from "./types";
  */
 export const getMeetings = async (): Promise<Meeting[]> => {
   try {
+    console.log("Fetching all meetings");
     // Use generic type for from() to bypass TypeScript's strict checking
     const { data, error } = await supabase
       .from('meetings' as any)
@@ -21,6 +22,8 @@ export const getMeetings = async (): Promise<Meeting[]> => {
     }
 
     if (!data) return [];
+
+    console.log("Raw meetings data:", data);
 
     // Transform the data to match our frontend Meeting type
     return (data as any[]).map((item) => ({
@@ -52,6 +55,7 @@ export const getMeetings = async (): Promise<Meeting[]> => {
  */
 export const getMeetingById = async (id: string): Promise<Meeting | null> => {
   try {
+    console.log(`Fetching meeting with ID: ${id}`);
     // Use generic type for from() to bypass TypeScript's strict checking
     const { data, error } = await supabase
       .from('meetings' as any)
@@ -68,6 +72,8 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
     
     // Cast data to any to bypass TypeScript checking
     const item = data as any;
+    console.log("Raw meeting data:", item);
+    console.log("Meeting minutes:", item.minutes);
 
     // Transform the data to match our frontend Meeting type
     return {

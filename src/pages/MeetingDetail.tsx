@@ -8,9 +8,8 @@ import { Button } from "@/components/ui/button";
 import MeetingHeader from "@/components/MeetingDetails/MeetingHeader";
 import MeetingTabs from "@/components/MeetingDetails/MeetingTabs";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { getMeetingById } from "@/services/meetingQueries";
 import { type Meeting } from "@/services/types";
-import { Json } from "@/integrations/supabase/types";
 
 const MeetingDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,61 +20,21 @@ const MeetingDetail: React.FC = () => {
   const { data: meeting, isLoading, error } = useQuery({
     queryKey: ['meeting', id],
     queryFn: async () => {
-      try {
-        if (!id) return null;
-        
-        const { data, error } = await supabase
-          .from('meetings')
-          .select('*')
-          .eq('id', id)
-          .single();
-        
-        if (error) throw error;
-        if (!data) return null;
-        
-        console.log("Meeting data retrieved:", data);
-        
-        // Parse summary data correctly based on its type
-        let parsedSummary;
-        if (data.summary) {
-          if (typeof data.summary === 'object' && !Array.isArray(data.summary)) {
-            // Use type assertion with a more specific type to access properties safely
-            const summaryObj = data.summary as { [key: string]: any };
-            parsedSummary = {
-              text: summaryObj.text || "",
-              keyTakeaways: summaryObj.key_takeaways || []
-            };
-          } else {
-            // Fallback if summary is not in expected format
-            parsedSummary = {
-              text: String(data.summary),
-              keyTakeaways: []
-            };
-          }
-        }
-        
-        // Transform the data to match our frontend Meeting type
-        return {
-          id: data.id,
-          title: data.title,
-          date: data.date,
-          participants: data.participants || [],
-          hasRecording: data.has_recording || false,
-          hasMinutes: !!data.minutes,
-          hasSummary: data.has_summary || false,
-          recording: data.recording_url,
-          minutes: data.minutes,
-          summary: parsedSummary
-        } as Meeting;
-      } catch (err) {
-        console.error("Error fetching meeting:", err);
-        return null;
-      }
-    }
+      if (!id) return null;
+      const meeting = await getMeetingById(id);
+      return meeting;
+    },
+    // Make sure we refetch when authentication status changes
+    enabled: !!id
   });
 
   useEffect(() => {
+    console.log("Meeting data in MeetingDetail:", meeting);
+    
     if (meeting) {
+      console.log("Meeting minutes:", meeting.minutes);
+      console.log("Has minutes:", meeting.hasMinutes);
+      
       // Set the active tab based on available content
       if (meeting.hasRecording) {
         setActiveTab("recording");
@@ -121,6 +80,7 @@ const MeetingDetail: React.FC = () => {
   }
 
   if (error || !meeting) {
+    console.error("Error fetching meeting:", error);
     return (
       <div className="min-h-screen bg-black text-white pt-28 pb-8 px-8">
         <div className="container mx-auto">
