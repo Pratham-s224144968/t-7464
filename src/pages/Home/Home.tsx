@@ -14,14 +14,24 @@ import { motion } from "@/components/ui/motion";
 const Home = () => {
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
-      {/* Global persistent particle background for neural network effect */}
+      {/* Light particle background for upper sections */}
       <ParticleBackground 
         variant="cyber" 
+        density="low" 
+        speed="normal" 
+        starEffect={true}
+        interactive={true}
+        className="fixed top-0 h-1/2 w-full opacity-40 z-0" 
+      />
+      
+      {/* Denser particle background for lower sections */}
+      <ParticleBackground 
+        variant="neural" 
         density="medium" 
         speed="normal" 
         starEffect={true}
         interactive={true}
-        className="fixed inset-0 opacity-60 z-0" 
+        className="fixed bottom-0 h-1/2 w-full opacity-70 z-0" 
       />
       
       {/* Additional motion gradient for depth that persists */}

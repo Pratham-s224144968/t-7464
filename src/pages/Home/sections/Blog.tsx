@@ -1,3 +1,4 @@
+
 import React from "react";
 import { motion } from "@/components/ui/motion";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -5,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { BookOpenText } from "lucide-react";
 import { blogPosts } from "@/data/blogPosts";
+import { ParticleBackground } from "@/components/ui/motion/particles";
 
 const Blog = () => {
   // Get the latest 3 blog posts
@@ -20,6 +22,16 @@ const Blog = () => {
     }} viewport={{
       once: true
     }}>
+      {/* Enhanced particle effect for this section */}
+      <ParticleBackground 
+        variant="blue" 
+        density="medium" 
+        speed="normal" 
+        starEffect={true}
+        interactive={true}
+        className="opacity-70 z-0" 
+      />
+      
       {/* Add subtle blue glow that doesn't hide particles */}
       <motion.div 
         className="absolute inset-0 bg-blue-500/5 pointer-events-none"

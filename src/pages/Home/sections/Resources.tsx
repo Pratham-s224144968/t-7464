@@ -4,6 +4,7 @@ import { motion } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { GitMerge, MessageSquare, FileText } from "lucide-react";
+import { ParticleBackground } from "@/components/ui/motion/particles";
 
 const Resources = () => {
   return (
@@ -16,6 +17,16 @@ const Resources = () => {
     }} viewport={{
       once: true
     }}>
+      {/* Enhanced particle effect for this section */}
+      <ParticleBackground 
+        variant="neural" 
+        density="high" 
+        speed="normal" 
+        starEffect={true}
+        interactive={true}
+        className="opacity-75 z-0" 
+      />
+      
       {/* Subtle cyber gradient that doesn't hide particles */}
       <motion.div 
         className="absolute inset-0 bg-gradient-to-r from-blue-900/10 to-purple-900/10 pointer-events-none"
