@@ -36,11 +36,18 @@ const VideoThumbnail = ({
         onClick={onClick}
       >
         <div className="aspect-video relative overflow-hidden">
-          <img
-            src={video.thumbnail}
-            alt="YouTube video thumbnail"
-            className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-300"
-          />
+          {video.thumbnail && (
+            <img
+              src={video.thumbnail}
+              alt="YouTube thumbnail"
+              className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-300"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                // If thumbnail fails, try a fallback
+                target.src = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
+              }}
+            />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-4">
           </div>
           <motion.div 

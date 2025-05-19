@@ -14,3 +14,10 @@ export const getVideoId = (url: string): string => {
 export const getThumbnailUrl = (videoId: string): string => {
   return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
 };
+
+/**
+ * Gets high quality thumbnail URL (will fall back to standard if HD is not available)
+ */
+export const getHQThumbnailUrl = (videoId: string): string => {
+  return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+};

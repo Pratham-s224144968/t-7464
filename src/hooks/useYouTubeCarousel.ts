@@ -13,15 +13,20 @@ export const useYouTubeCarousel = (videoUrls: string[]) => {
 
   // Initialize videos with shuffled order
   useEffect(() => {
+    if (videoUrls.length === 0) return;
+    
     // Create the videos array with unique IDs
     const uniqueVideos: YouTubeVideo[] = videoUrls
       .map(url => {
         const id = getVideoId(url);
+        if (!id) return null;
+        
         return {
           id,
           thumbnail: getThumbnailUrl(id),
         };
       })
+      .filter((video): video is YouTubeVideo => video !== null)
       .filter((video, index, self) => 
         // Remove duplicates
         index === self.findIndex((v) => v.id === video.id)
@@ -31,14 +36,16 @@ export const useYouTubeCarousel = (videoUrls: string[]) => {
     const shuffled = [...uniqueVideos].sort(() => Math.random() - 0.5);
     setVideos(shuffled);
     
-    // Set first video as active
-    if (shuffled.length > 0) {
+    // Set first video as active if we don't already have one
+    if (shuffled.length > 0 && !activeVideo) {
       setActiveVideo(shuffled[0]);
     }
-  }, [videoUrls]);
+  }, [videoUrls, activeVideo]);
 
   // Auto-scroll effect
   useEffect(() => {
+    if (videos.length === 0) return;
+    
     const interval = setInterval(() => {
       if (videos.length > 0) {
         const nextIndex = (autoScrollIndex + 1) % videos.length;
@@ -55,12 +62,13 @@ export const useYouTubeCarousel = (videoUrls: string[]) => {
   }, [autoScrollIndex, videos, currentPlayingId]);
 
   const handleVideoPlay = useCallback((video: YouTubeVideo) => {
+    setActiveVideo(video);
+    
     if (currentPlayingId === video.id) {
       // Toggle play/pause for current video
       setIsPlaying(!isPlaying);
     } else {
       // Switch to new video
-      setActiveVideo(video);
       setCurrentPlayingId(video.id);
       setIsPlaying(true);
     }

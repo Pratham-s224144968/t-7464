@@ -17,7 +17,7 @@ import VideoThumbnail from "./VideoThumbnail";
 import YouTubePlayer from "./YouTubePlayer";
 
 const YouTubeVideoCarousel = () => {
-  // All video URLs
+  // All video URLs - ensure these are correct YouTube links
   const videoUrls = [
     "https://youtu.be/JMBqw2SkuRw",
     "https://youtu.be/zxCHEJACAI8",
@@ -74,7 +74,7 @@ const YouTubeVideoCarousel = () => {
                   <VideoThumbnail
                     video={video}
                     index={index}
-                    isPlaying={isPlaying}
+                    isPlaying={isPlaying && currentPlayingId === video.id}
                     isCurrentVideo={currentPlayingId === video.id}
                     onClick={() => handleVideoPlay(video)}
                   />

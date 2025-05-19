@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "@/components/ui/motion";
 import { Play, Pause, Volume, VolumeOff } from "lucide-react";
@@ -19,6 +19,21 @@ const YouTubePlayer = ({
   onPlayToggle,
   onMuteToggle 
 }: YouTubePlayerProps) => {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  // Reset iframe src when videoId changes to prevent issues
+  useEffect(() => {
+    if (iframeRef.current) {
+      const currentSrc = iframeRef.current.src;
+      iframeRef.current.src = '';
+      setTimeout(() => {
+        if (iframeRef.current) {
+          iframeRef.current.src = currentSrc;
+        }
+      }, 100);
+    }
+  }, [videoId]);
+
   return (
     <motion.div 
       className="mb-8 rounded-xl overflow-hidden shadow-2xl relative bg-blue-950/20 backdrop-blur border border-blue-500/30"
@@ -29,7 +44,8 @@ const YouTubePlayer = ({
     >
       <div className="aspect-video w-full relative">
         <iframe
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=${isPlaying ? 1 : 0}&mute=${muted ? 1 : 0}&modestbranding=1&rel=0`}
+          ref={iframeRef}
+          src={`https://www.youtube.com/embed/${videoId}?autoplay=${isPlaying ? 1 : 0}&mute=${muted ? 1 : 0}&modestbranding=1&rel=0&enablejsapi=1`}
           title="YouTube video"
           className="absolute inset-0 w-full h-full"
           allowFullScreen
