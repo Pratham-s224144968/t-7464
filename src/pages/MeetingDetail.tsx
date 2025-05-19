@@ -7,91 +7,66 @@ import { motion } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
 import MeetingHeader from "@/components/MeetingDetails/MeetingHeader";
 import MeetingTabs from "@/components/MeetingDetails/MeetingTabs";
-
-type Meeting = {
-  id: string;
-  title: string;
-  date: string;
-  participants: string[];
-  hasRecording: boolean;
-  hasMinutes: boolean;
-  hasSummary: boolean;
-  recording?: string;
-  minutes?: string;
-  summary?: {
-    text: string;
-    keyTakeaways: string[];
-  };
-};
-
-// Sample data - in a real app this would come from an API or database
-const SAMPLE_MEETINGS: Record<string, Meeting> = {
-  "1": {
-    id: "1",
-    title: "Q2 Strategy Planning",
-    date: "2025-04-15",
-    participants: ["John Doe", "Jane Smith", "Robert Johnson"],
-    hasRecording: true,
-    hasMinutes: true,
-    hasSummary: true,
-    recording: "https://example.com/recordings/q2-strategy.mp4",
-    minutes: "During this meeting, we discussed our Q2 strategy including key market initiatives, budget allocations, and performance targets. The team agreed to focus on expanding our product line and improving customer retention rates. John will lead the product expansion, while Jane will develop the retention program.",
-    summary: {
-      text: "The Q2 strategy meeting covered market initiatives, budget allocations, and performance targets with a consensus on two primary objectives: product line expansion and customer retention improvement. The team identified competitive advantages and allocated resources accordingly, with clear ownership and timelines established for each initiative.",
-      keyTakeaways: [
-        "Focus on expanding product line with 3 new offerings by end of Q2",
-        "Develop customer retention program aiming for 15% improvement",
-        "Allocate 40% of Q2 budget to marketing initiatives",
-        "Schedule bi-weekly check-ins to track progress",
-        "Coordinate with Sales team for integrated approach"
-      ]
-    }
-  },
-  "2": {
-    id: "2",
-    title: "Product Roadmap Review",
-    date: "2025-04-22",
-    participants: ["Jane Smith", "Michael Brown", "Emily Davis"],
-    hasRecording: true,
-    hasMinutes: true,
-    hasSummary: false,
-    recording: "https://example.com/recordings/product-roadmap.mp4",
-    minutes: "The team reviewed the current product roadmap and made several adjustments to the timeline. Feature X was prioritized for the next release, while Feature Y was pushed back to Q3. Michael presented user research findings that will inform our next design sprint."
-  },
-  "3": {
-    id: "3",
-    title: "Marketing Campaign Kickoff",
-    date: "2025-05-01",
-    participants: ["Robert Johnson", "Emily Davis", "Sarah Wilson"],
-    hasRecording: true,
-    hasMinutes: false,
-    hasSummary: false,
-    recording: "https://example.com/recordings/marketing-campaign.mp4"
-  }
-};
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { type Meeting } from "@/services/types";
 
 const MeetingDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [meeting, setMeeting] = useState<Meeting | null>(null);
   const [activeTab, setActiveTab] = useState("recording");
   const { isAuthenticated, isDeakinUser } = useAuth();
   const navigate = useNavigate();
   
+  const { data: meeting, isLoading, error } = useQuery({
+    queryKey: ['meeting', id],
+    queryFn: async () => {
+      try {
+        if (!id) return null;
+        
+        const { data, error } = await supabase
+          .from('meetings')
+          .select('*')
+          .eq('id', id)
+          .single();
+        
+        if (error) throw error;
+        if (!data) return null;
+        
+        // Transform the data to match our frontend Meeting type
+        return {
+          id: data.id,
+          title: data.title,
+          date: data.date,
+          participants: data.participants || [],
+          hasRecording: data.has_recording || false,
+          hasMinutes: !!data.minutes,
+          hasSummary: data.has_summary || false,
+          recording: data.recording_url,
+          minutes: data.minutes,
+          summary: data.summary ? {
+            text: data.summary.text || "",
+            keyTakeaways: data.summary.key_takeaways || []
+          } : undefined
+        } as Meeting;
+      } catch (err) {
+        console.error("Error fetching meeting:", err);
+        return null;
+      }
+    }
+  });
+
   useEffect(() => {
-    // In a real app, you'd fetch the meeting data from an API
-    if (id && SAMPLE_MEETINGS[id]) {
-      setMeeting(SAMPLE_MEETINGS[id]);
-      
+    if (meeting) {
       // Set the active tab based on available content
-      if (SAMPLE_MEETINGS[id].hasRecording) {
+      if (meeting.hasRecording) {
         setActiveTab("recording");
-      } else if (SAMPLE_MEETINGS[id].hasMinutes) {
+      } else if (meeting.hasMinutes) {
         setActiveTab("minutes");
-      } else if (SAMPLE_MEETINGS[id].hasSummary) {
+      } else if (meeting.hasSummary) {
         setActiveTab("summary");
       }
     }
-  }, [id]);
+  }, [meeting]);
 
   const handleRestrictedContentClick = () => {
     if (!isAuthenticated) {
@@ -114,7 +89,19 @@ const MeetingDetail: React.FC = () => {
     }
   };
 
-  if (!meeting) {
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black text-white pt-28 pb-8 px-8">
+        <div className="container mx-auto text-center">
+          <div className="flex justify-center py-20">
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !meeting) {
     return (
       <div className="min-h-screen bg-black text-white pt-28 pb-8 px-8">
         <div className="container mx-auto">

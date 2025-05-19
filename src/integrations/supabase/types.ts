@@ -9,6 +9,57 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      meetings: {
+        Row: {
+          created_at: string
+          date: string
+          has_minutes: boolean
+          has_recording: boolean
+          has_summary: boolean
+          id: string
+          minutes: string | null
+          participants: string[]
+          recording_url: string | null
+          summary: Json | null
+          time: string | null
+          title: string
+          transcript_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          has_minutes?: boolean
+          has_recording?: boolean
+          has_summary?: boolean
+          id?: string
+          minutes?: string | null
+          participants?: string[]
+          recording_url?: string | null
+          summary?: Json | null
+          time?: string | null
+          title: string
+          transcript_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          has_minutes?: boolean
+          has_recording?: boolean
+          has_summary?: boolean
+          id?: string
+          minutes?: string | null
+          participants?: string[]
+          recording_url?: string | null
+          summary?: Json | null
+          time?: string | null
+          title?: string
+          transcript_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
