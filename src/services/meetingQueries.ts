@@ -23,7 +23,7 @@ export const getMeetings = async (): Promise<Meeting[]> => {
     if (!data) return [];
 
     // Transform the data to match our frontend Meeting type
-    return data.map((item: any) => ({
+    return (data as any[]).map((item) => ({
       id: item.id,
       title: item.title,
       date: item.date,
@@ -65,25 +65,28 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
     }
 
     if (!data) return null;
+    
+    // Cast data to any to bypass TypeScript checking
+    const item = data as any;
 
     // Transform the data to match our frontend Meeting type
     return {
-      id: data.id,
-      title: data.title,
-      date: data.date,
-      time: data.time,
-      participants: data.participants || [],
-      hasRecording: data.has_recording || false,
-      hasMinutes: !!data.minutes,
-      hasSummary: data.has_summary || false,
-      recording_url: data.recording_url,
-      transcript_url: data.transcript_url,
-      minutes: data.minutes,
-      summary: data.summary ? {
-        text: data.summary.text || "",
-        keyTakeaways: data.summary.key_takeaways || []
+      id: item.id,
+      title: item.title,
+      date: item.date,
+      time: item.time,
+      participants: item.participants || [],
+      hasRecording: item.has_recording || false,
+      hasMinutes: !!item.minutes,
+      hasSummary: item.has_summary || false,
+      recording_url: item.recording_url,
+      transcript_url: item.transcript_url,
+      minutes: item.minutes,
+      summary: item.summary ? {
+        text: item.summary.text || "",
+        keyTakeaways: item.summary.key_takeaways || []
       } : undefined,
-      created_at: data.created_at
+      created_at: item.created_at
     };
   } catch (error) {
     console.error("Error in getMeetingById:", error);

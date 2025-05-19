@@ -9,7 +9,6 @@ import { MeetingCreateData } from "./types";
  */
 export const createMeeting = async (meetingData: MeetingCreateData): Promise<boolean> => {
   try {
-    // Use generic type for from() to bypass TypeScript's strict checking
     const { error } = await supabase
       .from('meetings' as any)
       .insert({
@@ -38,10 +37,10 @@ export const createMeeting = async (meetingData: MeetingCreateData): Promise<boo
  */
 export const deleteMeeting = async (id: string): Promise<boolean> => {
   try {
-    // First, delete any files in storage
-    const { data: meeting, error: fetchError } = await supabase
+    // First, fetch the meeting to check if it exists
+    const { data: meetingData, error: fetchError } = await supabase
       .from('meetings' as any)
-      .select('id')
+      .select('*')
       .eq('id', id)
       .single();
 
@@ -50,16 +49,20 @@ export const deleteMeeting = async (id: string): Promise<boolean> => {
       return false;
     }
 
-    if (meeting) {
-      // Delete any files stored in the meeting folder
-      const { error: storageError } = await supabase.storage
-        .from('meeting-files')
-        .remove([`meetings/${meeting.id}`]);
+    // Ensure we have the meeting data before proceeding
+    if (!meetingData) {
+      console.error("Meeting not found:", id);
+      return false;
+    }
+
+    // Delete any files stored in the meeting folder
+    const { error: storageError } = await supabase.storage
+      .from('meeting-files')
+      .remove([`meetings/${id}`]);
         
-      if (storageError) {
-        console.error("Error deleting meeting files:", storageError);
-        // Continue anyway to delete the database record
-      }
+    if (storageError) {
+      console.error("Error deleting meeting files:", storageError);
+      // Continue anyway to delete the database record
     }
 
     // Delete the database record
