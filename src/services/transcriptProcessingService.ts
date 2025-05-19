@@ -6,8 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
  */
 export const createProcessingQueueItem = async (meetingId: string, transcriptUrl: string): Promise<boolean> => {
   try {
-    const { error } = await (supabase as any)
-      .from('processing_queue')
+    const { error } = await supabase
+      .from('processing_queue' as any)
       .insert({
         meeting_id: meetingId,
         transcript_url: transcriptUrl,
@@ -43,8 +43,8 @@ export const processTranscript = async (meetingId: string): Promise<boolean> => 
       ]
     };
     
-    const { error } = await (supabase as any)
-      .from('meetings')
+    const { error } = await supabase
+      .from('meetings' as any)
       .update({
         has_summary: true,
         summary: mockSummary

@@ -9,8 +9,9 @@ import { Meeting } from "./types";
  */
 export const getMeetings = async (): Promise<Meeting[]> => {
   try {
+    // Use generic type for from() to bypass TypeScript's strict checking
     const { data, error } = await supabase
-      .from('meetings')
+      .from('meetings' as any)
       .select('*')
       .order('date', { ascending: false });
 
@@ -51,8 +52,9 @@ export const getMeetings = async (): Promise<Meeting[]> => {
  */
 export const getMeetingById = async (id: string): Promise<Meeting | null> => {
   try {
+    // Use generic type for from() to bypass TypeScript's strict checking
     const { data, error } = await supabase
-      .from('meetings')
+      .from('meetings' as any)
       .select('*')
       .eq('id', id)
       .single();

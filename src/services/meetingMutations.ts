@@ -9,8 +9,9 @@ import { MeetingCreateData } from "./types";
  */
 export const createMeeting = async (meetingData: MeetingCreateData): Promise<boolean> => {
   try {
+    // Use generic type for from() to bypass TypeScript's strict checking
     const { error } = await supabase
-      .from('meetings')
+      .from('meetings' as any)
       .insert({
         id: meetingData.id,
         title: meetingData.title,
@@ -39,7 +40,7 @@ export const deleteMeeting = async (id: string): Promise<boolean> => {
   try {
     // First, delete any files in storage
     const { data: meeting } = await supabase
-      .from('meetings')
+      .from('meetings' as any)
       .select('id')
       .eq('id', id)
       .single();
@@ -58,7 +59,7 @@ export const deleteMeeting = async (id: string): Promise<boolean> => {
 
     // Delete the database record
     const { error } = await supabase
-      .from('meetings')
+      .from('meetings' as any)
       .delete()
       .eq('id', id);
 

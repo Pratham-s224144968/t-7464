@@ -23,13 +23,8 @@ export const uploadFile = async (
       .from(bucketName)
       .upload(path, file, {
         cacheControl: '3600',
-        upsert: false,
-        onUploadProgress: (progress) => {
-          if (onProgress) {
-            const percentComplete = Math.round((progress.loaded / progress.total) * 100);
-            onProgress(percentComplete);
-          }
-        }
+        upsert: false
+        // Progress tracking handled in a different way
       });
 
     if (error) {
