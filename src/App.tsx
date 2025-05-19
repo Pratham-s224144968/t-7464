@@ -72,7 +72,14 @@ function App() {
         <Route path="/blog/:id" element={<BlogPost />} />
         
         {/* Meetings routes */}
-        <Route path="/meetings" element={<Meetings />} />
+        <Route 
+          path="/meetings" 
+          element={
+            <ProtectedRoute>
+              <Meetings />
+            </ProtectedRoute>
+          } 
+        />
         <Route 
           path="/meetings/:id" 
           element={

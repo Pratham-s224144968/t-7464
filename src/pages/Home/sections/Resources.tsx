@@ -123,17 +123,17 @@ const Resources = () => {
           <motion.div className="p-6 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.5 }} viewport={{ once: true }}>
             <div className="flex items-center mb-4">
               <FileText className="w-8 h-8 text-blue-400 mr-3" />
-              <h3 className="text-xl font-semibold text-white">Meeting Notes</h3>
+              <h3 className="text-xl font-semibold text-white">Meeting Minutes</h3>
             </div>
             <p className="text-white/70 mb-4">
-              Browse our weekly meeting summaries and project updates.
+              Browse our meeting minutes and access detailed notes from past meetings.
               {!isAuthenticated && <span className="block mt-2 text-blue-300">*Requires authentication</span>}
             </p>
             <Button 
               className="w-full bg-blue-600 hover:bg-blue-700" 
               onClick={() => handleResourceClick('/meetings')}
             >
-              View Team Meetings
+              View Meeting Minutes
             </Button>
           </motion.div>
         </div>

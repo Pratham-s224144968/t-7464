@@ -39,7 +39,7 @@ const MeetingMinutes: React.FC<MeetingMinutesProps> = ({
   }
 
   if (!minutes) {
-    return <div className="text-center p-8 text-blue-300">No minutes available</div>;
+    return <div className="text-center p-8 text-blue-300">No minutes available for this meeting</div>;
   }
 
   return (
