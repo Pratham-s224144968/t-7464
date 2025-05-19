@@ -20,19 +20,19 @@ const Hero = () => {
         duration: 0.6
       }}
     >
-      {/* Subtle particles specific to hero section */}
+      {/* Very subtle particles specific to hero section */}
       <ParticleBackground 
         variant="default" 
         density="low" 
         speed="slow" 
         starEffect={true}
         interactive={true}
-        className="opacity-30 z-0" 
+        className="opacity-15 z-0" 
       />
       
       {/* Dynamic gradient overlay that doesn't hide particles */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-radial from-blue-500/20 to-transparent pointer-events-none"
+        className="absolute inset-0 bg-gradient-radial from-blue-500/10 to-transparent pointer-events-none"
         {...backgroundShift}
       />
       

@@ -22,21 +22,21 @@ const Blog = () => {
     }} viewport={{
       once: true
     }}>
-      {/* Enhanced particle effect for this section */}
+      {/* Reduced particle effect for this section */}
       <ParticleBackground 
         variant="blue" 
-        density="medium" 
+        density="low" 
         speed="normal" 
         starEffect={true}
         interactive={true}
-        className="opacity-70 z-0" 
+        className="opacity-40 z-0" 
       />
       
-      {/* Add subtle blue glow that doesn't hide particles */}
+      {/* Subtle blue glow that doesn't hide particles */}
       <motion.div 
         className="absolute inset-0 bg-blue-500/5 pointer-events-none"
         animate={{
-          opacity: [0.1, 0.3, 0.1],
+          opacity: [0.1, 0.2, 0.1],
         }}
         transition={{
           duration: 6,

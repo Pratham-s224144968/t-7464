@@ -16,21 +16,21 @@ const Contact = () => {
     }} viewport={{
       once: true
     }}>
-      {/* Enhanced particle effect for this section */}
+      {/* Reduced particle effect for this section */}
       <ParticleBackground 
         variant="cyber" 
-        density="high" 
+        density="low" 
         speed="normal" 
         starEffect={true}
         interactive={true}
-        className="opacity-80 z-0" 
+        className="opacity-40 z-0" 
       />
       
       {/* Subtle glowing effect that doesn't hide particles */}
       <motion.div 
-        className="absolute inset-0 bg-cyan-500/5 pointer-events-none"
+        className="absolute inset-0 bg-cyan-500/3 pointer-events-none"
         animate={{
-          opacity: [0.1, 0.3, 0.1],
+          opacity: [0.05, 0.15, 0.05],
         }}
         transition={{
           duration: 7,
