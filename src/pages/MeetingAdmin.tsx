@@ -1,12 +1,12 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { ArrowLeft, FileText, Search, Trash, Video, Edit, Eye, Calendar } from "lucide-react";
+import { ArrowLeft, FileText, Search, Trash, Video, Edit, Eye, Calendar, Lock } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { motion } from "@/components/ui/motion";
 import { fadeIn, slideIn } from "@/components/ui/motion/basic-animations";
@@ -14,15 +14,54 @@ import { Meeting, deleteMeeting, processTranscript, getMeetings } from "@/servic
 import { useToast } from "@/hooks/use-toast";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import MeetingUploadForm from "@/components/MeetingUploadForm";
+import { useAuth } from "@/contexts/AuthContext";
+import RestrictedContent from "@/components/MeetingDetails/RestrictedContent";
 
 const MeetingAdmin: React.FC = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { user, isAuthenticated, isDeakinUser } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const [selectedMeeting, setSelectedMeeting] = useState<Meeting | null>(null);
+
+  // Redirect non-Deakin users
+  useEffect(() => {
+    // Check authentication after a short delay to ensure auth state is loaded
+    const checkAccess = setTimeout(() => {
+      if (isAuthenticated === false || (isAuthenticated && !isDeakinUser)) {
+        // Non-Deakin users shouldn't be on this page
+        navigate('/meetings');
+      }
+    }, 500);
+    
+    return () => clearTimeout(checkAccess);
+  }, [isAuthenticated, isDeakinUser, navigate]);
+
+  // If not authenticated or not Deakin user, show restricted content
+  if (!isAuthenticated || !isDeakinUser) {
+    return (
+      <div className="min-h-screen bg-black text-white">
+        <Navbar />
+        <div className="container mx-auto py-20">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={fadeIn}
+            className="max-w-lg mx-auto"
+          >
+            <RestrictedContent 
+              title="Administrator Access Only"
+              description="This area is restricted to Deakin staff members. Please sign in with your Deakin account to access administration features."
+              buttonText="Sign In with Deakin"
+            />
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
 
   // Fetch meetings with react-query
   const { 

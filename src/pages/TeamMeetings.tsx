@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, FileText, Video, ArrowLeft, Search, List, Grid } from "lucide-react";
+import { Calendar, FileText, Video, ArrowLeft, Search, List, Grid, Lock } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import MeetingUploadForm from "@/components/MeetingUploadForm";
@@ -14,11 +14,14 @@ import MeetingsCalendar from "@/components/MeetingsCalendar";
 import { getMeetings, Meeting } from "@/services/meetingService";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/contexts/AuthContext";
+import RestrictedContent from "@/components/MeetingDetails/RestrictedContent";
 
 type ViewMode = "list" | "calendar";
 
 const TeamMeetings: React.FC = () => {
   const { toast } = useToast();
+  const { user, isAuthenticated, isDeakinUser } = useAuth();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState<ViewMode>("list");
@@ -141,16 +144,25 @@ const TeamMeetings: React.FC = () => {
               />
             </div>
 
-            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-              <DialogTrigger asChild>
-                <Button className="bg-blue-600 hover:bg-blue-700">
-                  <Calendar className="mr-2 h-4 w-4" /> Add New Meeting
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[600px]">
-                <MeetingUploadForm onClose={handleDialogClose} />
-              </DialogContent>
-            </Dialog>
+            {isAuthenticated && isDeakinUser ? (
+              <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button className="bg-blue-600 hover:bg-blue-700">
+                    <Calendar className="mr-2 h-4 w-4" /> Add New Meeting
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[600px]">
+                  <MeetingUploadForm onClose={handleDialogClose} />
+                </DialogContent>
+              </Dialog>
+            ) : (
+              <Button 
+                className="bg-blue-600/50 hover:bg-blue-700/50 cursor-not-allowed flex gap-2" 
+                disabled
+              >
+                <Lock className="h-4 w-4" /> Deakin Users Only
+              </Button>
+            )}
           </motion.div>
 
           {viewMode === "calendar" ? (
@@ -176,12 +188,22 @@ const TeamMeetings: React.FC = () => {
                   ) : (
                     <>
                       <p className="mb-4">No meetings have been added yet.</p>
-                      <Button 
-                        onClick={() => setDialogOpen(true)} 
-                        className="bg-blue-600 hover:bg-blue-700"
-                      >
-                        Add Your First Meeting
-                      </Button>
+                      {isAuthenticated && isDeakinUser ? (
+                        <Button 
+                          onClick={() => setDialogOpen(true)} 
+                          className="bg-blue-600 hover:bg-blue-700"
+                        >
+                          Add Your First Meeting
+                        </Button>
+                      ) : (
+                        <div className="mt-8 max-w-md mx-auto">
+                          <RestrictedContent 
+                            title="Deakin Login Required" 
+                            description="Only Deakin users can add new meetings. Please sign in with your Deakin account."
+                            buttonText="Sign In with Deakin"
+                          />
+                        </div>
+                      )}
                     </>
                   )}
                 </motion.div>

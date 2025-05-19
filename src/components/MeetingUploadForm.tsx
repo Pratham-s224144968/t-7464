@@ -8,10 +8,11 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { motion } from "@/components/ui/motion";
-import { Loader, Upload, Check } from "lucide-react";
+import { Loader, Upload, Check, Lock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { v4 as uuidv4 } from "uuid";
 import { uploadFile, createMeeting, createProcessingQueueItem } from "@/services/meetingService";
+import { useAuth } from "@/contexts/AuthContext";
 
 type MeetingFormData = {
   title: string;
@@ -24,6 +25,7 @@ type MeetingFormData = {
 
 const MeetingUploadForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { toast } = useToast();
+  const { user, isAuthenticated, isDeakinUser } = useAuth();
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState({
     recording: 0,
@@ -40,6 +42,21 @@ const MeetingUploadForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       minutes: "",
     }
   });
+
+  // Render restricted access message if not authenticated or not a Deakin user
+  if (!isAuthenticated || !isDeakinUser) {
+    return (
+      <Card>
+        <CardContent className="flex flex-col items-center justify-center p-12 text-center">
+          <Lock className="h-16 w-16 text-red-400 mb-4" />
+          <CardTitle className="mb-2">Restricted Access</CardTitle>
+          <CardDescription className="mb-4">
+            Only users with Deakin University accounts (@deakin.edu.au) can upload meetings.
+          </CardDescription>
+        </CardContent>
+      </Card>
+    );
+  }
 
   const onSubmit = async (data: MeetingFormData) => {
     try {
