@@ -1,8 +1,8 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { AlertTriangle, ArrowLeft } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { User, Calendar, Lock } from "lucide-react";
 import { motion } from "@/components/ui/motion";
 
 interface MeetingHeaderProps {
@@ -10,6 +10,7 @@ interface MeetingHeaderProps {
   date: string;
   participants: string[];
   canAccessRestrictedContent: boolean;
+  hideParticipants?: boolean;
 }
 
 const MeetingHeader: React.FC<MeetingHeaderProps> = ({
@@ -17,57 +18,69 @@ const MeetingHeader: React.FC<MeetingHeaderProps> = ({
   date,
   participants,
   canAccessRestrictedContent,
+  hideParticipants = false,
 }) => {
+  // Format the date to be more readable
+  const formattedDate = new Date(date).toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   return (
-    <>
-      <motion.div
-        className="mb-6"
-        initial={{
-          y: 20,
-          opacity: 0,
-        }}
-        animate={{
-          y: 0,
-          opacity: 1,
-        }}
-        transition={{
-          delay: 0.3,
-          duration: 0.5,
-        }}
-      >
-        <Button
-          variant="ghost"
-          asChild
-          className="mb-4 text-blue-400 border-blue-500/50 hover:bg-blue-950/50"
-        >
-          <Link to="/meetings">
-            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Meetings
-          </Link>
-        </Button>
-        <h1 className="text-3xl font-bold text-white">{title}</h1>
-        <p className="text-blue-300">
-          {new Date(date).toLocaleDateString(undefined, {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </p>
-        <div className="mt-2 text-blue-200">
-          <strong>Participants:</strong> {participants.join(", ")}
+    <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur mb-8">
+      <CardContent className="pt-6">
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-bold text-white mb-2">{title}</h1>
+          <div className="flex items-center justify-center text-blue-300">
+            <Calendar className="h-4 w-4 mr-2" />
+            <span>{formattedDate}</span>
+          </div>
         </div>
 
-        {!canAccessRestrictedContent && (
-          <div className="mt-4 p-3 border border-amber-500/30 bg-amber-900/20 rounded-md flex items-center text-amber-200">
-            <AlertTriangle className="h-5 w-5 mr-2 flex-shrink-0" />
-            <p>
-              Some content requires authentication with a Deakin email address
-              (@deakin.edu.au)
-            </p>
+        <div className="flex flex-wrap justify-center items-center mt-4">
+          <div className="flex items-center text-blue-300 mr-4">
+            <User className="h-5 w-5 mr-2" />
+            {hideParticipants ? (
+              <motion.div
+                initial={{ opacity: 0.8 }}
+                animate={{ 
+                  opacity: [0.8, 1, 0.8],
+                }}
+                transition={{ 
+                  duration: 2,
+                  repeat: Infinity,
+                  repeatType: "reverse"
+                }}
+                className="flex items-center"
+              >
+                <Lock className="h-4 w-4 mr-2 text-blue-400" />
+                <span className="text-blue-400">Participants hidden</span>
+              </motion.div>
+            ) : (
+              <span>
+                {participants.length} participant{participants.length !== 1 && "s"}
+              </span>
+            )}
           </div>
-        )}
-      </motion.div>
-    </>
+
+          {!hideParticipants && (
+            <div className="mt-2 sm:mt-0">
+              {participants.map((participant, index) => (
+                <Badge
+                  key={index}
+                  variant="outline"
+                  className="mr-2 mb-2 bg-blue-900/20 border-blue-500/30 text-blue-100"
+                >
+                  {participant}
+                </Badge>
+              ))}
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

@@ -1,18 +1,23 @@
 
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "@/components/ui/motion";
-import { fadeIn, floatAnimation, elasticEntry, blurIn } from "@/components/ui/motion";
+import { fadeIn, floatAnimation, elasticEntry } from "@/components/ui/motion";
+import { Lock } from "lucide-react";
 
 interface MeetingRecordingProps {
   recording?: string;
   date: string;
+  canAccessRecordings: boolean;
 }
 
-const MeetingRecording: React.FC<MeetingRecordingProps> = ({ recording, date }) => {
+const MeetingRecording: React.FC<MeetingRecordingProps> = ({ recording, date, canAccessRecordings }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [showWatermark, setShowWatermark] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Simulate loading delay
@@ -33,6 +38,44 @@ const MeetingRecording: React.FC<MeetingRecordingProps> = ({ recording, date }) 
 
     return () => clearTimeout(timer);
   }, [isPlaying]);
+
+  if (!canAccessRecordings) {
+    return (
+      <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
+        <CardContent className="flex flex-col items-center justify-center p-12 text-center">
+          <motion.div
+            initial={{ scale: 0, rotate: -15 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ duration: 0.5, type: "spring" }}
+          >
+            <Lock className="h-16 w-16 text-blue-400 mb-4" />
+          </motion.div>
+          <CardTitle className="text-white mb-2">Restricted Content</CardTitle>
+          <CardDescription className="text-blue-300 mb-4">
+            Meeting recordings are only available to authenticated users
+          </CardDescription>
+          <Button
+            onClick={() => navigate("/auth")}
+            className="bg-blue-600 hover:bg-blue-700"
+          >
+            Sign In to Access
+          </Button>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+            className="mt-8"
+          >
+            <img 
+              src="/lovable-uploads/e2814672-f895-4078-9d7c-faa5569a0d14.png" 
+              alt="Deakin University Logo"
+              className="h-16 opacity-70" 
+            />
+          </motion.div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   if (!recording) {
     return (

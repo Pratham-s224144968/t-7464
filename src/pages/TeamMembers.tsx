@@ -1,9 +1,8 @@
-
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Search, Mail, Phone, Users } from "lucide-react";
+import { ArrowLeft, Search, Mail, Phone, Users, Lock } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
@@ -11,6 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import Navbar from "@/components/Navbar";
 import { motion } from "@/components/ui/motion";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "@/hooks/use-toast";
 
 type TeamMember = {
   id: string;
@@ -120,6 +121,8 @@ const TeamMembers: React.FC = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("All");
   const [selectedProjects, setSelectedProjects] = useState<string[]>(["All"]);
   const [showFilters, setShowFilters] = useState(false);
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   // Handle project filter selection
   const handleProjectChange = (project: string) => {
@@ -142,6 +145,79 @@ const TeamMembers: React.FC = () => {
       }
     }
   };
+
+  // If user is not authenticated, show locked content view
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-black text-white">
+        <Navbar />
+        <motion.section 
+          className="py-20 bg-gradient-to-b from-black to-blue-950/50" 
+          initial={{ opacity: 0 }} 
+          animate={{ opacity: 1 }} 
+          transition={{ duration: 0.8 }}
+        >
+          <div className="container mx-auto max-w-3xl">
+            <motion.h2 
+              className="text-3xl font-mono font-bold mb-12 text-center text-blue-500" 
+              initial={{ y: 20, opacity: 0 }} 
+              animate={{ y: 0, opacity: 1 }} 
+              transition={{ delay: 0.2, duration: 0.5 }}
+            >
+              /TEAM MEMBERS - RESTRICTED
+            </motion.h2>
+            
+            <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur overflow-hidden">
+              <CardContent className="flex flex-col items-center justify-center p-12 text-center">
+                <motion.div
+                  initial={{ scale: 0, rotate: -15 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ duration: 0.5, type: "spring" }}
+                >
+                  <Lock className="h-20 w-20 text-blue-400 mb-6" />
+                </motion.div>
+                <CardTitle className="text-white text-2xl mb-4">Confidential Information</CardTitle>
+                <CardDescription className="text-blue-300 mb-8 max-w-md text-lg">
+                  Team member details are only available to authenticated users. Please sign in to access this information.
+                </CardDescription>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button
+                    onClick={() => {
+                      toast({
+                        title: "Authentication Required",
+                        description: "Redirecting to login page...",
+                        variant: "default",
+                      });
+                      navigate("/auth");
+                    }}
+                    className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6"
+                    size="lg"
+                  >
+                    Sign In to Access
+                  </Button>
+                </motion.div>
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6, duration: 0.5 }}
+                  className="mt-8"
+                >
+                  <img 
+                    src="/lovable-uploads/e2814672-f895-4078-9d7c-faa5569a0d14.png" 
+                    alt="Deakin University Logo"
+                    className="h-24 opacity-70" 
+                  />
+                </motion.div>
+              </CardContent>
+            </Card>
+          </div>
+        </motion.section>
+      </div>
+    );
+  }
 
   // Filter team members based on search, department, and project
   const filteredTeamMembers = teamMembers.filter((member) => {

@@ -125,6 +125,8 @@ const MeetingDetail: React.FC = () => {
 
   // Check if user can access restricted content (minutes and summary)
   const canAccessRestrictedContent = isAuthenticated && isDeakinUser;
+  // Recordings now require basic authentication (any user)
+  const canAccessRecordings = isAuthenticated;
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -151,6 +153,7 @@ const MeetingDetail: React.FC = () => {
             date={meeting.date}
             participants={meeting.participants}
             canAccessRestrictedContent={canAccessRestrictedContent}
+            hideParticipants={!isAuthenticated}
           />
 
           <motion.div 
@@ -163,6 +166,7 @@ const MeetingDetail: React.FC = () => {
               activeTab={activeTab}
               setActiveTab={setActiveTab}
               canAccessRestrictedContent={canAccessRestrictedContent}
+              canAccessRecordings={canAccessRecordings}
               handleRestrictedContentClick={handleRestrictedContentClick}
             />
           </motion.div>

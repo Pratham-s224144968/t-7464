@@ -25,6 +25,7 @@ interface MeetingTabsProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   canAccessRestrictedContent: boolean;
+  canAccessRecordings: boolean;
   handleRestrictedContentClick: () => void;
 }
 
@@ -33,6 +34,7 @@ const MeetingTabs: React.FC<MeetingTabsProps> = ({
   activeTab,
   setActiveTab,
   canAccessRestrictedContent,
+  canAccessRecordings,
   handleRestrictedContentClick,
 }) => {
   return (
@@ -42,8 +44,10 @@ const MeetingTabs: React.FC<MeetingTabsProps> = ({
           value="recording"
           disabled={!meeting.hasRecording}
           className="data-[state=active]:bg-blue-800/50 data-[state=active]:text-blue-200"
+          onClick={() => !canAccessRecordings && handleRestrictedContentClick()}
         >
           <Video className="mr-2 h-4 w-4" /> Recording
+          {!canAccessRecordings && <Lock className="ml-2 h-3 w-3" />}
         </TabsTrigger>
         <TabsTrigger
           value="minutes"
@@ -59,16 +63,14 @@ const MeetingTabs: React.FC<MeetingTabsProps> = ({
           value="summary"
           disabled={!meeting.hasSummary}
           className="data-[state=active]:bg-blue-800/50 data-[state=active]:text-blue-200"
-          onClick={() => !canAccessRestrictedContent && handleRestrictedContentClick()}
         >
           <FileText className="mr-2 h-4 w-4" />
           AI Summary
-          {!canAccessRestrictedContent && <Lock className="ml-2 h-3 w-3" />}
         </TabsTrigger>
       </TabsList>
 
       <TabsContent value="recording" className="space-y-4">
-        <MeetingRecording recording={meeting.recording} date={meeting.date} />
+        <MeetingRecording recording={meeting.recording} date={meeting.date} canAccessRecordings={canAccessRecordings} />
       </TabsContent>
 
       <TabsContent value="minutes" className="space-y-4">
@@ -84,6 +86,7 @@ const MeetingTabs: React.FC<MeetingTabsProps> = ({
           summary={meeting.summary}
           date={meeting.date}
           canAccessRestrictedContent={canAccessRestrictedContent}
+          previewMode={!canAccessRestrictedContent}
         />
       </TabsContent>
     </Tabs>
