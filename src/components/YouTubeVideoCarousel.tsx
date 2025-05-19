@@ -93,12 +93,9 @@ const YouTubeVideoCarousel = () => {
   };
 
   return (
-    <motion.div 
+    <div 
       ref={containerRef}
-      className="w-full max-w-5xl mx-auto"
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-      transition={{ duration: 0.8 }}
+      className="w-full"
     >
       {/* Featured Video Player */}
       {activeVideo && (
@@ -239,7 +236,7 @@ const YouTubeVideoCarousel = () => {
           </div>
         </Carousel>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

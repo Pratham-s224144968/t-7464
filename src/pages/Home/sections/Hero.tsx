@@ -104,9 +104,9 @@ const Hero = () => {
           We are an AI-focused innovation platform driven by students and researchers at Deakin University.
         </motion.p>
         
-        {/* YouTube Video Carousel - Now with embedded videos */}
+        {/* YouTube Video Carousel */}
         <motion.div 
-          className="mt-12 mb-6" 
+          className="mt-12 mb-6 w-full" 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.5 }}
@@ -120,7 +120,9 @@ const Hero = () => {
               transition={{ delay: 1, duration: 0.8 }}
             />
           </h2>
-          <YouTubeVideoCarousel />
+          <div className="w-full max-w-5xl mx-auto">
+            <YouTubeVideoCarousel />
+          </div>
         </motion.div>
       </div>
     </motion.section>
