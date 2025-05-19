@@ -17,7 +17,6 @@ const MeetingDetail: React.FC = () => {
   const { isAuthenticated, isDeakinUser } = useAuth();
   const navigate = useNavigate();
   
-  // Add more verbose debugging of the query process
   console.log("Starting meeting detail page with ID:", id);
   
   const { data: meeting, isLoading, error } = useQuery({
@@ -46,7 +45,7 @@ const MeetingDetail: React.FC = () => {
           minutesPresent: !!meeting.minutes,
           minutesLength: meeting.minutes ? meeting.minutes.length : 0,
           minutesType: typeof meeting.minutes,
-          minutesContent: meeting.minutes?.substring(0, 100) + '...'
+          minutesContent: meeting.minutes ? (typeof meeting.minutes === 'string' ? meeting.minutes.substring(0, 100) + '...' : 'Not a string') : null
         });
         
         return meeting;
@@ -143,7 +142,9 @@ const MeetingDetail: React.FC = () => {
     canAccessRestrictedContent,
     hasMinutes: meeting.hasMinutes,
     minutesAvailable: !!meeting.minutes,
-    minutesContent: meeting.minutes?.substring(0, 50) + (meeting.minutes && meeting.minutes.length > 50 ? '...' : '')
+    minutesType: typeof meeting.minutes,
+    minutesContent: meeting.minutes ? (typeof meeting.minutes === 'string' ? 
+      meeting.minutes.substring(0, 50) + '...' : 'Not a string') : 'null'
   });
 
   return (

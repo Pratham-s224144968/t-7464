@@ -23,14 +23,14 @@ export const getMeetings = async (): Promise<Meeting[]> => {
 
     if (!data) return [];
 
-    console.log("Raw meetings data:", data);
+    console.log("Raw meetings data count:", data.length);
 
     // Transform the data to match our frontend Meeting type
     return (data as any[]).map((item) => {
       console.log(`Processing meeting ${item.id}, minutes:`, {
         hasMinutes: !!item.minutes,
         minutesType: typeof item.minutes,
-        minutesPreview: item.minutes ? `${item.minutes.substring(0, 30)}...` : 'null'
+        minutesPreview: item.minutes ? `${String(item.minutes).substring(0, 30)}...` : 'null'
       });
 
       return {
@@ -44,7 +44,7 @@ export const getMeetings = async (): Promise<Meeting[]> => {
         hasSummary: item.has_summary || false,
         recording: item.recording_url,
         transcript_url: item.transcript_url,
-        minutes: item.minutes,
+        minutes: item.minutes ? String(item.minutes) : undefined,
         summary: item.summary ? {
           text: item.summary.text || "",
           keyTakeaways: item.summary.key_takeaways || []
@@ -64,6 +64,12 @@ export const getMeetings = async (): Promise<Meeting[]> => {
 export const getMeetingById = async (id: string): Promise<Meeting | null> => {
   try {
     console.log(`Fetching meeting with ID: ${id}`);
+    
+    if (!id) {
+      console.error("Invalid meeting ID provided");
+      return null;
+    }
+    
     // Use generic type for from() to bypass TypeScript's strict checking
     const { data, error } = await supabase
       .from('meetings' as any)
@@ -88,8 +94,8 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
       hasMinutes: !!item.minutes,
       minutesValue: item.minutes,
       minutesType: typeof item.minutes,
-      minutesLength: item.minutes ? item.minutes.length : 0,
-      minutesPreview: item.minutes ? `${item.minutes.substring(0, 30)}...` : 'null'
+      minutesLength: item.minutes ? String(item.minutes).length : 0,
+      minutesPreview: item.minutes ? `${String(item.minutes).substring(0, 30)}...` : 'null'
     });
 
     // Transform the data to match our frontend Meeting type
@@ -104,7 +110,7 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
       hasSummary: item.has_summary || false,
       recording: item.recording_url,
       transcript_url: item.transcript_url,
-      minutes: item.minutes,
+      minutes: item.minutes ? String(item.minutes) : undefined,
       summary: item.summary ? {
         text: item.summary.text || "",
         keyTakeaways: item.summary.key_takeaways || []

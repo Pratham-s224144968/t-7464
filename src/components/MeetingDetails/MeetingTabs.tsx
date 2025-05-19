@@ -43,11 +43,15 @@ const MeetingTabs: React.FC<MeetingTabsProps> = ({
     canAccessRestrictedContent,
     hasMinutes: meeting.hasMinutes,
     minutesPresent: !!meeting.minutes,
-    minutesContent: meeting.minutes?.substring(0, 50) + (meeting.minutes && meeting.minutes.length > 50 ? '...' : '')
+    minutesType: typeof meeting.minutes,
+    minutesContent: meeting.minutes ? (typeof meeting.minutes === 'string' ? 
+      meeting.minutes.substring(0, 50) + '...' : 'Not a string') : 'null'
   });
 
   useEffect(() => {
-    console.log("MeetingTabs mounted with minutes:", meeting.minutes);
+    console.log("MeetingTabs mounted with minutes:", 
+      meeting.minutes ? (typeof meeting.minutes === 'string' ? 
+        meeting.minutes.substring(0, 50) + '...' : 'Not a string') : 'null');
   }, [meeting.minutes]);
 
   return (

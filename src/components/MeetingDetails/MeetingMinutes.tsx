@@ -23,7 +23,8 @@ const MeetingMinutes: React.FC<MeetingMinutesProps> = ({
       hasMinutes: !!minutes,
       minutesType: typeof minutes,
       minutesLength: minutes ? minutes.length : 0,
-      minutesSample: minutes?.substring(0, 50) + (minutes && minutes.length > 50 ? '...' : ''),
+      minutesSample: minutes ? (typeof minutes === 'string' ? 
+        minutes.substring(0, 50) + (minutes.length > 50 ? '...' : '') : 'Not a string') : 'null',
       canAccessRestrictedContent
     });
   }, [minutes, canAccessRestrictedContent]);
@@ -48,8 +49,8 @@ const MeetingMinutes: React.FC<MeetingMinutesProps> = ({
     );
   }
 
-  // If minutes is undefined, null, or an empty string
-  if (!minutes || minutes.trim() === '') {
+  // If minutes is undefined, null, or an empty string, or not a string
+  if (!minutes || typeof minutes !== 'string' || minutes.trim() === '') {
     return (
       <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
         <CardContent className="flex flex-col items-center justify-center p-8 text-center">
