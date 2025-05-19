@@ -14,18 +14,27 @@ export const uploadFile = async (
   onProgress?: (progress: number) => void
 ): Promise<string | null> => {
   try {
-    // Simulate progress for development environment
+    // Simulate realistic progress for development environment
     if (onProgress) {
       const simulateProgress = () => {
         let progress = 0;
         const interval = setInterval(() => {
-          progress += Math.floor(Math.random() * 15) + 5;
+          // Create a more realistic simulation with variable speeds and pauses
+          const increment = Math.floor(Math.random() * 10) + 2;
+          progress += increment;
+          
+          // Simulate slowdown at certain thresholds
+          if (progress >= 85 && progress < 95) {
+            progress += Math.floor(Math.random() * 3);
+          }
+          
           if (progress >= 100) {
             progress = 100;
             clearInterval(interval);
           }
+          
           onProgress(progress);
-        }, 500);
+        }, 300 + Math.random() * 400); // Variable timing between updates
       };
       simulateProgress();
     }

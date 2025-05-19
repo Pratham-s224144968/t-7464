@@ -47,9 +47,9 @@ const MeetingUploadForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   // Render restricted access message if not authenticated or not a Deakin user
   if (!isAuthenticated || !isDeakinUser) {
     return (
-      <Card>
-        <CardContent className="flex flex-col items-center justify-center p-12 text-center">
-          <Lock className="h-16 w-16 text-red-400 mb-4" />
+      <Card className="w-full max-w-lg mx-auto">
+        <CardContent className="flex flex-col items-center justify-center p-8 md:p-12 text-center">
+          <Lock className="h-12 w-12 md:h-16 md:w-16 text-red-400 mb-4" />
           <CardTitle className="mb-2">Restricted Access</CardTitle>
           <CardDescription className="mb-4">
             Only users with Deakin University accounts (@deakin.edu.au) can upload meetings.
@@ -159,8 +159,8 @@ const MeetingUploadForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="w-full">
+      <CardHeader className="px-4 sm:px-6">
         <CardTitle>Upload Meeting</CardTitle>
         <CardDescription>
           Add a new team meeting with recording, transcript, and minutes
@@ -168,7 +168,7 @@ const MeetingUploadForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 px-4 sm:px-6">
             <FormField
               control={form.control}
               name="title"
@@ -192,7 +192,7 @@ const MeetingUploadForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 <FormItem>
                   <FormLabel>Meeting Date</FormLabel>
                   <FormControl>
-                    <Input type="date" {...field} />
+                    <Input type="date" {...field} className="w-full" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -214,81 +214,83 @@ const MeetingUploadForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="recording"
-              render={({ field: { onChange, value, ...rest } }) => (
-                <FormItem>
-                  <FormLabel>Meeting Recording</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Input 
-                        type="file" 
-                        accept="video/mp4,video/webm"
-                        onChange={(e) => onChange(e.target.files)}
-                        disabled={isUploading}
-                        className={isUploading ? "opacity-50" : ""}
-                        {...rest}
-                      />
-                      {isUploading && uploadProgress.recording > 0 && uploadProgress.recording < 100 && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-background/80">
-                          <div className="text-sm text-primary font-medium flex items-center">
-                            <Loader className="animate-spin mr-2 h-4 w-4" />
-                            {uploadProgress.recording}%
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="recording"
+                render={({ field: { onChange, value, ...rest } }) => (
+                  <FormItem>
+                    <FormLabel>Meeting Recording</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input 
+                          type="file" 
+                          accept="video/mp4,video/webm"
+                          onChange={(e) => onChange(e.target.files)}
+                          disabled={isUploading}
+                          className={isUploading ? "opacity-50" : ""}
+                          {...rest}
+                        />
+                        {isUploading && uploadProgress.recording > 0 && uploadProgress.recording < 100 && (
+                          <div className="absolute inset-0 flex items-center justify-center bg-background/80">
+                            <div className="text-sm text-primary font-medium flex items-center">
+                              <Loader className="animate-spin mr-2 h-4 w-4" />
+                              {uploadProgress.recording}%
+                            </div>
                           </div>
-                        </div>
-                      )}
-                      {isUploading && uploadProgress.recording === 100 && (
-                        <div className="absolute right-2 top-1/2 transform -translate-y-1/2 text-primary">
-                          <Check className="h-4 w-4" />
-                        </div>
-                      )}
-                    </div>
-                  </FormControl>
-                  <FormDescription>
-                    Upload the video recording of your meeting (MP4 or WebM format)
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
+                        )}
+                        {isUploading && uploadProgress.recording === 100 && (
+                          <div className="absolute right-2 top-1/2 transform -translate-y-1/2 text-primary">
+                            <Check className="h-4 w-4" />
+                          </div>
+                        )}
+                      </div>
+                    </FormControl>
+                    <FormDescription className="text-xs">
+                      Upload the video recording (MP4 or WebM)
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="transcript"
-              render={({ field: { onChange, value, ...rest } }) => (
-                <FormItem>
-                  <FormLabel>Meeting Transcript</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Input 
-                        type="file" 
-                        accept=".txt,.doc,.docx,.pdf"
-                        onChange={(e) => onChange(e.target.files)}
-                        disabled={isUploading}
-                        className={isUploading ? "opacity-50" : ""}
-                        {...rest}
-                      />
-                      {isUploading && uploadProgress.transcript > 0 && uploadProgress.transcript < 100 && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-background/80">
-                          <div className="text-sm text-primary font-medium flex items-center">
-                            <Loader className="animate-spin mr-2 h-4 w-4" />
-                            {uploadProgress.transcript}%
+              <FormField
+                control={form.control}
+                name="transcript"
+                render={({ field: { onChange, value, ...rest } }) => (
+                  <FormItem>
+                    <FormLabel>Meeting Transcript</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input 
+                          type="file" 
+                          accept=".txt,.doc,.docx,.pdf"
+                          onChange={(e) => onChange(e.target.files)}
+                          disabled={isUploading}
+                          className={isUploading ? "opacity-50" : ""}
+                          {...rest}
+                        />
+                        {isUploading && uploadProgress.transcript > 0 && uploadProgress.transcript < 100 && (
+                          <div className="absolute inset-0 flex items-center justify-center bg-background/80">
+                            <div className="text-sm text-primary font-medium flex items-center">
+                              <Loader className="animate-spin mr-2 h-4 w-4" />
+                              {uploadProgress.transcript}%
+                            </div>
                           </div>
-                        </div>
-                      )}
-                      {isUploading && uploadProgress.transcript === 100 && (
-                        <div className="absolute right-2 top-1/2 transform -translate-y-1/2 text-primary">
-                          <Check className="h-4 w-4" />
-                        </div>
-                      )}
-                    </div>
-                  </FormControl>
-                  <FormDescription>
-                    Upload the transcript to generate an AI summary (TXT, DOC, DOCX, or PDF)
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
+                        )}
+                        {isUploading && uploadProgress.transcript === 100 && (
+                          <div className="absolute right-2 top-1/2 transform -translate-y-1/2 text-primary">
+                            <Check className="h-4 w-4" />
+                          </div>
+                        )}
+                      </div>
+                    </FormControl>
+                    <FormDescription className="text-xs">
+                      Upload the transcript (TXT, DOC, DOCX, or PDF)
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <FormField
               control={form.control}
@@ -299,15 +301,16 @@ const MeetingUploadForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   <FormControl>
                     <Textarea 
                       placeholder="Enter the meeting minutes here..." 
-                      rows={5} 
+                      rows={4} 
                       {...field} 
+                      className="resize-none"
                     />
                   </FormControl>
                 </FormItem>
               )}
             />
           </CardContent>
-          <CardFooter className="flex justify-between">
+          <CardFooter className="flex justify-between px-4 sm:px-6 pb-6">
             <Button type="button" variant="outline" onClick={onClose} disabled={isUploading}>
               Cancel
             </Button>

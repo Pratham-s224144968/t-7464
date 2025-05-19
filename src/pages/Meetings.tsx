@@ -57,9 +57,9 @@ const Meetings = () => {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-black text-white pt-28 pb-8 px-8">
+      <div className="min-h-screen bg-black text-white pt-16 sm:pt-20 md:pt-28 pb-8 px-4 sm:px-6 md:px-8">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6">Meetings</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-6">Meetings</h1>
           <RestrictedContent 
             title="Authentication Required"
             description="Please sign in to view meeting notes and recordings."
@@ -72,9 +72,9 @@ const Meetings = () => {
   
   if (!isDeakinUser) {
     return (
-      <div className="min-h-screen bg-black text-white pt-28 pb-8 px-8">
+      <div className="min-h-screen bg-black text-white pt-16 sm:pt-20 md:pt-28 pb-8 px-4 sm:px-6 md:px-8">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6">Meetings</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-6">Meetings</h1>
           <RestrictedContent 
             title="Deakin Access Required"
             description="These meeting notes are restricted to Deakin University members."
@@ -87,15 +87,15 @@ const Meetings = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white pt-28 pb-8 px-8">
+    <div className="min-h-screen bg-black text-white pt-16 sm:pt-20 md:pt-28 pb-8 px-4 sm:px-6 md:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">Meetings</h1>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+          <h1 className="text-2xl sm:text-3xl font-bold">Meetings</h1>
           
           {isAuthenticated && isDeakinUser && (
             <Button 
               onClick={() => setUploadDialogOpen(true)} 
-              className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
+              className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2 whitespace-nowrap"
             >
               <Plus size={16} /> Upload Meeting
             </Button>
@@ -103,7 +103,7 @@ const Meetings = () => {
         </div>
         
         {SAMPLE_MEETINGS.length === 0 ? (
-          <div className="text-center py-20">
+          <div className="text-center py-12 sm:py-20">
             <p className="text-gray-400 mb-6">No meetings have been added yet.</p>
             <Button 
               onClick={() => setUploadDialogOpen(true)} 
@@ -114,11 +114,11 @@ const Meetings = () => {
           </div>
         ) : (
           <div className="grid gap-6">
-            <div className="p-6 rounded-lg bg-blue-950/30 border border-blue-500/30">
-              <h2 className="text-xl font-bold mb-4">Recent Team Meetings</h2>
+            <div className="p-4 sm:p-6 rounded-lg bg-blue-950/30 border border-blue-500/30">
+              <h2 className="text-lg sm:text-xl font-bold mb-4">Recent Team Meetings</h2>
               <p className="text-gray-300 mb-6">Welcome, Deakin team member! Here are the latest meeting notes and recordings.</p>
               
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {SAMPLE_MEETINGS.map((meeting) => (
                   <div 
                     key={meeting.id} 
@@ -129,7 +129,7 @@ const Meetings = () => {
                     <p className="text-sm text-gray-400 mt-2 mb-4">
                       {new Date(meeting.date).toLocaleDateString()}
                     </p>
-                    <div className="flex gap-2 mt-4">
+                    <div className="flex flex-wrap gap-2 mt-4">
                       {meeting.hasRecording && (
                         <span className="inline-flex items-center text-xs bg-blue-900/30 text-blue-300 px-2 py-1 rounded">
                           Recording
@@ -157,7 +157,7 @@ const Meetings = () => {
         )}
         
         <Dialog open={uploadDialogOpen} onOpenChange={setUploadDialogOpen}>
-          <DialogContent className="sm:max-w-[600px]">
+          <DialogContent className="w-full max-w-3xl p-0 sm:p-4 md:p-6 sm:max-w-[90vw] md:max-w-[600px]">
             <MeetingUploadForm onClose={() => setUploadDialogOpen(false)} />
           </DialogContent>
         </Dialog>
