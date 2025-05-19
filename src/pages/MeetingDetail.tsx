@@ -1,12 +1,14 @@
 
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Video, ArrowLeft } from "lucide-react";
+import { FileText, Video, ArrowLeft, Lock, AlertTriangle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { motion } from "@/components/ui/motion";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "@/hooks/use-toast";
 
 type Meeting = {
   id: string;
@@ -74,6 +76,8 @@ const MeetingDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [meeting, setMeeting] = useState<Meeting | null>(null);
   const [activeTab, setActiveTab] = useState("recording");
+  const { isAuthenticated, isDeakinUser } = useAuth();
+  const navigate = useNavigate();
   
   useEffect(() => {
     // In a real app, you'd fetch the meeting data from an API
@@ -91,6 +95,27 @@ const MeetingDetail: React.FC = () => {
     }
   }, [id]);
 
+  const handleRestrictedContentClick = () => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to access this content",
+        variant: "destructive",
+      });
+      navigate('/auth');
+      return;
+    }
+    
+    if (!isDeakinUser) {
+      toast({
+        title: "Access Denied",
+        description: "This content is only available to users with a Deakin email address",
+        variant: "destructive",
+      });
+      return;
+    }
+  };
+
   if (!meeting) {
     return (
       <div className="min-h-screen bg-black text-white">
@@ -99,6 +124,9 @@ const MeetingDetail: React.FC = () => {
       </div>
     );
   }
+
+  // Check if user can access restricted content (minutes and summary)
+  const canAccessRestrictedContent = isAuthenticated && isDeakinUser;
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -152,6 +180,13 @@ const MeetingDetail: React.FC = () => {
             <div className="mt-2 text-blue-200">
               <strong>Participants:</strong> {meeting.participants.join(", ")}
             </div>
+            
+            {!canAccessRestrictedContent && (
+              <div className="mt-4 p-3 border border-amber-500/30 bg-amber-900/20 rounded-md flex items-center text-amber-200">
+                <AlertTriangle className="h-5 w-5 mr-2 flex-shrink-0" />
+                <p>Some content requires authentication with a Deakin email address (@deakin.edu.au)</p>
+              </div>
+            )}
           </motion.div>
 
           <motion.div initial={{
@@ -177,15 +212,21 @@ const MeetingDetail: React.FC = () => {
                   value="minutes" 
                   disabled={!meeting.hasMinutes}
                   className="data-[state=active]:bg-blue-800/50 data-[state=active]:text-blue-200"
+                  onClick={() => !canAccessRestrictedContent && handleRestrictedContentClick()}
                 >
-                  <FileText className="mr-2 h-4 w-4" /> Minutes
+                  <FileText className="mr-2 h-4 w-4" /> 
+                  Minutes
+                  {!canAccessRestrictedContent && <Lock className="ml-2 h-3 w-3" />}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="summary" 
                   disabled={!meeting.hasSummary}
                   className="data-[state=active]:bg-blue-800/50 data-[state=active]:text-blue-200"
+                  onClick={() => !canAccessRestrictedContent && handleRestrictedContentClick()}
                 >
-                  <FileText className="mr-2 h-4 w-4" /> AI Summary
+                  <FileText className="mr-2 h-4 w-4" /> 
+                  AI Summary
+                  {!canAccessRestrictedContent && <Lock className="ml-2 h-3 w-3" />}
                 </TabsTrigger>
               </TabsList>
               
@@ -215,7 +256,23 @@ const MeetingDetail: React.FC = () => {
               </TabsContent>
               
               <TabsContent value="minutes" className="space-y-4">
-                {meeting.minutes ? (
+                {!canAccessRestrictedContent ? (
+                  <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
+                    <CardContent className="flex flex-col items-center justify-center p-12 text-center">
+                      <Lock className="h-16 w-16 text-blue-400 mb-4" />
+                      <CardTitle className="text-white mb-2">Restricted Content</CardTitle>
+                      <CardDescription className="text-blue-300 mb-4">
+                        Meeting minutes are only available to authenticated Deakin users
+                      </CardDescription>
+                      <Button 
+                        onClick={() => navigate('/auth')}
+                        className="bg-blue-600 hover:bg-blue-700"
+                      >
+                        Sign In with Deakin Account
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ) : meeting.minutes ? (
                   <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
                     <CardHeader className="bg-blue-900/20">
                       <CardTitle className="text-white">Meeting Minutes</CardTitle>
@@ -231,7 +288,23 @@ const MeetingDetail: React.FC = () => {
               </TabsContent>
               
               <TabsContent value="summary" className="space-y-4">
-                {meeting.summary ? (
+                {!canAccessRestrictedContent ? (
+                  <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
+                    <CardContent className="flex flex-col items-center justify-center p-12 text-center">
+                      <Lock className="h-16 w-16 text-blue-400 mb-4" />
+                      <CardTitle className="text-white mb-2">Restricted Content</CardTitle>
+                      <CardDescription className="text-blue-300 mb-4">
+                        AI generated summaries are only available to authenticated Deakin users
+                      </CardDescription>
+                      <Button 
+                        onClick={() => navigate('/auth')}
+                        className="bg-blue-600 hover:bg-blue-700"
+                      >
+                        Sign In with Deakin Account
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ) : meeting.summary ? (
                   <>
                     <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
                       <CardHeader className="bg-blue-900/20">

@@ -8,15 +8,17 @@ export interface User extends SupabaseUser {
   name?: string;
   avatar?: string;
   email?: string;
+  isDeakinUser?: boolean; // Add this property
 }
 
 interface AuthContextType {
   session: Session | null;
   user: User | null;
   loading: boolean;
-  isAuthenticated: boolean; // Add this property
+  isAuthenticated: boolean;
+  isDeakinUser: boolean; // Add this property
   signOut: () => Promise<void>;
-  logout: () => Promise<void>; // Add alias for signOut
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -26,6 +28,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Check if user has a Deakin email
+  const isDeakinEmail = (email: string | undefined): boolean => {
+    if (!email) return false;
+    return email.toLowerCase().endsWith('@deakin.edu.au');
+  };
+
   useEffect(() => {
     // Set up the auth state listener first
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -34,11 +42,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setSession(session);
         // Add mock data for demo purposes
         if (session?.user) {
+          const isUserDeakin = isDeakinEmail(session.user.email);
           const enhancedUser: User = {
             ...session.user,
             name: session.user.email ? session.user.email.split('@')[0] : 'User',
             avatar: `https://source.unsplash.com/random/100x100?face&u=${session.user.id}`,
-            email: session.user.email
+            email: session.user.email,
+            isDeakinUser: isUserDeakin
           };
           setUser(enhancedUser);
         } else {
@@ -53,11 +63,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(session);
       // Add mock data for demo purposes
       if (session?.user) {
+        const isUserDeakin = isDeakinEmail(session.user.email);
         const enhancedUser: User = {
           ...session.user,
           name: session.user.email ? session.user.email.split('@')[0] : 'User',
           avatar: `https://source.unsplash.com/random/100x100?face&u=${session.user.id}`,
-          email: session.user.email
+          email: session.user.email,
+          isDeakinUser: isUserDeakin
         };
         setUser(enhancedUser);
       } else {
@@ -82,6 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user,
     loading,
     isAuthenticated: !!session,
+    isDeakinUser: !!user?.isDeakinUser,
     signOut,
     logout: signOut, // Alias for signOut
   };
