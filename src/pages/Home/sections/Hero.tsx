@@ -54,7 +54,7 @@ const Hero = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
         >
-          <span className="bg-black px-3 py-1 inline-block rounded-lg bg-opacity-80 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 animate-gradient-move">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 animate-gradient-move">
             InnovAIte
           </span>
           
@@ -87,7 +87,7 @@ const Hero = () => {
         </motion.h1>
         
         <motion.p 
-          className="text-2xl max-w-2xl mx-auto mb-4 text-blue-200 font-medium bg-black bg-opacity-70 px-3 py-1 rounded-lg inline-block"
+          className="text-2xl max-w-2xl mx-auto mb-4 text-blue-200 font-medium"
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.5 }}
@@ -96,7 +96,7 @@ const Hero = () => {
         </motion.p>
         
         <motion.p 
-          className="text-lg max-w-3xl mx-auto mb-8 text-white/80 bg-black bg-opacity-70 px-3 py-1 rounded-lg inline-block"
+          className="text-lg max-w-3xl mx-auto mb-8 text-white/80"
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.5 }}
@@ -111,7 +111,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.5 }}
         >
-          <h2 className="text-2xl font-semibold text-blue-300 mb-8 relative inline-block bg-black bg-opacity-70 px-3 py-1 rounded-lg">
+          <h2 className="text-2xl font-semibold text-blue-300 mb-8 relative inline-block">
             Featured Videos
             <motion.span 
               className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500"
