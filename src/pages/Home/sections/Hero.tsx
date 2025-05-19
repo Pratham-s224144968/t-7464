@@ -9,7 +9,7 @@ const Hero = () => {
   return (
     <motion.section 
       id="home" 
-      className="relative pt-5 pb-24 bg-gradient-to-br from-blue-900/70 to-black overflow-hidden" 
+      className="relative pt-5 pb-32 bg-gradient-to-br from-blue-900/70 to-black overflow-hidden" 
       initial={{
         opacity: 0
       }} 
