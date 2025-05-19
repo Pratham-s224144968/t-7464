@@ -10,6 +10,10 @@ interface MeetingRecordingProps {
   canAccessRecordings: boolean;
 }
 
+interface NoRecordingNoticeProps {
+  date?: string;
+}
+
 const MeetingRecording: React.FC<MeetingRecordingProps> = ({
   recording,
   date,

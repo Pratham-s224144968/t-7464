@@ -1,33 +1,57 @@
 
 /**
- * Validates a YouTube URL and returns true if it's a valid YouTube video link
- * Supports various YouTube URL formats
+ * Utility functions for processing YouTube URLs
+ */
+
+/**
+ * Validates if a string is a valid YouTube URL
  */
 export function isValidYoutubeUrl(url: string): boolean {
-  if (!url) return false;
-  
-  // Regular expression to match YouTube URLs
-  const regExp = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:embed\/|watch\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:\S+)?$/;
-  return regExp.test(url);
+  try {
+    if (!url) return false;
+    
+    // Regular expression for YouTube URL validation
+    const regex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/;
+    const result = regex.test(url);
+    
+    console.log(`URL ${url} is ${result ? 'valid' : 'invalid'} YouTube URL`);
+    return result;
+  } catch (error) {
+    console.error("Error validating YouTube URL:", error);
+    return false;
+  }
 }
 
 /**
- * Extracts the video ID from a YouTube URL
+ * Converts a YouTube URL to an embeddable format
  */
-export function getYoutubeVideoId(url: string): string | null {
-  if (!url) return null;
-  
-  // Match YouTube URLs and extract the video ID
-  const regExp = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:embed\/|watch\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:\S+)?$/;
-  const match = url.match(regExp);
-  
-  return match ? match[1] : null;
-}
-
-/**
- * Converts a YouTube URL to an embed URL
- */
-export function getYoutubeEmbedUrl(url: string): string | null {
-  const videoId = getYoutubeVideoId(url);
-  return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+export function getYoutubeEmbedUrl(url: string): string {
+  try {
+    if (!url) return '';
+    
+    // Extract video ID from YouTube URL
+    let videoId = '';
+    
+    // Handle youtu.be format
+    if (url.includes('youtu.be')) {
+      videoId = url.split('youtu.be/')[1].split('?')[0];
+    } 
+    // Handle youtube.com format
+    else if (url.includes('youtube.com')) {
+      const urlParams = new URLSearchParams(new URL(url).search);
+      videoId = urlParams.get('v') || '';
+    }
+    
+    if (!videoId) {
+      console.warn("Could not extract YouTube video ID from URL:", url);
+      return url; // Return original URL if we couldn't extract the video ID
+    }
+    
+    const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+    console.log(`Converted ${url} to embed URL: ${embedUrl}`);
+    return embedUrl;
+  } catch (error) {
+    console.error("Error getting YouTube embed URL:", error);
+    return url; // Return original URL in case of any error
+  }
 }

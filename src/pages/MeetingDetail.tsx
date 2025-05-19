@@ -33,13 +33,15 @@ const MeetingDetail: React.FC = () => {
         if (error) throw error;
         if (!data) return null;
         
+        console.log("Meeting data retrieved:", data);
+        
         // Parse summary data correctly based on its type
         let parsedSummary;
         if (data.summary) {
           if (typeof data.summary === 'object') {
             parsedSummary = {
-              text: (data.summary as any).text || "",
-              keyTakeaways: (data.summary as any).key_takeaways || []
+              text: data.summary.text || "",
+              keyTakeaways: data.summary.key_takeaways || []
             };
           } else {
             // Fallback if summary is not in expected format
