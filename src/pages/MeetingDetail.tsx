@@ -1,14 +1,12 @@
 
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Video, ArrowLeft, Lock, AlertTriangle } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import { motion } from "@/components/ui/motion";
+import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
+import Navbar from "@/components/Navbar";
+import { motion } from "@/components/ui/motion";
+import MeetingHeader from "@/components/MeetingDetails/MeetingHeader";
+import MeetingTabs from "@/components/MeetingDetails/MeetingTabs";
 
 type Meeting = {
   id: string;
@@ -132,209 +130,41 @@ const MeetingDetail: React.FC = () => {
     <div className="min-h-screen bg-black text-white">
       <Navbar />
       
-      <motion.section className="py-20 bg-gradient-to-b from-black to-blue-950/50" initial={{
-        opacity: 0
-      }} animate={{
-        opacity: 1
-      }} transition={{
-        duration: 0.8
-      }}>
+      <motion.section 
+        className="py-20 bg-gradient-to-b from-black to-blue-950/50" 
+        initial={{ opacity: 0 }} 
+        animate={{ opacity: 1 }} 
+        transition={{ duration: 0.8 }}
+      >
         <div className="container mx-auto">
-          <motion.h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500" initial={{
-            y: 20,
-            opacity: 0
-          }} animate={{
-            y: 0,
-            opacity: 1
-          }} transition={{
-            delay: 0.2,
-            duration: 0.5
-          }}>
+          <motion.h2 
+            className="text-3xl font-mono font-bold mb-12 text-center text-blue-500" 
+            initial={{ y: 20, opacity: 0 }} 
+            animate={{ y: 0, opacity: 1 }} 
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
             /MEETING DETAILS
           </motion.h2>
           
-          <motion.div className="mb-6" initial={{
-            y: 20,
-            opacity: 0
-          }} animate={{
-            y: 0,
-            opacity: 1
-          }} transition={{
-            delay: 0.3,
-            duration: 0.5
-          }}>
-            <Button variant="ghost" asChild className="mb-4 text-blue-400 border-blue-500/50 hover:bg-blue-950/50">
-              <Link to="/meetings">
-                <ArrowLeft className="mr-2 h-4 w-4" /> Back to Meetings
-              </Link>
-            </Button>
-            <h1 className="text-3xl font-bold text-white">{meeting.title}</h1>
-            <p className="text-blue-300">
-              {new Date(meeting.date).toLocaleDateString(undefined, {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </p>
-            <div className="mt-2 text-blue-200">
-              <strong>Participants:</strong> {meeting.participants.join(", ")}
-            </div>
-            
-            {!canAccessRestrictedContent && (
-              <div className="mt-4 p-3 border border-amber-500/30 bg-amber-900/20 rounded-md flex items-center text-amber-200">
-                <AlertTriangle className="h-5 w-5 mr-2 flex-shrink-0" />
-                <p>Some content requires authentication with a Deakin email address (@deakin.edu.au)</p>
-              </div>
-            )}
-          </motion.div>
+          <MeetingHeader
+            title={meeting.title}
+            date={meeting.date}
+            participants={meeting.participants}
+            canAccessRestrictedContent={canAccessRestrictedContent}
+          />
 
-          <motion.div initial={{
-            y: 20,
-            opacity: 0
-          }} animate={{
-            y: 0,
-            opacity: 1
-          }} transition={{
-            delay: 0.4,
-            duration: 0.5
-          }}>
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid grid-cols-3 mb-8 bg-blue-900/30">
-                <TabsTrigger 
-                  value="recording" 
-                  disabled={!meeting.hasRecording}
-                  className="data-[state=active]:bg-blue-800/50 data-[state=active]:text-blue-200"
-                >
-                  <Video className="mr-2 h-4 w-4" /> Recording
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="minutes" 
-                  disabled={!meeting.hasMinutes}
-                  className="data-[state=active]:bg-blue-800/50 data-[state=active]:text-blue-200"
-                  onClick={() => !canAccessRestrictedContent && handleRestrictedContentClick()}
-                >
-                  <FileText className="mr-2 h-4 w-4" /> 
-                  Minutes
-                  {!canAccessRestrictedContent && <Lock className="ml-2 h-3 w-3" />}
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="summary" 
-                  disabled={!meeting.hasSummary}
-                  className="data-[state=active]:bg-blue-800/50 data-[state=active]:text-blue-200"
-                  onClick={() => !canAccessRestrictedContent && handleRestrictedContentClick()}
-                >
-                  <FileText className="mr-2 h-4 w-4" /> 
-                  AI Summary
-                  {!canAccessRestrictedContent && <Lock className="ml-2 h-3 w-3" />}
-                </TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="recording" className="space-y-4">
-                {meeting.recording ? (
-                  <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
-                    <CardHeader className="bg-blue-900/20">
-                      <CardTitle className="text-white">Meeting Recording</CardTitle>
-                      <CardDescription className="text-blue-300">Video recording from {meeting.date}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="aspect-video bg-blue-900/30 rounded-md flex items-center justify-center">
-                        <video 
-                          controls 
-                          className="w-full h-full rounded-md"
-                          poster="https://images.unsplash.com/photo-1556155092-8707de31f9c4?q=80&w=1000"
-                        >
-                          <source src={meeting.recording} type="video/mp4" />
-                          Your browser does not support the video tag.
-                        </video>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ) : (
-                  <div className="text-center p-8 text-blue-300">No recording available</div>
-                )}
-              </TabsContent>
-              
-              <TabsContent value="minutes" className="space-y-4">
-                {!canAccessRestrictedContent ? (
-                  <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
-                    <CardContent className="flex flex-col items-center justify-center p-12 text-center">
-                      <Lock className="h-16 w-16 text-blue-400 mb-4" />
-                      <CardTitle className="text-white mb-2">Restricted Content</CardTitle>
-                      <CardDescription className="text-blue-300 mb-4">
-                        Meeting minutes are only available to authenticated Deakin users
-                      </CardDescription>
-                      <Button 
-                        onClick={() => navigate('/auth')}
-                        className="bg-blue-600 hover:bg-blue-700"
-                      >
-                        Sign In with Deakin Account
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ) : meeting.minutes ? (
-                  <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
-                    <CardHeader className="bg-blue-900/20">
-                      <CardTitle className="text-white">Meeting Minutes</CardTitle>
-                      <CardDescription className="text-blue-300">Notes from the meeting on {meeting.date}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="whitespace-pre-line text-blue-200">{meeting.minutes}</p>
-                    </CardContent>
-                  </Card>
-                ) : (
-                  <div className="text-center p-8 text-blue-300">No minutes available</div>
-                )}
-              </TabsContent>
-              
-              <TabsContent value="summary" className="space-y-4">
-                {!canAccessRestrictedContent ? (
-                  <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
-                    <CardContent className="flex flex-col items-center justify-center p-12 text-center">
-                      <Lock className="h-16 w-16 text-blue-400 mb-4" />
-                      <CardTitle className="text-white mb-2">Restricted Content</CardTitle>
-                      <CardDescription className="text-blue-300 mb-4">
-                        AI generated summaries are only available to authenticated Deakin users
-                      </CardDescription>
-                      <Button 
-                        onClick={() => navigate('/auth')}
-                        className="bg-blue-600 hover:bg-blue-700"
-                      >
-                        Sign In with Deakin Account
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ) : meeting.summary ? (
-                  <>
-                    <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
-                      <CardHeader className="bg-blue-900/20">
-                        <CardTitle className="text-white">AI Generated Summary</CardTitle>
-                        <CardDescription className="text-blue-300">Auto-generated summary of the meeting content</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="whitespace-pre-line text-blue-200">{meeting.summary.text}</p>
-                      </CardContent>
-                    </Card>
-                    
-                    <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
-                      <CardHeader className="bg-blue-900/20">
-                        <CardTitle className="text-white">Key Takeaways</CardTitle>
-                        <CardDescription className="text-blue-300">Important points from the meeting</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <ul className="list-disc pl-6 space-y-2 text-blue-200">
-                          {meeting.summary.keyTakeaways.map((item, index) => (
-                            <li key={index}>{item}</li>
-                          ))}
-                        </ul>
-                      </CardContent>
-                    </Card>
-                  </>
-                ) : (
-                  <div className="text-center p-8 text-blue-300">No AI summary available</div>
-                )}
-              </TabsContent>
-            </Tabs>
+          <motion.div 
+            initial={{ y: 20, opacity: 0 }} 
+            animate={{ y: 0, opacity: 1 }} 
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            <MeetingTabs
+              meeting={meeting}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              canAccessRestrictedContent={canAccessRestrictedContent}
+              handleRestrictedContentClick={handleRestrictedContentClick}
+            />
           </motion.div>
         </div>
       </motion.section>
