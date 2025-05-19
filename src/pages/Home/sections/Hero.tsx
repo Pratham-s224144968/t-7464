@@ -1,3 +1,4 @@
+
 import React from "react";
 import { motion } from "@/components/ui/motion";
 import YouTubeVideoCarousel from "@/components/YouTubeVideoCarousel";
@@ -28,21 +29,17 @@ const Hero = () => {
         <motion.img 
           alt="InnovAIte Logo" 
           initial={{
-            y: -50,
-            opacity: 0
+            y: 0,
+            opacity: 1
           }} 
           animate={{
-            y: 0,
-            opacity: 1,
-            scale: [1, 1.02, 1],
-            rotate: [-1, 1, -1],
-            y: [0, -10, 0]
+            y: [-5, 0, -5], // Subtle vertical hover between -5px and 0px
+            opacity: 1, // Keep opacity constant so logo never disappears
           }} 
           transition={{
-            delay: 0.2,
-            duration: 6,
+            duration: 4, // Slower animation
             repeat: Infinity,
-            repeatType: "reverse",
+            repeatType: "loop",
             ease: "easeInOut"
           }} 
           src="/lovable-uploads/7b9b7ff1-8cf0-4f74-a362-00f0ceaf28e9.png" 

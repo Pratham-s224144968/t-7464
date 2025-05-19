@@ -17,11 +17,11 @@ const Home = () => {
       {/* Global persistent particle background for neural network effect */}
       <ParticleBackground 
         variant="cyber" 
-        density="medium" 
+        density="low" // Changed from medium to low for fewer particles
         speed="normal" 
         starEffect={true}
         interactive={true}
-        className="fixed inset-0 opacity-60 z-0" 
+        className="fixed inset-0 opacity-30 z-0" // Reduced opacity from 60% to 30%
       />
       
       {/* Additional motion gradient for depth that persists */}
@@ -46,18 +46,18 @@ const Home = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        {[...Array(50)].map((_, i) => (
+        {[...Array(30)].map((_, i) => ( // Reduced from 50 to 30 stars
           <motion.div
             key={`star-${i}`}
             className="absolute rounded-full bg-white"
             style={{
-              width: Math.random() * 3 + 1,
-              height: Math.random() * 3 + 1,
+              width: Math.random() * 2 + 1, // Slightly smaller stars
+              height: Math.random() * 2 + 1, // Slightly smaller stars
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
             }}
             animate={{
-              opacity: [0.2, 0.8, 0.2],
+              opacity: [0.1, 0.4, 0.1], // Reduced opacity from [0.2, 0.8, 0.2]
               scale: [1, 1.2, 1],
             }}
             transition={{
