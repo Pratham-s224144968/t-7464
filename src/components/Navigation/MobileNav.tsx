@@ -7,9 +7,10 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useAuth } from '@/contexts/AuthContext';
+import { Badge } from '@/components/ui/badge';
 
 export const MobileNav = () => {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user, logout, isDeakinUser } = useAuth();
   const location = useLocation();
 
   return (
@@ -52,6 +53,8 @@ export const MobileNav = () => {
             >
               <FileText className="mr-2 h-5 w-5" />
               Meeting Notes
+              {!isAuthenticated && <span className="ml-2 text-xs text-blue-400">(Login required)</span>}
+              {isAuthenticated && !isDeakinUser && <span className="ml-2 text-xs text-blue-400">(Deakin only)</span>}
             </Link>
             <Link 
               to="/team" 
@@ -102,7 +105,12 @@ export const MobileNav = () => {
                     <AvatarFallback>{user.name?.[0]}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="font-medium text-white">{user.name}</p>
+                    <div className="flex items-center">
+                      <p className="font-medium text-white">{user.name}</p>
+                      {isDeakinUser && (
+                        <Badge className="ml-2 bg-blue-600 text-xs font-normal py-0.5">Deakin</Badge>
+                      )}
+                    </div>
                     <p className="text-sm text-white/60">{user.email}</p>
                   </div>
                 </div>

@@ -12,6 +12,7 @@ import Meetings from './pages/Meetings';
 import Home from './pages/Home';
 import Auth from './pages/Auth';
 import { useTheme } from './contexts/ThemeContext';
+import { toast } from '@/hooks/use-toast';
 
 // Protected Route wrapper component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -54,6 +55,11 @@ const DeakinRoute = ({ children }: { children: React.ReactNode }) => {
   }
   
   if (!isDeakinUser) {
+    toast({
+      title: "Access Restricted",
+      description: "This page is only available to Deakin University members.",
+      variant: "destructive"
+    });
     return <Navigate to="/" replace />;
   }
   
