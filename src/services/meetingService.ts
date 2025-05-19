@@ -4,6 +4,9 @@ import { uploadFile, generateFilePath } from "./fileUploadService";
 import { v4 as uuidv4 } from "uuid";
 import { Meeting, MeetingCreateData } from "./types";
 
+// Re-export the Meeting type so it can be imported from this module
+export type { Meeting, MeetingCreateData };
+
 // In-memory cache for demo purposes (would be replaced by actual database in production)
 const MEETINGS_CACHE: Meeting[] = [
   {

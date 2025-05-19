@@ -11,7 +11,7 @@ import Navbar from "@/components/Navbar";
 import { motion } from "@/components/ui/motion";
 import { fadeIn, slideIn, staggerContainer } from "@/components/ui/motion/basic-animations";
 import MeetingsCalendar from "@/components/MeetingsCalendar";
-import { getMeetings, Meeting } from "@/services/meetingService";
+import { getMeetings, type Meeting } from "@/services/meetingService";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";

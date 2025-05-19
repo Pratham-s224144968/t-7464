@@ -10,7 +10,7 @@ import { ArrowLeft, FileText, Search, Trash, Video, Edit, Eye, Calendar, Lock } 
 import Navbar from "@/components/Navbar";
 import { motion } from "@/components/ui/motion";
 import { fadeIn, slideIn } from "@/components/ui/motion/basic-animations";
-import { Meeting, deleteMeeting, processTranscript, getMeetings } from "@/services/meetingService";
+import { deleteMeeting, processTranscript, getMeetings, type Meeting } from "@/services/meetingService";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import MeetingUploadForm from "@/components/MeetingUploadForm";
