@@ -22,6 +22,19 @@ const MeetingDetail: React.FC = () => {
     queryFn: async () => {
       if (!id) return null;
       const meeting = await getMeetingById(id);
+      
+      // Add extra console logging for debugging
+      if (meeting) {
+        console.log("Meeting fetched successfully:", {
+          id: meeting.id,
+          title: meeting.title,
+          hasMinutes: meeting.hasMinutes,
+          minutes: meeting.minutes,
+          minutesType: typeof meeting.minutes,
+          minutesLength: meeting.minutes ? meeting.minutes.length : 0
+        });
+      }
+      
       return meeting;
     },
     // Make sure we refetch when authentication status changes
@@ -110,7 +123,9 @@ const MeetingDetail: React.FC = () => {
     meeting,
     activeTab,
     canAccessRestrictedContent,
-    canAccessRecordings
+    canAccessRecordings,
+    minutesAvailable: !!meeting.minutes,
+    minutesContent: meeting.minutes
   });
 
   return (

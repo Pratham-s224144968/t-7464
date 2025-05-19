@@ -37,7 +37,12 @@ const MeetingTabs: React.FC<MeetingTabsProps> = ({
   canAccessRecordings,
   handleRestrictedContentClick,
 }) => {
-  console.log("MeetingTabs props:", { meeting, activeTab, canAccessRestrictedContent });
+  console.log("MeetingTabs props:", { 
+    meeting, 
+    activeTab, 
+    canAccessRestrictedContent,
+    minutes: meeting.minutes 
+  });
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
