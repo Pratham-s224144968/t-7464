@@ -1,4 +1,3 @@
-
 import { Database, Server, Network, Users, Code, Globe, GitMerge, Lightbulb, Webhook, Cpu, Mail, Heart, CalendarDays, FileText, MessageSquare, ChevronDown, BookOpenText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
@@ -12,6 +11,8 @@ import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { blogPosts } from "@/data/blogPosts";
 import YouTubeVideoCarousel from "@/components/YouTubeVideoCarousel";
+import { ParticleBackground } from "@/components/ui/motion/particles";
+import { fadeIn, slideIn, elasticEntry, floatAnimation, backgroundShift } from "@/components/ui/motion";
 
 const Index = () => {
   const [isCommsOpen, setIsCommsOpen] = useState(false);
@@ -21,105 +22,156 @@ const Index = () => {
   // Get the latest 3 blog posts
   const latestPosts = [...blogPosts].sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 3);
 
-  return <div className="min-h-screen bg-black text-white">
+  return (
+    <div className="min-h-screen bg-black text-white overflow-hidden">
       <Navbar />
       
-      {/* Hero Section - Updated with Video Carousel */}
-      <motion.section id="home" className="pt-5 pb-16 bg-gradient-to-br from-blue-900/70 to-black" initial={{
-      opacity: 0
-    }} animate={{
-      opacity: 1
-    }} transition={{
-      duration: 0.6
-    }}>
-        <div className="container mx-auto text-center">
-          <motion.img alt="InnovAIte Logo" initial={{
-          y: -50,
+      {/* Hero Section with Dynamic Background */}
+      <motion.section id="home" className="relative pt-5 pb-16 bg-gradient-to-br from-blue-900/70 to-black overflow-hidden" 
+        initial={{
           opacity: 0
-        }} animate={{
-          y: 0,
+        }} 
+        animate={{
           opacity: 1
-        }} transition={{
-          delay: 0.2,
-          duration: 0.5
-        }} src="/lovable-uploads/7b9b7ff1-8cf0-4f74-a362-00f0ceaf28e9.png" className="mx-auto h-150 w-auto object-contain" />
-          <motion.h1 className="text-5xl md:text-7xl font-mono font-bold mb-6 text-white" initial={{
-          y: 30,
-          opacity: 0
-        }} animate={{
-          y: 0,
-          opacity: 1
-        }} transition={{
-          delay: 0.3,
-          duration: 0.5
-        }}>
-            InnovAIte
+        }} 
+        transition={{
+          duration: 0.6
+        }}
+      >
+        {/* Interactive Particle Background */}
+        <ParticleBackground variant="blue" density="medium" className="opacity-40" />
+        
+        {/* Dynamic gradient overlay */}
+        <motion.div 
+          className="absolute inset-0 bg-gradient-radial from-blue-500/10 to-transparent pointer-events-none"
+          {...backgroundShift}
+        />
+        
+        <div className="container mx-auto text-center relative z-10">
+          <motion.img 
+            alt="InnovAIte Logo" 
+            initial={{
+              y: -50,
+              opacity: 0
+            }} 
+            animate={{
+              y: 0,
+              opacity: 1
+            }} 
+            transition={{
+              delay: 0.2,
+              duration: 0.5
+            }} 
+            src="/lovable-uploads/7b9b7ff1-8cf0-4f74-a362-00f0ceaf28e9.png" 
+            className="mx-auto h-150 w-auto object-contain" 
+          />
+          
+          <motion.h1 
+            className="text-5xl md:text-7xl font-mono font-bold mb-6 text-white relative"
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 animate-gradient-move">
+              InnovAIte
+            </span>
+            
+            {/* Animated glowing orbs */}
+            <motion.span 
+              className="absolute -right-2 top-0 h-3 w-3 rounded-full bg-blue-400 blur-sm"
+              animate={{
+                opacity: [0.4, 0.8, 0.4],
+                scale: [1, 1.3, 1],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+            <motion.span 
+              className="absolute -left-2 bottom-0 h-2 w-2 rounded-full bg-purple-400 blur-sm"
+              animate={{
+                opacity: [0.3, 0.7, 0.3],
+                scale: [1, 1.5, 1],
+              }}
+              transition={{
+                duration: 2.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.5
+              }}
+            />
           </motion.h1>
-          <motion.p className="text-2xl max-w-2xl mx-auto mb-4 text-blue-200 font-medium" initial={{
-          y: 30,
-          opacity: 0
-        }} animate={{
-          y: 0,
-          opacity: 1
-        }} transition={{
-          delay: 0.4,
-          duration: 0.5
-        }}>
+          
+          <motion.p 
+            className="text-2xl max-w-2xl mx-auto mb-4 text-blue-200 font-medium"
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
             AI Innovation Hub at Deakin University
           </motion.p>
-          <motion.p className="text-lg max-w-3xl mx-auto mb-8 text-white/80" initial={{
-          y: 30,
-          opacity: 0
-        }} animate={{
-          y: 0,
-          opacity: 1
-        }} transition={{
-          delay: 0.5,
-          duration: 0.5
-        }}>
+          
+          <motion.p 
+            className="text-lg max-w-3xl mx-auto mb-8 text-white/80"
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+          >
             We are an AI-focused innovation platform driven by students and researchers at Deakin University.
           </motion.p>
           
-          {/* YouTube Video Carousel */}
+          {/* YouTube Video Carousel - Now with embedded videos */}
           <motion.div 
             className="mt-12 mb-6" 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.5 }}
           >
-            <h2 className="text-xl font-semibold text-blue-300 mb-6">Featured Videos</h2>
+            <h2 className="text-xl font-semibold text-blue-300 mb-6 relative inline-block">
+              Featured Videos
+              <motion.span 
+                className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500"
+                initial={{ width: "0%" }}
+                animate={{ width: "100%" }}
+                transition={{ delay: 1, duration: 0.8 }}
+              />
+            </h2>
             <YouTubeVideoCarousel />
           </motion.div>
         </div>
       </motion.section>
 
-      {/* Portfolio Showcase Section - NEW */}
-      <motion.section id="portfolio" className="py-20 bg-black" initial={{
-      opacity: 0
-    }} whileInView={{
-      opacity: 1
-    }} transition={{
-      duration: 0.8
-    }} viewport={{
-      once: true
-    }}>
-        <div className="container mx-auto">
-          <motion.h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500" initial={{
-          y: 20,
-          opacity: 0
-        }} whileInView={{
-          y: 0,
-          opacity: 1
-        }} transition={{
-          delay: 0.2,
-          duration: 0.5
-        }} viewport={{
-          once: true
-        }}>
+      {/* Portfolio Showcase Section with Enhanced Animations */}
+      <motion.section id="portfolio" className="relative py-20 bg-black" 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <ParticleBackground variant="purple" density="low" className="opacity-30" />
+        
+        <div className="container mx-auto relative z-10">
+          <motion.h2 
+            className="text-3xl font-mono font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            viewport={{ once: true }}
+          >
             /PORTFOLIO
           </motion.h2>
+          
           <div className="grid md:grid-cols-3 gap-6">
-            <motion.div className="col-span-3 md:col-span-2" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }} viewport={{ once: true }}>
+            <motion.div 
+              className="col-span-3 md:col-span-2" 
+              initial={{ opacity: 0, y: 20 }} 
+              whileInView={{ opacity: 1, y: 0 }} 
+              transition={{ delay: 0.3, duration: 0.5 }} 
+              viewport={{ once: true }}
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            >
               <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur h-full hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="text-white text-2xl">Featured Project: AI Prototyping Lab</CardTitle>
@@ -151,7 +203,14 @@ const Index = () => {
               </Card>
             </motion.div>
 
-            <motion.div className="col-span-3 md:col-span-1" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.5 }} viewport={{ once: true }}>
+            <motion.div 
+              className="col-span-3 md:col-span-1" 
+              initial={{ opacity: 0, y: 20 }} 
+              whileInView={{ opacity: 1, y: 0 }} 
+              transition={{ delay: 0.4, duration: 0.5 }} 
+              viewport={{ once: true }}
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            >
               <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur h-full hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="text-white">AI Generalist Program</CardTitle>
@@ -178,29 +237,41 @@ const Index = () => {
         </div>
       </motion.section>
 
-      {/* About Us Section - Simplified */}
-      <motion.section id="about" className="py-20 bg-gradient-to-b from-black to-blue-950/50" initial={{
-      opacity: 0
-    }} whileInView={{
-      opacity: 1
-    }} transition={{
-      duration: 0.8
-    }} viewport={{
-      once: true
-    }}>
-        <div className="container mx-auto">
-          <motion.h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500" initial={{
-          y: 20,
-          opacity: 0
-        }} whileInView={{
-          y: 0,
-          opacity: 1
-        }} transition={{
-          delay: 0.2,
-          duration: 0.5
-        }} viewport={{
-          once: true
-        }}>
+      {/* About Us Section with Enhanced Background */}
+      <motion.section 
+        id="about" 
+        className="relative py-20 bg-gradient-to-b from-black to-blue-950/50 overflow-hidden" 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <ParticleBackground variant="default" density="low" className="opacity-30" />
+        
+        <motion.div 
+          className="absolute inset-0 bg-gradient-radial from-blue-500/5 via-transparent to-transparent pointer-events-none"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3]
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        
+        <div className="container mx-auto relative z-10">
+          <motion.h2 
+            className="text-3xl font-mono font-bold mb-12 text-center text-blue-500" 
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{
+              delay: 0.2,
+              duration: 0.5
+            }} 
+            viewport={{ once: true }}
+          >
             /ABOUT US
           </motion.h2>
           <div className="max-w-4xl mx-auto">
@@ -247,7 +318,7 @@ const Index = () => {
       </motion.section>
 
       {/* NEW: Blog & Vlogs Section */}
-      <motion.section id="blog" className="py-20 bg-black" initial={{
+      <motion.section id="blog" className="relative py-20 bg-black" initial={{
       opacity: 0
     }} whileInView={{
       opacity: 1
@@ -256,7 +327,9 @@ const Index = () => {
     }} viewport={{
       once: true
     }}>
-        <div className="container mx-auto">
+        <ParticleBackground variant="blue" density="low" className="opacity-20" />
+        
+        <div className="container mx-auto relative z-10">
           <motion.h2 className="text-3xl font-mono font-bold mb-6 text-center text-blue-500" initial={{
           y: 20,
           opacity: 0
@@ -341,7 +414,7 @@ const Index = () => {
       </motion.section>
 
       {/* Resources Section - NEW */}
-      <motion.section id="resources" className="py-20 bg-black" initial={{
+      <motion.section id="resources" className="relative py-20 bg-black" initial={{
       opacity: 0
     }} whileInView={{
       opacity: 1
@@ -350,7 +423,9 @@ const Index = () => {
     }} viewport={{
       once: true
     }}>
-        <div className="container mx-auto">
+        <ParticleBackground variant="cyber" density="low" speed="slow" className="opacity-20" />
+        
+        <div className="container mx-auto relative z-10">
           <motion.h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500" initial={{
           y: 20,
           opacity: 0
@@ -410,7 +485,7 @@ const Index = () => {
       </motion.section>
 
       {/* Company Leadership Section - NEW */}
-      <motion.section id="leadership" className="py-20 bg-black" initial={{
+      <motion.section id="leadership" className="relative py-20 bg-black" initial={{
       opacity: 0
     }} whileInView={{
       opacity: 1
@@ -419,7 +494,14 @@ const Index = () => {
     }} viewport={{
       once: true
     }}>
-        <div className="container mx-auto">
+        <ParticleBackground variant="purple" density="low" speed="slow" className="opacity-20" />
+        
+        <motion.div 
+          className="absolute inset-0 bg-gradient-radial from-purple-500/10 via-transparent to-transparent pointer-events-none"
+          {...floatAnimation}
+        />
+        
+        <div className="container mx-auto relative z-10">
           <motion.h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500" initial={{
           y: 20,
           opacity: 0
@@ -588,7 +670,7 @@ const Index = () => {
       </motion.section>
 
       {/* Contact Section - Simplified */}
-      <motion.section id="contact" className="py-20 bg-black" initial={{
+      <motion.section id="contact" className="relative py-20 bg-black" initial={{
       opacity: 0
     }} whileInView={{
       opacity: 1
@@ -597,7 +679,9 @@ const Index = () => {
     }} viewport={{
       once: true
     }}>
-        <div className="container mx-auto">
+        <ParticleBackground variant="cyber" density="medium" className="opacity-30" />
+        
+        <div className="container mx-auto relative z-10">
           <motion.h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500" initial={{
           y: 20,
           opacity: 0
@@ -645,8 +729,10 @@ const Index = () => {
       </motion.section>
 
       {/* Footer - Kept similar */}
-      <footer className="bg-black border-t border-blue-900/30 py-12">
-        <div className="container mx-auto">
+      <footer className="relative bg-black border-t border-blue-900/30 py-12">
+        <ParticleBackground variant="default" density="low" className="opacity-20" />
+        
+        <div className="container mx-auto relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-6 md:mb-0 flex items-center">
               <img src="/lovable-uploads/2ac77590-a08e-4983-bafa-7be5dc24647b.png" alt="InnovAIte Logo" className="h-16 mr-3" />
@@ -676,7 +762,8 @@ const Index = () => {
           </div>
         </div>
       </footer>
-    </div>;
+    </div>
+  );
 };
 
 // TeamMemberCard Component
@@ -688,9 +775,21 @@ const TeamMemberCard = ({ name, role, imageUrl, delay = 0.3 }) => {
       whileInView={{ opacity: 1, y: 0 }} 
       transition={{ delay, duration: 0.5 }} 
       viewport={{ once: true }}
+      whileHover={{ y: -5, scale: 1.02, transition: { duration: 0.2 } }}
     >
-      <div className="w-full aspect-square rounded-full overflow-hidden mb-4 border-2 border-blue-500/30">
+      <div className="w-full aspect-square rounded-full overflow-hidden mb-4 border-2 border-blue-500/30 relative">
         <img src={imageUrl} alt={name} className="w-full h-full object-cover" />
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-t from-blue-500/20 via-transparent to-transparent"
+          animate={{
+            opacity: [0.3, 0.6, 0.3],
+          }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
       </div>
       <h4 className="text-lg font-medium text-white">{name}</h4>
       <p className="text-sm text-blue-300">{role}</p>
