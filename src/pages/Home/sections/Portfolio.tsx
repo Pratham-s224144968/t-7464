@@ -1,22 +1,31 @@
-
 import React from "react";
 import { motion } from "@/components/ui/motion";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { GitMerge } from "lucide-react";
-import { ParticleBackground } from "@/components/ui/motion/particles";
 
 const Portfolio = () => {
   return (
     <motion.section 
       id="portfolio" 
-      className="relative py-20 bg-black" 
+      className="relative py-20 bg-black/30 backdrop-blur-sm" 
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
     >
-      <ParticleBackground variant="purple" density="low" className="opacity-30" />
+      {/* Add subtle purple glow that doesn't hide particles */}
+      <motion.div 
+        className="absolute inset-0 bg-purple-500/5 pointer-events-none"
+        animate={{
+          opacity: [0.2, 0.4, 0.2],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
       
       <div className="container mx-auto relative z-10">
         <motion.h2 

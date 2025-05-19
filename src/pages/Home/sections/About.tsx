@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "@/components/ui/motion";
 import { ParticleBackground } from "@/components/ui/motion/particles";
@@ -8,7 +7,7 @@ const About = () => {
   return (
     <motion.section 
       id="about" 
-      className="relative py-20 bg-gradient-to-b from-black to-blue-950/50 overflow-hidden" 
+      className="relative py-20 bg-gradient-to-b from-transparent to-blue-950/30 overflow-hidden" 
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
@@ -16,6 +15,7 @@ const About = () => {
     >
       <ParticleBackground variant="default" density="low" className="opacity-30" />
       
+      {/* Subtle radial gradient that doesn't hide particles */}
       <motion.div 
         className="absolute inset-0 bg-gradient-radial from-blue-500/5 via-transparent to-transparent pointer-events-none"
         animate={{

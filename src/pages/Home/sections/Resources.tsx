@@ -4,11 +4,10 @@ import { motion } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { GitMerge, MessageSquare, FileText } from "lucide-react";
-import { ParticleBackground } from "@/components/ui/motion/particles";
 
 const Resources = () => {
   return (
-    <motion.section id="resources" className="relative py-20 bg-black" initial={{
+    <motion.section id="resources" className="relative py-20 bg-black/30 backdrop-blur-sm" initial={{
       opacity: 0
     }} whileInView={{
       opacity: 1
@@ -17,7 +16,18 @@ const Resources = () => {
     }} viewport={{
       once: true
     }}>
-      <ParticleBackground variant="cyber" density="low" speed="slow" className="opacity-20" />
+      {/* Subtle cyber gradient that doesn't hide particles */}
+      <motion.div 
+        className="absolute inset-0 bg-gradient-to-r from-blue-900/10 to-purple-900/10 pointer-events-none"
+        animate={{
+          opacity: [0.2, 0.3, 0.2],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
       
       <div className="container mx-auto relative z-10">
         <motion.h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500" initial={{

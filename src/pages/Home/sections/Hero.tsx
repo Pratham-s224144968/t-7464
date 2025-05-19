@@ -1,6 +1,5 @@
 import React from "react";
-import { motion, AnimatePresence } from "@/components/ui/motion";
-import { ParticleBackground } from "@/components/ui/motion/particles";
+import { motion } from "@/components/ui/motion";
 import YouTubeVideoCarousel from "@/components/YouTubeVideoCarousel";
 import { backgroundShift } from "@/components/ui/motion";
 
@@ -8,7 +7,7 @@ const Hero = () => {
   return (
     <motion.section 
       id="home" 
-      className="relative pt-5 pb-32 bg-gradient-to-br from-blue-900/70 to-black overflow-hidden" 
+      className="relative pt-5 pb-32 bg-gradient-to-br from-blue-900/40 to-transparent overflow-hidden" 
       initial={{
         opacity: 0
       }} 
@@ -19,16 +18,7 @@ const Hero = () => {
         duration: 0.6
       }}
     >
-      {/* Enhanced Interactive Particle Background */}
-      <ParticleBackground 
-        variant="blue" 
-        density="medium" 
-        interactive={true}
-        speed="normal" 
-        className="opacity-70" 
-      />
-      
-      {/* Dynamic gradient overlay */}
+      {/* Dynamic gradient overlay that doesn't hide particles */}
       <motion.div 
         className="absolute inset-0 bg-gradient-radial from-blue-500/20 to-transparent pointer-events-none"
         {...backgroundShift}
@@ -46,6 +36,7 @@ const Hero = () => {
             opacity: 1,
             scale: [1, 1.02, 1],
             rotate: [-1, 1, -1],
+            y: [0, -10, 0]
           }} 
           transition={{
             delay: 0.2,

@@ -9,24 +9,24 @@ import Leadership from './sections/Leadership';
 import Contact from './sections/Contact';
 import Footer from './sections/Footer';
 import { ParticleBackground } from "@/components/ui/motion/particles";
-import { motion, AnimatePresence } from "@/components/ui/motion";
+import { motion } from "@/components/ui/motion";
 
 const Home = () => {
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
-      {/* Enhanced global particle background for neural network effect */}
+      {/* Global persistent particle background for neural network effect */}
       <ParticleBackground 
         variant="cyber" 
         density="medium" 
         speed="normal" 
         starEffect={true}
         interactive={true}
-        className="fixed inset-0 opacity-60" 
+        className="fixed inset-0 opacity-60 z-0" 
       />
       
       {/* Additional motion gradient for depth that persists */}
       <motion.div 
-        className="fixed inset-0 bg-gradient-radial from-blue-900/20 via-transparent to-black/80 pointer-events-none"
+        className="fixed inset-0 bg-gradient-radial from-blue-900/20 via-transparent to-black/80 pointer-events-none z-0"
         animate={{ 
           opacity: [0.3, 0.5, 0.3],
           scale: [1, 1.1, 1],
@@ -69,14 +69,17 @@ const Home = () => {
         ))}
       </motion.div>
       
-      <Hero />
-      <Portfolio />
-      <About />
-      <Blog />
-      <Resources />
-      <Leadership />
-      <Contact />
-      <Footer />
+      {/* Content wrapper with higher z-index and transparent backgrounds */}
+      <div className="relative z-10">
+        <Hero />
+        <Portfolio />
+        <About />
+        <Blog />
+        <Resources />
+        <Leadership />
+        <Contact />
+        <Footer />
+      </div>
     </div>
   );
 };

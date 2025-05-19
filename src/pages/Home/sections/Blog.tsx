@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "@/components/ui/motion";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -6,14 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { BookOpenText } from "lucide-react";
 import { blogPosts } from "@/data/blogPosts";
-import { ParticleBackground } from "@/components/ui/motion/particles";
 
 const Blog = () => {
   // Get the latest 3 blog posts
   const latestPosts = [...blogPosts].sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 3);
 
   return (
-    <motion.section id="blog" className="relative py-20 bg-black" initial={{
+    <motion.section id="blog" className="relative py-20 bg-black/20 backdrop-blur-sm" initial={{
       opacity: 0
     }} whileInView={{
       opacity: 1
@@ -22,7 +20,18 @@ const Blog = () => {
     }} viewport={{
       once: true
     }}>
-      <ParticleBackground variant="blue" density="low" className="opacity-20" />
+      {/* Add subtle blue glow that doesn't hide particles */}
+      <motion.div 
+        className="absolute inset-0 bg-blue-500/5 pointer-events-none"
+        animate={{
+          opacity: [0.1, 0.3, 0.1],
+        }}
+        transition={{
+          duration: 6,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
       
       <div className="container mx-auto relative z-10">
         <motion.h2 className="text-3xl font-mono font-bold mb-6 text-center text-blue-500" initial={{

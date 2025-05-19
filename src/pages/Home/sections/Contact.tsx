@@ -3,11 +3,10 @@ import React from "react";
 import { motion } from "@/components/ui/motion";
 import { Mail, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ParticleBackground } from "@/components/ui/motion/particles";
 
 const Contact = () => {
   return (
-    <motion.section id="contact" className="relative py-20 bg-black" initial={{
+    <motion.section id="contact" className="relative py-20 bg-black/20 backdrop-blur-sm" initial={{
       opacity: 0
     }} whileInView={{
       opacity: 1
@@ -16,7 +15,18 @@ const Contact = () => {
     }} viewport={{
       once: true
     }}>
-      <ParticleBackground variant="cyber" density="medium" className="opacity-30" />
+      {/* Subtle glowing effect that doesn't hide particles */}
+      <motion.div 
+        className="absolute inset-0 bg-cyan-500/5 pointer-events-none"
+        animate={{
+          opacity: [0.1, 0.3, 0.1],
+        }}
+        transition={{
+          duration: 7,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
       
       <div className="container mx-auto relative z-10">
         <motion.h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500" initial={{

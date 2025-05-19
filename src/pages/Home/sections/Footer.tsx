@@ -1,12 +1,23 @@
 
 import React from "react";
 import { Mail, GitMerge, MessageSquare, Heart } from "lucide-react";
-import { ParticleBackground } from "@/components/ui/motion/particles";
+import { motion } from "@/components/ui/motion";
 
 const Footer = () => {
   return (
-    <footer className="relative bg-black border-t border-blue-900/30 py-12">
-      <ParticleBackground variant="default" density="low" className="opacity-20" />
+    <footer className="relative bg-black/60 backdrop-blur-sm border-t border-blue-900/30 py-12">
+      {/* Subtle footer glow */}
+      <motion.div 
+        className="absolute inset-0 bg-blue-900/10 pointer-events-none"
+        animate={{
+          opacity: [0.1, 0.2, 0.1],
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
       
       <div className="container mx-auto relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-center">
