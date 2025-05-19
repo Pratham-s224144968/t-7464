@@ -1,7 +1,5 @@
-
 import React from "react";
-import { motion } from "@/components/ui/motion";
-import { floatAnimation } from "@/components/ui/motion";
+import { motion, floatAnimation } from "@/components/ui/motion";
 
 interface NoRecordingNoticeProps {
   logoSrc?: string;
