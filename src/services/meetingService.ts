@@ -7,6 +7,7 @@ export type Meeting = {
   id: string;
   title: string;
   date: string;
+  time?: string;
   participants: string[];
   hasRecording: boolean;
   hasMinutes: boolean;
@@ -32,6 +33,7 @@ export const getMeetings = async (): Promise<Meeting[]> => {
         id: "1",
         title: "Q2 Strategy Planning",
         date: "2025-04-15",
+        time: "14:00",
         participants: ["John Doe", "Jane Smith", "Robert Johnson"],
         hasRecording: true,
         hasMinutes: true,
@@ -53,6 +55,7 @@ export const getMeetings = async (): Promise<Meeting[]> => {
         id: "2",
         title: "Product Roadmap Review",
         date: "2025-04-22",
+        time: "10:30",
         participants: ["Jane Smith", "Michael Brown", "Emily Davis"],
         hasRecording: true,
         hasMinutes: true,
@@ -64,6 +67,7 @@ export const getMeetings = async (): Promise<Meeting[]> => {
         id: "3",
         title: "Marketing Campaign Kickoff",
         date: "2025-05-01",
+        time: "15:00",
         participants: ["Robert Johnson", "Emily Davis", "Sarah Wilson"],
         hasRecording: true,
         hasMinutes: false,

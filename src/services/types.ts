@@ -24,6 +24,7 @@ export type MeetingCreateData = {
   id: string;
   title: string;
   date: string;
+  time?: string;
   participants: string[];
   recording_url?: string;
   transcript_url?: string;
