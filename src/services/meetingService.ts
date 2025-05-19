@@ -22,145 +22,165 @@ export type Meeting = {
 };
 
 export const getMeetings = async (): Promise<Meeting[]> => {
-  // Use type assertion to work with the existing Supabase client
-  const { data, error } = await (supabase
-    .from('meetings')
-    .select('*')
-    .order('date', { ascending: false }) as any);
+  try {
+    // Use any type assertion to bypass TypeScript's type checking for Supabase client
+    const { data, error } = await (supabase as any)
+      .from('meetings')
+      .select('*')
+      .order('date', { ascending: false });
 
-  if (error) {
-    console.error("Error fetching meetings:", error);
-    throw error;
+    if (error) {
+      console.error("Error fetching meetings:", error);
+      throw error;
+    }
+
+    // Transform the data to match our frontend Meeting type
+    return data.map((item: any) => ({
+      id: item.id,
+      title: item.title,
+      date: item.date,
+      time: item.time,
+      participants: item.participants || [],
+      hasRecording: item.has_recording || false,
+      hasMinutes: !!item.minutes,
+      hasSummary: item.has_summary || false,
+      recording_url: item.recording_url,
+      transcript_url: item.transcript_url,
+      minutes: item.minutes,
+      summary: item.summary ? {
+        text: item.summary.text || "",
+        keyTakeaways: item.summary.key_takeaways || []
+      } : undefined,
+      created_at: item.created_at
+    }));
+  } catch (error) {
+    console.error("Error in getMeetings:", error);
+    return [];
   }
-
-  // Transform the data to match our frontend Meeting type
-  return data.map((item: any) => ({
-    id: item.id,
-    title: item.title,
-    date: item.date,
-    time: item.time,
-    participants: item.participants || [],
-    hasRecording: item.has_recording || false,
-    hasMinutes: !!item.minutes,
-    hasSummary: item.has_summary || false,
-    recording_url: item.recording_url,
-    transcript_url: item.transcript_url,
-    minutes: item.minutes,
-    summary: item.summary ? {
-      text: item.summary.text || "",
-      keyTakeaways: item.summary.key_takeaways || []
-    } : undefined,
-    created_at: item.created_at
-  }));
 };
 
 export const getMeetingById = async (id: string): Promise<Meeting | null> => {
-  // Use type assertion to work with the existing Supabase client
-  const { data, error } = await (supabase
-    .from('meetings')
-    .select('*')
-    .eq('id', id)
-    .single() as any);
+  try {
+    // Use any type assertion to bypass TypeScript's type checking for Supabase client
+    const { data, error } = await (supabase as any)
+      .from('meetings')
+      .select('*')
+      .eq('id', id)
+      .single();
 
-  if (error) {
-    console.error("Error fetching meeting:", error);
+    if (error) {
+      console.error("Error fetching meeting:", error);
+      return null;
+    }
+
+    if (!data) return null;
+
+    // Transform the data to match our frontend Meeting type
+    return {
+      id: data.id,
+      title: data.title,
+      date: data.date,
+      time: data.time,
+      participants: data.participants || [],
+      hasRecording: data.has_recording || false,
+      hasMinutes: !!data.minutes,
+      hasSummary: data.has_summary || false,
+      recording_url: data.recording_url,
+      transcript_url: data.transcript_url,
+      minutes: data.minutes,
+      summary: data.summary ? {
+        text: data.summary.text || "",
+        keyTakeaways: data.summary.key_takeaways || []
+      } : undefined,
+      created_at: data.created_at
+    };
+  } catch (error) {
+    console.error("Error in getMeetingById:", error);
     return null;
   }
-
-  if (!data) return null;
-
-  // Transform the data to match our frontend Meeting type
-  return {
-    id: data.id,
-    title: data.title,
-    date: data.date,
-    time: data.time,
-    participants: data.participants || [],
-    hasRecording: data.has_recording || false,
-    hasMinutes: !!data.minutes,
-    hasSummary: data.has_summary || false,
-    recording_url: data.recording_url,
-    transcript_url: data.transcript_url,
-    minutes: data.minutes,
-    summary: data.summary ? {
-      text: data.summary.text || "",
-      keyTakeaways: data.summary.key_takeaways || []
-    } : undefined,
-    created_at: data.created_at
-  };
 };
 
 export const deleteMeeting = async (id: string): Promise<boolean> => {
-  // First, delete any files in storage
-  const { data: meeting } = await (supabase
-    .from('meetings')
-    .select('id')
-    .eq('id', id)
-    .single() as any);
+  try {
+    // First, delete any files in storage
+    const { data: meeting } = await (supabase as any)
+      .from('meetings')
+      .select('id')
+      .eq('id', id)
+      .single();
 
-  if (meeting) {
-    // Delete any files stored in the meeting folder
-    const { error: storageError } = await (supabase.storage
-      .from('meeting-files')
-      .remove([`meetings/${meeting.id}`]) as any);
-      
-    if (storageError) {
-      console.error("Error deleting meeting files:", storageError);
-      // Continue anyway to delete the database record
+    if (meeting) {
+      // Delete any files stored in the meeting folder
+      const { error: storageError } = await (supabase.storage as any)
+        .from('meeting-files')
+        .remove([`meetings/${meeting.id}`]);
+        
+      if (storageError) {
+        console.error("Error deleting meeting files:", storageError);
+        // Continue anyway to delete the database record
+      }
     }
-  }
 
-  // Delete the database record
-  const { error } = await (supabase
-    .from('meetings')
-    .delete()
-    .eq('id', id) as any);
+    // Delete the database record
+    const { error } = await (supabase as any)
+      .from('meetings')
+      .delete()
+      .eq('id', id);
 
-  if (error) {
-    console.error("Error deleting meeting:", error);
+    if (error) {
+      console.error("Error deleting meeting:", error);
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Error in deleteMeeting:", error);
     return false;
   }
-
-  return true;
 };
 
 export const processTranscript = async (meeting_id: string): Promise<boolean> => {
-  // In a real implementation, this would call an Edge Function to process the transcript
-  // For now, we'll just simulate success
-  
-  // Mark the meeting as processed in the queue
-  const { error: queueError } = await (supabase
-    .from('meeting_processing_queue')
-    .update({ status: 'completed' })
-    .eq('meeting_id', meeting_id) as any);
+  try {
+    // In a real implementation, this would call an Edge Function to process the transcript
+    // For now, we'll just simulate success
     
-  if (queueError) {
-    console.error("Error updating processing queue:", queueError);
+    // Mark the meeting as processed in the queue
+    const { error: queueError } = await (supabase as any)
+      .from('meeting_processing_queue')
+      .update({ status: 'completed' })
+      .eq('meeting_id', meeting_id);
+      
+    if (queueError) {
+      console.error("Error updating processing queue:", queueError);
+      return false;
+    }
+    
+    // Update the meeting with a placeholder summary
+    const { error: updateError } = await (supabase as any)
+      .from('meetings')
+      .update({
+        has_summary: true,
+        summary: {
+          text: "This is a placeholder summary that would normally be generated by AI from the transcript.",
+          key_takeaways: [
+            "Key point 1 would be extracted from the transcript.",
+            "Action item would be identified here.",
+            "Important decision would be noted here."
+          ]
+        }
+      })
+      .eq('id', meeting_id);
+      
+    if (updateError) {
+      console.error("Error updating meeting with summary:", updateError);
+      return false;
+    }
+    
+    return true;
+  } catch (error) {
+    console.error("Error in processTranscript:", error);
     return false;
   }
-  
-  // Update the meeting with a placeholder summary
-  const { error: updateError } = await (supabase
-    .from('meetings')
-    .update({
-      has_summary: true,
-      summary: {
-        text: "This is a placeholder summary that would normally be generated by AI from the transcript.",
-        key_takeaways: [
-          "Key point 1 would be extracted from the transcript.",
-          "Action item would be identified here.",
-          "Important decision would be noted here."
-        ]
-      }
-    })
-    .eq('id', meeting_id) as any);
-    
-  if (updateError) {
-    console.error("Error updating meeting with summary:", updateError);
-    return false;
-  }
-  
-  return true;
 };
 
 export const uploadFile = async (
@@ -224,7 +244,7 @@ export const createMeeting = async (meetingData: {
   minutes?: string;
 }): Promise<boolean> => {
   try {
-    const { error } = await (supabase
+    const { error } = await (supabase as any)
       .from('meetings')
       .insert({
         id: meetingData.id,
@@ -237,7 +257,7 @@ export const createMeeting = async (meetingData: {
         has_recording: !!meetingData.recording_url,
         has_minutes: !!meetingData.minutes,
         has_summary: false,
-      }) as any);
+      });
 
     if (error) throw error;
     return true;
@@ -252,13 +272,13 @@ export const createProcessingQueueItem = async (
   transcript_url: string
 ): Promise<boolean> => {
   try {
-    const { error } = await (supabase
+    const { error } = await (supabase as any)
       .from('meeting_processing_queue')
       .insert({
         meeting_id,
         status: 'pending',
         transcript_url
-      }) as any);
+      });
       
     if (error) throw error;
     return true;
