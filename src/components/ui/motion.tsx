@@ -9,7 +9,7 @@ type MotionComponentProps = MotionProps & {
   onClick?: () => void;
   src?: string;
   alt?: string;
-  [key: string]: any; // Add this to accept any additional props
+  [key: string]: any; // Accept any additional props
 };
 
 // Basic motion components with extended props
@@ -189,6 +189,69 @@ export const backgroundShift = {
   visible: {
     backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
     transition: { duration: 10, repeat: Infinity, ease: "linear" }
+  }
+};
+
+// Enhanced animations below
+export const popIn = {
+  hidden: { scale: 0, opacity: 0 },
+  visible: { 
+    scale: [0, 1.1, 1],
+    opacity: 1,
+    transition: { duration: 0.7, ease: "easeOut" }
+  }
+};
+
+export const elasticEntry = {
+  hidden: { scale: 0, opacity: 0 },
+  visible: { 
+    scale: [0, 1.2, 0.9, 1.1, 0.95, 1],
+    opacity: 1,
+    transition: { duration: 1, ease: "easeOut" }
+  }
+};
+
+export const flipIn = {
+  hidden: { rotateY: 90, opacity: 0 },
+  visible: { 
+    rotateY: 0,
+    opacity: 1,
+    transition: { duration: 0.8, ease: "easeOut" }
+  }
+};
+
+export const blurIn = {
+  hidden: { filter: "blur(12px)", opacity: 0 },
+  visible: { 
+    filter: "blur(0px)",
+    opacity: 1,
+    transition: { duration: 0.7, ease: "easeOut" }
+  }
+};
+
+export const expandIn = {
+  hidden: { height: 0, opacity: 0 },
+  visible: { 
+    height: "auto",
+    opacity: 1,
+    transition: { duration: 0.7 }
+  }
+};
+
+export const rainbowText = {
+  initial: { backgroundPosition: "0% 50%" },
+  animate: {
+    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+    transition: { duration: 8, repeat: Infinity, ease: "linear" }
+  }
+};
+
+export const rotateAndPulse = {
+  initial: { scale: 1, rotate: 0 },
+  animate: {
+    scale: [1, 1.05, 1],
+    rotate: [0, 5, 0, -5, 0],
+    transition: { duration: 5, repeat: Infinity, ease: "easeInOut" }
   }
 };
 
