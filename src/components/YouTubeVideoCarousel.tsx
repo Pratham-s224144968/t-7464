@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -10,7 +10,7 @@ import {
 import { ExternalLink, Play, Pause, Volume, VolumeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "@/components/ui/motion";
-import { useInView, floatAnimation, pulseAnimation, glowAnimation } from "@/components/ui/motion";
+import { useInView, pulseAnimation, glowAnimation } from "@/components/ui/motion";
 
 interface YouTubeVideo {
   id: string;
@@ -66,8 +66,7 @@ const YouTubeVideoCarousel = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [currentPlayingId, setCurrentPlayingId] = useState<string | null>(null);
   const [muted, setMuted] = useState<boolean>(true);
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: false, margin: "-100px" });
 
   // Set first video as active when component mounts
@@ -151,7 +150,7 @@ const YouTubeVideoCarousel = () => {
       )}
 
       {/* Video Carousel */}
-      <div ref={carouselRef} className="relative">
+      <div className="relative">
         <motion.div 
           className="absolute -left-5 -right-5 -top-5 -bottom-5 bg-blue-500/5 rounded-3xl -z-10"
           style={{ 
@@ -198,7 +197,9 @@ const YouTubeVideoCarousel = () => {
                         {...pulseAnimation}
                       >
                         <Button
-                          className={`bg-blue-600/80 hover:bg-blue-600 backdrop-blur p-2 rounded-full ${
+                          variant="default"
+                          size="icon"
+                          className={`bg-blue-600/80 hover:bg-blue-600 backdrop-blur rounded-full ${
                             currentPlayingId === video.id ? 'animate-pulse' : ''
                           }`}
                         >
@@ -224,20 +225,18 @@ const YouTubeVideoCarousel = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <motion.div className="flex items-center justify-center mt-4 gap-2">
+          <div className="flex items-center justify-center mt-4 gap-2">
             <CarouselPrevious className="relative static transform-none translate-y-0 bg-blue-800/50 border-blue-500/30 hover:bg-blue-700/70 text-white" />
-            <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
-              <Button
-                variant="outline"
-                size="sm"
-                className="text-blue-300 border-blue-500/30 hover:bg-blue-800/30"
-                onClick={() => window.open("https://www.youtube.com/@innovAIteDeakin", "_blank")}
-              >
-                Visit Channel <ExternalLink className="ml-1 h-3 w-3" />
-              </Button>
-            </motion.div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-blue-300 border-blue-500/30 hover:bg-blue-800/30"
+              onClick={() => window.open("https://www.youtube.com/@innovAIteDeakin", "_blank")}
+            >
+              Visit Channel <ExternalLink className="ml-1 h-3 w-3" />
+            </Button>
             <CarouselNext className="relative static transform-none translate-y-0 bg-blue-800/50 border-blue-500/30 hover:bg-blue-700/70 text-white" />
-          </motion.div>
+          </div>
         </Carousel>
       </div>
     </motion.div>

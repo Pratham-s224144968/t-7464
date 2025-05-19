@@ -1,7 +1,6 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "@/components/ui/motion";
-import Navbar from "@/components/Navbar";
 import { ParticleBackground } from "@/components/ui/motion/particles";
 import YouTubeVideoCarousel from "@/components/YouTubeVideoCarousel";
 import { backgroundShift } from "@/components/ui/motion";
@@ -21,8 +20,6 @@ const Hero = () => {
         duration: 0.6
       }}
     >
-      <Navbar />
-      
       {/* Interactive Particle Background */}
       <ParticleBackground variant="blue" density="medium" className="opacity-40" />
       
