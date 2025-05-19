@@ -146,6 +146,13 @@ const MeetingDetail: React.FC = () => {
   // Recordings now require basic authentication (any user)
   const canAccessRecordings = isAuthenticated;
 
+  console.log("Meeting details for rendering:", {
+    meeting,
+    activeTab,
+    canAccessRestrictedContent,
+    canAccessRecordings
+  });
+
   return (
     <div className="min-h-screen bg-black text-white pt-28 pb-8 px-8">
       <motion.section 

@@ -38,8 +38,18 @@ const MeetingMinutes: React.FC<MeetingMinutesProps> = ({
     );
   }
 
-  if (!minutes) {
-    return <div className="text-center p-8 text-blue-300">No minutes available for this meeting</div>;
+  // If minutes is undefined, null, or an empty string
+  if (!minutes || minutes.trim() === '') {
+    return (
+      <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
+        <CardContent className="flex flex-col items-center justify-center p-8 text-center">
+          <CardTitle className="text-white mb-2">No Minutes Available</CardTitle>
+          <CardDescription className="text-blue-300">
+            No minutes are available for this meeting from {date}
+          </CardDescription>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (

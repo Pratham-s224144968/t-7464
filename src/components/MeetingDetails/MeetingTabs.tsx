@@ -37,6 +37,8 @@ const MeetingTabs: React.FC<MeetingTabsProps> = ({
   canAccessRecordings,
   handleRestrictedContentClick,
 }) => {
+  console.log("MeetingTabs props:", { meeting, activeTab, canAccessRestrictedContent });
+
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
       <TabsList className="grid grid-cols-3 mb-8 bg-blue-900/30">
@@ -51,7 +53,6 @@ const MeetingTabs: React.FC<MeetingTabsProps> = ({
         </TabsTrigger>
         <TabsTrigger
           value="minutes"
-          disabled={!meeting.hasMinutes}
           className="data-[state=active]:bg-blue-800/50 data-[state=active]:text-blue-200"
           onClick={() => !canAccessRestrictedContent && handleRestrictedContentClick()}
         >
@@ -70,7 +71,11 @@ const MeetingTabs: React.FC<MeetingTabsProps> = ({
       </TabsList>
 
       <TabsContent value="recording" className="space-y-4">
-        <MeetingRecording recording={meeting.recording} date={meeting.date} canAccessRecordings={canAccessRecordings} />
+        <MeetingRecording 
+          recording={meeting.recording} 
+          date={meeting.date} 
+          canAccessRecordings={canAccessRecordings} 
+        />
       </TabsContent>
 
       <TabsContent value="minutes" className="space-y-4">

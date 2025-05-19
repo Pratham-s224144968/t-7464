@@ -10,7 +10,7 @@ export type Meeting = {
   hasRecording: boolean;
   hasMinutes: boolean;
   hasSummary: boolean;
-  recording_url?: string;
+  recording?: string;
   transcript_url?: string;
   minutes?: string;
   summary?: {
