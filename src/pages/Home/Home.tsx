@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Hero from './sections/Hero';
 import Portfolio from './sections/Portfolio';
@@ -9,7 +8,7 @@ import Leadership from './sections/Leadership';
 import Contact from './sections/Contact';
 import Footer from './sections/Footer';
 import { ParticleBackground } from "@/components/ui/motion/particles";
-import { motion } from "@/components/ui/motion";
+import { motion, AnimatePresence } from "@/components/ui/motion";
 
 const Home = () => {
   return (

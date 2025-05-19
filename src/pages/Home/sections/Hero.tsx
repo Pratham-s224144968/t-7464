@@ -1,6 +1,6 @@
 
 import React from "react";
-import { motion } from "@/components/ui/motion";
+import { motion, AnimatePresence } from "@/components/ui/motion";
 import { ParticleBackground } from "@/components/ui/motion/particles";
 import YouTubeVideoCarousel from "@/components/YouTubeVideoCarousel";
 import { backgroundShift } from "@/components/ui/motion";
