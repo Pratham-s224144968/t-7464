@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import { motion } from "@/components/ui/motion";
+import { Button } from "@/components/ui/button";
 import MeetingHeader from "@/components/MeetingDetails/MeetingHeader";
 import MeetingTabs from "@/components/MeetingDetails/MeetingTabs";
 
