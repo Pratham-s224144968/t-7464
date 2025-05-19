@@ -26,25 +26,27 @@ const Hero = () => {
       />
       
       <div className="container mx-auto text-center relative z-10 px-4">
-        <motion.img 
-          alt="InnovAIte Logo" 
-          initial={{
-            y: 0,
-            opacity: 1
-          }} 
-          animate={{
-            y: [-5, 0, -5], // Subtle vertical hover between -5px and 0px
-            opacity: 1, // Keep opacity constant so logo never disappears
-          }} 
-          transition={{
-            duration: 4, // Slower animation
-            repeat: Infinity,
-            repeatType: "loop",
-            ease: "easeInOut"
-          }} 
-          src="/lovable-uploads/7b9b7ff1-8cf0-4f74-a362-00f0ceaf28e9.png" 
-          className="mx-auto h-150 w-auto object-contain filter drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]" 
-        />
+        <motion.div
+          className="relative"
+          style={{ minHeight: "150px" }} // Ensure there's always space for the logo
+        >
+          <motion.img 
+            alt="InnovAIte Logo" 
+            initial={{ opacity: 1 }} // Start fully visible
+            animate={{
+              y: [-5, 0, -5], // Subtle vertical hover between -5px and 0px
+              opacity: [1, 1, 1], // Keep opacity constant at 1 so logo always stays visible
+            }} 
+            transition={{
+              duration: 4, // Slower animation
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut"
+            }} 
+            src="/lovable-uploads/7b9b7ff1-8cf0-4f74-a362-00f0ceaf28e9.png" 
+            className="mx-auto h-150 w-auto object-contain filter drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]" 
+          />
+        </motion.div>
         
         <motion.h1 
           className="text-5xl md:text-7xl font-mono font-bold mb-6 text-white relative"
@@ -52,7 +54,7 @@ const Hero = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
         >
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 animate-gradient-move">
+          <span className="bg-black px-3 py-1 inline-block rounded-lg bg-opacity-80 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 animate-gradient-move">
             InnovAIte
           </span>
           
@@ -85,7 +87,7 @@ const Hero = () => {
         </motion.h1>
         
         <motion.p 
-          className="text-2xl max-w-2xl mx-auto mb-4 text-blue-200 font-medium"
+          className="text-2xl max-w-2xl mx-auto mb-4 text-blue-200 font-medium bg-black bg-opacity-70 px-3 py-1 rounded-lg inline-block"
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.5 }}
@@ -94,7 +96,7 @@ const Hero = () => {
         </motion.p>
         
         <motion.p 
-          className="text-lg max-w-3xl mx-auto mb-8 text-white/80"
+          className="text-lg max-w-3xl mx-auto mb-8 text-white/80 bg-black bg-opacity-70 px-3 py-1 rounded-lg inline-block"
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.5 }}
@@ -109,7 +111,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.5 }}
         >
-          <h2 className="text-2xl font-semibold text-blue-300 mb-8 relative inline-block">
+          <h2 className="text-2xl font-semibold text-blue-300 mb-8 relative inline-block bg-black bg-opacity-70 px-3 py-1 rounded-lg">
             Featured Videos
             <motion.span 
               className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500"
