@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Plus } from 'lucide-react';
 import MeetingUploadForm from '@/components/MeetingUploadForm';
+import { useToast } from '@/hooks/use-toast';
 
 // Sample meeting data - in a real app this would come from an API or database
 const SAMPLE_MEETINGS = [
@@ -38,11 +39,20 @@ const SAMPLE_MEETINGS = [
 
 const Meetings = () => {
   const { isAuthenticated, isDeakinUser } = useAuth();
+  const { toast } = useToast();
   const navigate = useNavigate();
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   
   const handleMeetingClick = (id: string) => {
     navigate(`/meetings/${id}`);
+  };
+
+  const handleUploadSuccess = () => {
+    setUploadDialogOpen(false);
+    toast({
+      title: "Meeting Created",
+      description: "Your meeting has been successfully added.",
+    });
   };
 
   if (!isAuthenticated) {
@@ -148,9 +158,7 @@ const Meetings = () => {
         
         <Dialog open={uploadDialogOpen} onOpenChange={setUploadDialogOpen}>
           <DialogContent className="sm:max-w-[600px]">
-            <MeetingUploadForm onClose={() => {
-              setUploadDialogOpen(false);
-            }} />
+            <MeetingUploadForm onClose={() => setUploadDialogOpen(false)} />
           </DialogContent>
         </Dialog>
       </div>

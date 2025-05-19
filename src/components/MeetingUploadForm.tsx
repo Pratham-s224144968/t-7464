@@ -11,7 +11,8 @@ import { motion } from "@/components/ui/motion";
 import { Loader, Upload, Check, Lock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { v4 as uuidv4 } from "uuid";
-import { uploadFile, createMeeting, createProcessingQueueItem } from "@/services/meetingService";
+import { uploadFile } from "@/services/fileUploadService";
+import { createMeeting, createProcessingQueueItem } from "@/services/meetingService";
 import { useAuth } from "@/contexts/AuthContext";
 
 type MeetingFormData = {
