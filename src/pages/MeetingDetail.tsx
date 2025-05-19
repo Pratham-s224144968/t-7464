@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
-import Navbar from "@/components/Navbar";
 import { motion } from "@/components/ui/motion";
 import MeetingHeader from "@/components/MeetingDetails/MeetingHeader";
 import MeetingTabs from "@/components/MeetingDetails/MeetingTabs";
@@ -116,9 +115,21 @@ const MeetingDetail: React.FC = () => {
 
   if (!meeting) {
     return (
-      <div className="min-h-screen bg-black text-white">
-        <Navbar />
-        <div className="container mx-auto py-20">Meeting not found</div>
+      <div className="min-h-screen bg-black text-white pt-28 pb-8 px-8">
+        <div className="container mx-auto">
+          <h2 className="text-3xl font-mono font-bold mb-12 text-center text-blue-500">
+            /MEETING NOT FOUND
+          </h2>
+          <div className="text-center">
+            <p className="text-white/70 mb-6">The requested meeting could not be found.</p>
+            <Button 
+              onClick={() => navigate('/meetings')} 
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              Back to Meetings
+            </Button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -129,9 +140,7 @@ const MeetingDetail: React.FC = () => {
   const canAccessRecordings = isAuthenticated;
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <Navbar />
-      
+    <div className="min-h-screen bg-black text-white pt-28 pb-8 px-8">
       <motion.section 
         className="py-20 bg-gradient-to-b from-black to-blue-950/50" 
         initial={{ opacity: 0 }} 

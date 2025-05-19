@@ -119,7 +119,7 @@ const Resources = () => {
             </Button>
           </motion.div>
           
-          {/* Meeting Notes */}
+          {/* Meeting Minutes */}
           <motion.div className="p-6 rounded-lg bg-blue-900/20 backdrop-blur border border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.5 }} viewport={{ once: true }}>
             <div className="flex items-center mb-4">
               <FileText className="w-8 h-8 text-blue-400 mr-3" />

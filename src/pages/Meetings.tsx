@@ -7,27 +7,40 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Plus } from 'lucide-react';
 import MeetingUploadForm from '@/components/MeetingUploadForm';
-import { Meeting } from '@/services/types';
-import { useQuery } from '@tanstack/react-query';
-import { getMeetings } from '@/services/meetingService';
-import { toast } from '@/hooks/use-toast';
+
+// Sample meeting data - in a real app this would come from an API or database
+const SAMPLE_MEETINGS = [
+  {
+    id: "1",
+    title: "Q2 Strategy Planning",
+    date: "2025-04-15",
+    hasRecording: true, 
+    hasMinutes: true,
+    hasSummary: true
+  },
+  {
+    id: "2",
+    title: "Product Roadmap Review",
+    date: "2025-04-22",
+    hasRecording: true,
+    hasMinutes: true,
+    hasSummary: false
+  },
+  {
+    id: "3",
+    title: "Marketing Campaign Kickoff",
+    date: "2025-05-01",
+    hasRecording: true,
+    hasMinutes: false,
+    hasSummary: false
+  }
+];
 
 const Meetings = () => {
   const { isAuthenticated, isDeakinUser } = useAuth();
   const navigate = useNavigate();
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   
-  // Fetch meetings with react-query
-  const { 
-    data: meetings = [], 
-    isLoading, 
-    error,
-    refetch
-  } = useQuery({
-    queryKey: ['meetings'],
-    queryFn: getMeetings,
-  });
-
   const handleMeetingClick = (id: string) => {
     navigate(`/meetings/${id}`);
   };
@@ -79,21 +92,7 @@ const Meetings = () => {
           )}
         </div>
         
-        {isLoading ? (
-          <div className="flex justify-center py-20">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
-          </div>
-        ) : error ? (
-          <div className="text-center py-20 text-red-300">
-            <p>There was an error loading meetings. Please try again.</p>
-            <Button 
-              onClick={() => refetch()} 
-              className="mt-4 bg-blue-600 hover:bg-blue-700"
-            >
-              Retry
-            </Button>
-          </div>
-        ) : meetings.length === 0 ? (
+        {SAMPLE_MEETINGS.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-gray-400 mb-6">No meetings have been added yet.</p>
             <Button 
@@ -110,7 +109,7 @@ const Meetings = () => {
               <p className="text-gray-300 mb-6">Welcome, Deakin team member! Here are the latest meeting notes and recordings.</p>
               
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {meetings.map((meeting) => (
+                {SAMPLE_MEETINGS.map((meeting) => (
                   <div 
                     key={meeting.id} 
                     className="p-4 bg-blue-950/50 rounded-lg border border-blue-500/20 hover:border-blue-500/40 transition-colors cursor-pointer"
@@ -151,7 +150,6 @@ const Meetings = () => {
           <DialogContent className="sm:max-w-[600px]">
             <MeetingUploadForm onClose={() => {
               setUploadDialogOpen(false);
-              refetch(); // Refetch meetings after upload
             }} />
           </DialogContent>
         </Dialog>
