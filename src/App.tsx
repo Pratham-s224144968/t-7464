@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { ThemeProvider } from './components/theme-provider';
 import { ScrollToTop } from './components/utils';
@@ -8,16 +8,17 @@ import BlogPost from './pages/BlogPost';
 import Meetings from './pages/Meetings';
 import Home from './pages/Home';
 import { useTheme } from './contexts/ThemeContext';
+import Navbar from './components/Navbar';
 
 function App() {
   const { theme } = useTheme();
-  const location = useLocation();
-
+  
   return (
     <div className={theme}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <ScrollToTop />
-      
+        <Navbar />
+        
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/blog" element={<Blog />} />
