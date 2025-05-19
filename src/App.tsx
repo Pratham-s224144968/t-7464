@@ -9,6 +9,7 @@ import Meetings from './pages/Meetings';
 import Home from './pages/Home';
 import { useTheme } from './contexts/ThemeContext';
 import Navbar from './components/Navbar';
+import Auth from './pages/Auth';
 
 function App() {
   const { theme } = useTheme();
@@ -24,6 +25,7 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<BlogPost />} />
           <Route path="/meetings" element={<Meetings />} />
+          <Route path="/auth" element={<Auth />} />
         </Routes>
       
       </ThemeProvider>
