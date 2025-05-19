@@ -10,6 +10,7 @@ import MeetingTabs from "@/components/MeetingDetails/MeetingTabs";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { type Meeting } from "@/services/types";
+import { Json } from "@/integrations/supabase/types";
 
 const MeetingDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,6 +33,23 @@ const MeetingDetail: React.FC = () => {
         if (error) throw error;
         if (!data) return null;
         
+        // Parse summary data correctly based on its type
+        let parsedSummary;
+        if (data.summary) {
+          if (typeof data.summary === 'object') {
+            parsedSummary = {
+              text: (data.summary as any).text || "",
+              keyTakeaways: (data.summary as any).key_takeaways || []
+            };
+          } else {
+            // Fallback if summary is not in expected format
+            parsedSummary = {
+              text: String(data.summary),
+              keyTakeaways: []
+            };
+          }
+        }
+        
         // Transform the data to match our frontend Meeting type
         return {
           id: data.id,
@@ -43,10 +61,7 @@ const MeetingDetail: React.FC = () => {
           hasSummary: data.has_summary || false,
           recording: data.recording_url,
           minutes: data.minutes,
-          summary: data.summary ? {
-            text: data.summary.text || "",
-            keyTakeaways: data.summary.key_takeaways || []
-          } : undefined
+          summary: parsedSummary
         } as Meeting;
       } catch (err) {
         console.error("Error fetching meeting:", err);

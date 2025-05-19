@@ -1,12 +1,15 @@
+
 import React from "react";
 import { motion, floatAnimation } from "@/components/ui/motion";
 
 interface NoRecordingNoticeProps {
   logoSrc?: string;
+  date?: string;
 }
 
 const NoRecordingNotice: React.FC<NoRecordingNoticeProps> = ({ 
-  logoSrc = "/lovable-uploads/e2814672-f895-4078-9d7c-faa5569a0d14.png" 
+  logoSrc = "/lovable-uploads/e2814672-f895-4078-9d7c-faa5569a0d14.png",
+  date
 }) => {
   return (
     <motion.div
@@ -45,7 +48,7 @@ const NoRecordingNotice: React.FC<NoRecordingNoticeProps> = ({
         }}
         transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
       >
-        No recording available
+        {date ? `No recording available for meeting on ${date}` : 'No recording available'}
       </motion.p>
       <motion.img 
         src={logoSrc}
