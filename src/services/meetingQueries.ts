@@ -32,7 +32,7 @@ export const getMeetings = async (): Promise<Meeting[]> => {
       hasRecording: item.has_recording || false,
       hasMinutes: !!item.minutes,
       hasSummary: item.has_summary || false,
-      recording_url: item.recording_url,
+      recording: item.recording_url, // Changed from recording_url to recording to match the Meeting type
       transcript_url: item.transcript_url,
       minutes: item.minutes,
       summary: item.summary ? {
@@ -79,7 +79,7 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
       hasRecording: item.has_recording || false,
       hasMinutes: !!item.minutes,
       hasSummary: item.has_summary || false,
-      recording_url: item.recording_url,
+      recording: item.recording_url, // Changed from recording_url to recording to match the Meeting type
       transcript_url: item.transcript_url,
       minutes: item.minutes,
       summary: item.summary ? {
