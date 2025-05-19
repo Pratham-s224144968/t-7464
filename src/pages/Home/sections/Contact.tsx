@@ -3,7 +3,6 @@ import React from "react";
 import { motion } from "@/components/ui/motion";
 import { Mail, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ParticleBackground } from "@/components/ui/motion/particles";
 
 const Contact = () => {
   return (
@@ -16,21 +15,11 @@ const Contact = () => {
     }} viewport={{
       once: true
     }}>
-      {/* Reduced particle effect for this section */}
-      <ParticleBackground 
-        variant="cyber" 
-        density="low" 
-        speed="normal" 
-        starEffect={true}
-        interactive={true}
-        className="opacity-40 z-0" 
-      />
-      
       {/* Subtle glowing effect that doesn't hide particles */}
       <motion.div 
-        className="absolute inset-0 bg-cyan-500/3 pointer-events-none"
+        className="absolute inset-0 bg-cyan-500/5 pointer-events-none"
         animate={{
-          opacity: [0.05, 0.15, 0.05],
+          opacity: [0.1, 0.3, 0.1],
         }}
         transition={{
           duration: 7,

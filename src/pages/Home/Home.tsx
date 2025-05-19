@@ -14,24 +14,14 @@ import { motion } from "@/components/ui/motion";
 const Home = () => {
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
-      {/* Light particle background for upper sections with reduced opacity and density */}
+      {/* Global persistent particle background for neural network effect */}
       <ParticleBackground 
         variant="cyber" 
-        density="low" 
+        density="medium" 
         speed="normal" 
         starEffect={true}
         interactive={true}
-        className="fixed top-0 h-1/2 w-full opacity-20 z-0" 
-      />
-      
-      {/* Reduced density for lower sections */}
-      <ParticleBackground 
-        variant="neural" 
-        density="low" 
-        speed="normal" 
-        starEffect={true}
-        interactive={true}
-        className="fixed bottom-0 h-1/2 w-full opacity-30 z-0" 
+        className="fixed inset-0 opacity-60 z-0" 
       />
       
       {/* Additional motion gradient for depth that persists */}
@@ -49,25 +39,25 @@ const Home = () => {
         }}
       />
       
-      {/* Distant stars effect with reduced quantity */}
+      {/* Distant stars effect */}
       <motion.div 
         className="fixed inset-0 pointer-events-none z-0"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        {[...Array(30)].map((_, i) => (
+        {[...Array(50)].map((_, i) => (
           <motion.div
             key={`star-${i}`}
             className="absolute rounded-full bg-white"
             style={{
-              width: Math.random() * 2 + 1,
-              height: Math.random() * 2 + 1,
+              width: Math.random() * 3 + 1,
+              height: Math.random() * 3 + 1,
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
             }}
             animate={{
-              opacity: [0.2, 0.6, 0.2],
+              opacity: [0.2, 0.8, 0.2],
               scale: [1, 1.2, 1],
             }}
             transition={{

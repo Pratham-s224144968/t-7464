@@ -1,9 +1,7 @@
-
 import React from "react";
 import { motion } from "@/components/ui/motion";
 import YouTubeVideoCarousel from "@/components/YouTubeVideoCarousel";
 import { backgroundShift } from "@/components/ui/motion";
-import { ParticleBackground } from "@/components/ui/motion/particles";
 
 const Hero = () => {
   return (
@@ -20,19 +18,9 @@ const Hero = () => {
         duration: 0.6
       }}
     >
-      {/* Very subtle particles specific to hero section */}
-      <ParticleBackground 
-        variant="default" 
-        density="low" 
-        speed="slow" 
-        starEffect={true}
-        interactive={true}
-        className="opacity-15 z-0" 
-      />
-      
       {/* Dynamic gradient overlay that doesn't hide particles */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-radial from-blue-500/10 to-transparent pointer-events-none"
+        className="absolute inset-0 bg-gradient-radial from-blue-500/20 to-transparent pointer-events-none"
         {...backgroundShift}
       />
       
@@ -40,13 +28,15 @@ const Hero = () => {
         <motion.img 
           alt="InnovAIte Logo" 
           initial={{
+            y: -50,
             opacity: 0
           }} 
           animate={{
+            y: 0,
             opacity: 1,
             scale: [1, 1.02, 1],
             rotate: [-1, 1, -1],
-            y: [-10, 0, -10]
+            y: [0, -10, 0]
           }} 
           transition={{
             delay: 0.2,
