@@ -20,6 +20,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [showWatermark, setShowWatermark] = useState(true);
 
+  // Check if the src is a YouTube URL
+  const isYoutubeVideo = src?.includes('youtube.com') || src?.includes('youtu.be');
+
   useEffect(() => {
     // Simulate loading delay
     const timer = setTimeout(() => {
@@ -49,6 +52,20 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   };
 
   if (!src) return null;
+
+  if (isYoutubeVideo) {
+    return (
+      <div className="aspect-video bg-blue-900/30 rounded-md overflow-hidden">
+        <iframe
+          src={src}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          className="w-full h-full"
+          title="YouTube video player"
+        />
+      </div>
+    );
+  }
 
   return (
     <motion.div 

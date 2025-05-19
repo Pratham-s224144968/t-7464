@@ -1,8 +1,38 @@
 
-// Service for handling file uploads
+// Service for handling file uploads and YouTube video links
 
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "@/integrations/supabase/client";
+
+/**
+ * Validates if a URL is a valid YouTube video URL
+ */
+export const isValidYoutubeUrl = (url: string): boolean => {
+  // Check common YouTube URL patterns
+  const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})(\S*)?$/;
+  return youtubeRegex.test(url);
+};
+
+/**
+ * Extracts the YouTube video ID from a valid YouTube URL
+ */
+export const extractYoutubeVideoId = (url: string): string | null => {
+  if (!isValidYoutubeUrl(url)) return null;
+  
+  // Extract video ID from various YouTube URL formats
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
+  return match ? match[1] : null;
+};
+
+/**
+ * Converts a YouTube URL to an embed URL
+ */
+export const getYoutubeEmbedUrl = (url: string): string | null => {
+  const videoId = extractYoutubeVideoId(url);
+  if (!videoId) return null;
+  
+  return `https://www.youtube.com/embed/${videoId}`;
+};
 
 /**
  * Uploads a file with progress tracking

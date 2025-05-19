@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import RestrictedContent from '@/components/MeetingDetails/RestrictedContent';
@@ -8,40 +8,38 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Plus } from 'lucide-react';
 import MeetingUploadForm from '@/components/MeetingUploadForm';
 import { useToast } from '@/hooks/use-toast';
-
-// Sample meeting data - in a real app this would come from an API or database
-const SAMPLE_MEETINGS = [
-  {
-    id: "1",
-    title: "Q2 Strategy Planning",
-    date: "2025-04-15",
-    hasRecording: true, 
-    hasMinutes: true,
-    hasSummary: true
-  },
-  {
-    id: "2",
-    title: "Product Roadmap Review",
-    date: "2025-04-22",
-    hasRecording: true,
-    hasMinutes: true,
-    hasSummary: false
-  },
-  {
-    id: "3",
-    title: "Marketing Campaign Kickoff",
-    date: "2025-05-01",
-    hasRecording: true,
-    hasMinutes: false,
-    hasSummary: false
-  }
-];
+import { getMeetings } from '@/services/meetingService';
+import { Meeting } from '@/services/types';
 
 const Meetings = () => {
   const { isAuthenticated, isDeakinUser } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
+  const [meetings, setMeetings] = useState<Meeting[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Fetch meetings when the component mounts or when the dialog closes
+  const fetchMeetings = async () => {
+    setIsLoading(true);
+    try {
+      const data = await getMeetings();
+      setMeetings(data);
+    } catch (error) {
+      console.error("Error fetching meetings:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load meetings. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    fetchMeetings();
+  }, []);
   
   const handleMeetingClick = (id: string) => {
     navigate(`/meetings/${id}`);
@@ -49,10 +47,16 @@ const Meetings = () => {
 
   const handleUploadSuccess = () => {
     setUploadDialogOpen(false);
+    fetchMeetings(); // Refresh the meetings list
     toast({
       title: "Meeting Created",
       description: "Your meeting has been successfully added.",
     });
+  };
+  
+  const handleDialogClose = () => {
+    setUploadDialogOpen(false);
+    fetchMeetings(); // Refresh the meetings list
   };
 
   if (!isAuthenticated) {
@@ -102,7 +106,11 @@ const Meetings = () => {
           )}
         </div>
         
-        {SAMPLE_MEETINGS.length === 0 ? (
+        {isLoading ? (
+          <div className="flex justify-center py-20">
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
+          </div>
+        ) : meetings.length === 0 ? (
           <div className="text-center py-12 sm:py-20">
             <p className="text-gray-400 mb-6">No meetings have been added yet.</p>
             <Button 
@@ -119,7 +127,7 @@ const Meetings = () => {
               <p className="text-gray-300 mb-6">Welcome, Deakin team member! Here are the latest meeting notes and recordings.</p>
               
               <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {SAMPLE_MEETINGS.map((meeting) => (
+                {meetings.map((meeting) => (
                   <div 
                     key={meeting.id} 
                     className="p-4 bg-blue-950/50 rounded-lg border border-blue-500/20 hover:border-blue-500/40 transition-colors cursor-pointer"
@@ -128,6 +136,7 @@ const Meetings = () => {
                     <h3 className="font-semibold text-blue-300">{meeting.title}</h3>
                     <p className="text-sm text-gray-400 mt-2 mb-4">
                       {new Date(meeting.date).toLocaleDateString()}
+                      {meeting.time && ` • ${meeting.time}`}
                     </p>
                     <div className="flex flex-wrap gap-2 mt-4">
                       {meeting.hasRecording && (
@@ -157,8 +166,8 @@ const Meetings = () => {
         )}
         
         <Dialog open={uploadDialogOpen} onOpenChange={setUploadDialogOpen}>
-          <DialogContent className="w-full max-w-3xl p-0 sm:p-4 md:p-6 sm:max-w-[90vw] md:max-w-[600px]">
-            <MeetingUploadForm onClose={() => setUploadDialogOpen(false)} />
+          <DialogContent className="w-full max-w-3xl p-0 sm:max-w-[90vw] md:max-w-[600px]">
+            <MeetingUploadForm onClose={handleDialogClose} />
           </DialogContent>
         </Dialog>
       </div>

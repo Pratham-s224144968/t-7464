@@ -26,6 +26,9 @@ const MeetingRecording: React.FC<MeetingRecordingProps> = ({
     return <NoRecordingNotice />;
   }
 
+  // Check if the recording URL is a YouTube embed URL
+  const isYoutubeEmbed = recording.includes('youtube.com/embed/');
+
   return (
     <motion.div
       initial="hidden"
@@ -68,7 +71,19 @@ const MeetingRecording: React.FC<MeetingRecordingProps> = ({
           </div>
         </CardHeader>
         <CardContent className="p-4">
-          <VideoPlayer src={recording} />
+          {isYoutubeEmbed ? (
+            <div className="aspect-video w-full overflow-hidden rounded">
+              <iframe
+                src={recording}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full"
+                title="YouTube video player"
+              />
+            </div>
+          ) : (
+            <VideoPlayer src={recording} />
+          )}
         </CardContent>
       </Card>
     </motion.div>
