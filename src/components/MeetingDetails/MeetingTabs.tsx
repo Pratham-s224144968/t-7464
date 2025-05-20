@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, Lock, Video } from "lucide-react";
 import MeetingRecording from "./MeetingRecording";
@@ -37,16 +37,18 @@ const MeetingTabs: React.FC<MeetingTabsProps> = ({
   canAccessRecordings,
   handleRestrictedContentClick,
 }) => {
-  // Debug logging
-  console.log("MeetingTabs rendering with:", { 
-    meetingId: meeting.id,
-    activeTab,
-    hasMinutes: meeting.hasMinutes,
-    minutesExists: meeting.minutes !== undefined,
-    minutesType: typeof meeting.minutes,
-    minutesLength: meeting.minutes ? meeting.minutes.length : 0,
-    minutesContent: meeting.minutes ? meeting.minutes.substring(0, 50) + "..." : "No minutes"
-  });
+  // Debug logging for minutes data
+  useEffect(() => {
+    console.log("MeetingTabs initialized with meeting data:", { 
+      meetingId: meeting.id,
+      activeTab,
+      hasMinutes: meeting.hasMinutes,
+      minutesExists: meeting.minutes !== undefined,
+      minutesType: typeof meeting.minutes,
+      minutesLength: meeting.minutes ? meeting.minutes.length : 0,
+      minutesContent: meeting.minutes ? meeting.minutes.substring(0, 50) + "..." : "No minutes"
+    });
+  }, [meeting, activeTab]);
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

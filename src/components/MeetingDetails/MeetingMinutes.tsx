@@ -18,9 +18,8 @@ const MeetingMinutes: React.FC<MeetingMinutesProps> = ({
 }) => {
   const navigate = useNavigate();
   
-  // Debug logging
-  console.log("MeetingMinutes rendering with:", {
-    minutesExists: minutes !== undefined,
+  console.log("MeetingMinutes component rendering with:", {
+    minutesProvided: minutes !== undefined,
     minutesType: typeof minutes,
     minutesLength: minutes ? minutes.length : 0,
     minutesSample: minutes ? minutes.substring(0, 50) + "..." : "undefined",
@@ -74,7 +73,7 @@ const MeetingMinutes: React.FC<MeetingMinutesProps> = ({
         </CardDescription>
       </CardHeader>
       <CardContent className="pt-6">
-        <pre className="whitespace-pre-wrap text-blue-200 font-sans">{minutes}</pre>
+        <div className="whitespace-pre-wrap text-blue-200 font-sans">{minutes}</div>
       </CardContent>
     </Card>
   );
