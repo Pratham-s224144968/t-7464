@@ -37,10 +37,14 @@ const MeetingTabs: React.FC<MeetingTabsProps> = ({
   canAccessRecordings,
   handleRestrictedContentClick,
 }) => {
+  // Debug logging
   console.log("MeetingTabs rendering with:", { 
     meetingId: meeting.id,
     activeTab,
     hasMinutes: meeting.hasMinutes,
+    minutesExists: meeting.minutes !== undefined,
+    minutesType: typeof meeting.minutes,
+    minutesLength: meeting.minutes ? meeting.minutes.length : 0,
     minutesContent: meeting.minutes ? meeting.minutes.substring(0, 50) + "..." : "No minutes"
   });
 

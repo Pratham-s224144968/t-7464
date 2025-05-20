@@ -21,8 +21,6 @@ const MeetingDetail: React.FC = () => {
   const { data: meeting, isLoading, error } = useQuery({
     queryKey: ['meeting', id],
     queryFn: async () => {
-      console.log("Fetching meeting with ID:", id);
-      
       if (!id) {
         console.error("No meeting ID provided");
         return null;
@@ -40,6 +38,7 @@ const MeetingDetail: React.FC = () => {
           id: meeting.id,
           title: meeting.title,
           hasMinutes: meeting.hasMinutes,
+          minutesExists: meeting.minutes !== undefined,
           minutesType: typeof meeting.minutes,
           minutesLength: meeting.minutes ? meeting.minutes.length : 0,
           minutesPreview: meeting.minutes ? meeting.minutes.substring(0, 100) + '...' : 'No minutes'
@@ -152,6 +151,9 @@ const MeetingDetail: React.FC = () => {
   const canAccessRestrictedContent = isAuthenticated && isDeakinUser;
   // Recordings now require basic authentication (any user)
   const canAccessRecordings = isAuthenticated;
+
+  // Debug log entire meeting object
+  console.log("Full meeting object:", meeting);
 
   return (
     <div className="min-h-screen bg-black text-white pt-28 pb-8 px-8">

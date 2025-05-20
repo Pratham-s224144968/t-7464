@@ -18,12 +18,12 @@ const MeetingMinutes: React.FC<MeetingMinutesProps> = ({
 }) => {
   const navigate = useNavigate();
   
-  // Debug the minutes prop
+  // Debug logging
   console.log("MeetingMinutes rendering with:", {
-    minutes: minutes,
+    minutesExists: minutes !== undefined,
     minutesType: typeof minutes,
-    minutesExists: !!minutes,
     minutesLength: minutes ? minutes.length : 0,
+    minutesSample: minutes ? minutes.substring(0, 50) + "..." : "undefined",
     date,
     canAccess: canAccessRestrictedContent
   });
@@ -64,7 +64,7 @@ const MeetingMinutes: React.FC<MeetingMinutesProps> = ({
     );
   }
 
-  // If minutes content exists
+  // If minutes content exists, display it
   return (
     <Card className="bg-blue-950/20 border-blue-500/30 backdrop-blur">
       <CardHeader className="bg-blue-900/20">
@@ -74,7 +74,7 @@ const MeetingMinutes: React.FC<MeetingMinutesProps> = ({
         </CardDescription>
       </CardHeader>
       <CardContent className="pt-6">
-        <p className="whitespace-pre-line text-blue-200">{minutes}</p>
+        <pre className="whitespace-pre-wrap text-blue-200 font-sans">{minutes}</pre>
       </CardContent>
     </Card>
   );

@@ -10,7 +10,6 @@ import { Meeting } from "./types";
 export const getMeetings = async (): Promise<Meeting[]> => {
   try {
     console.log("Fetching all meetings");
-    // Use generic type for from() to bypass TypeScript's strict checking
     const { data, error } = await supabase
       .from('meetings')
       .select('*')
@@ -27,36 +26,27 @@ export const getMeetings = async (): Promise<Meeting[]> => {
     }
 
     console.log(`Found ${data.length} meetings`);
-
-    // Transform the data to match our frontend Meeting type
-    return data.map((item: any) => {
-      // Extract and process the minutes field
-      let processedMinutes = undefined;
-      if (item.minutes !== null) {
-        processedMinutes = String(item.minutes);
-      }
-      
-      return {
-        id: item.id,
-        title: item.title,
-        date: item.date,
-        time: item.time,
-        participants: item.participants || [],
-        hasRecording: item.has_recording || false,
-        hasMinutes: !!item.minutes,
-        hasSummary: item.has_summary || false,
-        recording: item.recording_url,
-        transcript_url: item.transcript_url,
-        minutes: processedMinutes,
-        summary: item.summary ? {
-          text: String(item.summary.text || ""),
-          keyTakeaways: Array.isArray(item.summary.key_takeaways) 
-            ? item.summary.key_takeaways.map(String)
-            : []
-        } : undefined,
-        created_at: item.created_at
-      };
-    });
+    
+    return data.map((item: any) => ({
+      id: item.id,
+      title: item.title,
+      date: item.date,
+      time: item.time,
+      participants: item.participants || [],
+      hasRecording: item.has_recording || false,
+      hasMinutes: item.minutes ? true : false, // Explicitly check if minutes exist
+      hasSummary: item.has_summary || false,
+      recording: item.recording_url,
+      transcript_url: item.transcript_url,
+      minutes: item.minutes ? String(item.minutes) : undefined, // Convert minutes to string
+      summary: item.summary && typeof item.summary === 'object' ? {
+        text: String(item.summary.text || ""),
+        keyTakeaways: Array.isArray(item.summary.key_takeaways) 
+          ? item.summary.key_takeaways.map(String)
+          : []
+      } : undefined,
+      created_at: item.created_at
+    }));
   } catch (error) {
     console.error("Error in getMeetings:", error);
     return [];
@@ -92,47 +82,24 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
       return null;
     }
     
-    console.log("Raw meeting data:", {
-      id: data.id,
-      title: data.title, 
-      hasMinutes: data.has_minutes,
-      minutesType: typeof data.minutes,
-      minutes: data.minutes
-    });
+    console.log("Raw meeting data:", data);
+    console.log("Minutes type:", typeof data.minutes);
+    console.log("Minutes value:", data.minutes);
     
-    // Extract and process the minutes field
-    let processedMinutes = undefined;
-    if (data.minutes !== null) {
-      processedMinutes = String(data.minutes);
-      console.log("Processed minutes:", {
-        length: processedMinutes.length,
-        preview: processedMinutes.substring(0, 50) + "..."
-      });
-    } else {
-      console.log("No minutes data found");
-    }
-
-    // Process summary data safely with type checking
+    // Ensure minutes is a string if it exists
+    const minutes = data.minutes ? String(data.minutes) : undefined;
+    
+    // Process summary if it exists
     let processedSummary = undefined;
-    if (data.summary) {
-      console.log("Raw summary data:", data.summary);
+    if (data.summary && typeof data.summary === 'object') {
+      const summaryObj = data.summary as Record<string, any>;
       
-      // Type checking for summary data
-      if (typeof data.summary === 'object' && data.summary !== null) {
-        const summaryObj = data.summary as Record<string, any>;
-        
-        processedSummary = {
-          text: String(summaryObj.text || ""),
-          keyTakeaways: Array.isArray(summaryObj.key_takeaways) 
-            ? summaryObj.key_takeaways.map(String)
-            : []
-        };
-        console.log("Processed summary:", processedSummary);
-      } else {
-        console.log("Summary data found but in unexpected format");
-      }
-    } else {
-      console.log("No summary data found");
+      processedSummary = {
+        text: String(summaryObj.text || ""),
+        keyTakeaways: Array.isArray(summaryObj.key_takeaways) 
+          ? summaryObj.key_takeaways.map(String)
+          : []
+      };
     }
 
     // Transform the data to match our frontend Meeting type
@@ -143,11 +110,11 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
       time: data.time,
       participants: data.participants || [],
       hasRecording: data.has_recording || false,
-      hasMinutes: !!data.minutes,
+      hasMinutes: data.minutes ? true : false, // Explicitly check if minutes exist
       hasSummary: data.has_summary || false,
       recording: data.recording_url,
       transcript_url: data.transcript_url,
-      minutes: processedMinutes,
+      minutes: minutes,
       summary: processedSummary,
       created_at: data.created_at
     };
