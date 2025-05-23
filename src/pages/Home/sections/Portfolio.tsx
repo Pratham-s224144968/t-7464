@@ -109,8 +109,9 @@ const Portfolio = () => {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button variant="outline" className="text-blue-400 border-blue-500/50 hover:bg-blue-950/50" onClick={() => window.open('https://gitlab.deakin.edu.au/innovaite/generalist', '_blank')}>
-                  Learn More
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={() => window.open('https://gitlab.deakin.edu.au/innovaite/generalist', '_blank')}>
+                  <GitMerge className="mr-2 h-4 w-4" />
+                  View Project Repository
                 </Button>
               </CardFooter>
             </Card>
