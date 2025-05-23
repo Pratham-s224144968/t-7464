@@ -9,32 +9,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 import { Search, Filter, RefreshCcw, ExternalLink } from 'lucide-react';
 import BlogPostCard, { BlogPost } from '@/components/BlogPostCard';
 import { blogPosts } from '@/data/blogPosts';
@@ -43,7 +17,6 @@ import Navbar from '@/components/Navbar';
 const BlogPosts = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const categories = Array.from(new Set(blogPosts.map(post => post.category))).sort();
 
@@ -69,7 +42,6 @@ const BlogPosts = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <Navbar />
       <div className="container py-32">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div className="flex items-center">
@@ -81,14 +53,6 @@ const BlogPosts = () => {
               className="ml-4 flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors bg-blue-950/30 px-3 py-1 rounded-full text-sm"
             >
               YouTube Channel <ExternalLink size={14} />
-            </a>
-            <a 
-              href="https://innovate-spark-hackathon-hub.lovable.app" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="ml-2 flex items-center gap-1 text-amber-400 hover:text-amber-300 transition-colors bg-amber-950/30 px-3 py-1 rounded-full text-sm"
-            >
-              Hackathon Hub <ExternalLink size={14} />
             </a>
           </div>
           <div className="flex items-center space-x-4 w-full md:w-auto">

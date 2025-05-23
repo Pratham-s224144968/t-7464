@@ -1,11 +1,18 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Blog = () => {
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    // Redirect to the BlogPosts page
+    navigate('/blog');
+  }, [navigate]);
+  
   return (
-    <div className="min-h-screen bg-black text-white p-8">
-      <h1 className="text-3xl font-bold mb-6">Blog Posts</h1>
-      <p className="text-gray-300">Blog content will be displayed here.</p>
+    <div className="min-h-screen bg-black text-white p-8 flex items-center justify-center">
+      <p className="text-gray-300">Redirecting to blog posts...</p>
     </div>
   );
 };

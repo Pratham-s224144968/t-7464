@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { Menu, X, FileText, Users, BookOpenText, ExternalLink } from 'lucide-react';
+import { Menu, FileText, Users, BookOpenText, ExternalLink } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -70,7 +70,7 @@ export const MobileNav = () => {
               to="/blog" 
               className={cn(
                 "flex items-center text-lg text-white/80 hover:text-white py-2 border-b border-blue-900/30",
-                location.pathname === "/blog" && "text-white font-medium"
+                location.pathname.includes("/blog") && "text-white font-medium"
               )}
             >
               <BookOpenText className="mr-2 h-5 w-5" />

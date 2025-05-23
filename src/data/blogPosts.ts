@@ -1,177 +1,165 @@
 
-import { BlogPost } from "@/components/BlogPostCard";
+import { BlogPost } from '../components/BlogPostCard';
 
 export const blogPosts: BlogPost[] = [
   {
     id: "1",
-    title: "AI for Industry Collaboration Instructional Video",
-    excerpt: "Learn how AI can enhance industry partnerships and collaborative projects between universities and businesses.",
-    coverImage: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
-    youtubeUrl: "https://www.youtube.com/watch?v=2DkQAYOGppY",
-    date: new Date("2025-05-08"),
+    title: "Transforming Education with AI: InnovAIte's Approach",
+    excerpt: "Discover how InnovAIte is revolutionizing higher education through innovative AI solutions that enhance learning outcomes and student engagement.",
+    content: "Full article content here...",
+    coverImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800",
+    date: new Date('2025-05-15'),
     author: {
-      name: "Thomas Fleming",
-      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      name: "Dr. Sarah Johnson",
+      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
     },
-    commentCount: 0,
-    category: "AI Education"
+    category: "AI",
+    tags: ["education", "innovation", "student-experience"],
+    commentCount: 12,
+    isVideo: false
   },
   {
     id: "2",
-    title: "AI for Student Success Instructional Video",
-    excerpt: "Discover how AI tools can support student learning outcomes and improve educational experiences.",
-    coverImage: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
-    youtubeUrl: "https://www.youtube.com/watch?v=X5AZfmCMfMM",
-    date: new Date("2025-04-25"),
+    title: "Behind the Scenes: Building AI Models for Education",
+    excerpt: "Our technical team shares insights into the development process of creating custom AI models that understand educational content and student needs.",
+    content: "Full article content here...",
+    coverImage: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?q=80&w=800",
+    date: new Date('2025-05-10'),
     author: {
-      name: "Pooja Dissanayake",
-      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      name: "James Chen",
+      avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
     },
-    commentCount: 3,
-    category: "Education"
+    category: "Technology",
+    tags: ["machine-learning", "data-science", "algorithms"],
+    commentCount: 8,
+    isVideo: false
   },
   {
     id: "3",
-    title: "Academic Integrity and Ethics of AI",
-    excerpt: "An in-depth exploration of ethical considerations when using AI tools in academic research and education.",
-    coverImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
-    youtubeUrl: "https://www.youtube.com/watch?v=2_3zvdZ-J8I",
-    date: new Date("2025-04-18"),
+    title: "Student Success Stories: AI-Assisted Learning Outcomes",
+    excerpt: "Read inspiring stories from students who have benefited from InnovAIte's personalized learning tools and improved their academic performance.",
+    content: "Full article content here...",
+    coverImage: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?q=80&w=800",
+    date: new Date('2025-05-05'),
     author: {
-      name: "Leon Yang",
-      avatar: "/lovable-uploads/56f17cfa-e923-4bfe-8f17-008f082f7ba9.png",
+      name: "Michelle Rodriguez",
+      avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
     },
-    commentCount: 8,
-    category: "Ethics"
+    category: "Education",
+    tags: ["student-stories", "success", "case-study"],
+    commentCount: 15,
+    isVideo: false
   },
   {
     id: "4",
-    title: "Administrative AI Applications Instructional Video",
-    excerpt: "Exploring how AI can streamline administrative tasks and improve efficiency in educational institutions.",
-    coverImage: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81",
-    youtubeUrl: "https://www.youtube.com/watch?v=gq1yJgqo9rY", 
-    date: new Date("2025-04-04"),
+    title: "Designing for Accessibility: InnovAIte's UX Principles",
+    excerpt: "Our UX team explains how we design AI-powered educational tools with accessibility and inclusivity at the forefront of our process.",
+    content: "Full article content here...",
+    coverImage: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800",
+    date: new Date('2025-04-28'),
     author: {
-      name: "Negin Pakroohjahromi",
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      name: "Alex Patel",
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
     },
-    commentCount: 5,
-    category: "Administration"
+    category: "UX Design",
+    tags: ["accessibility", "inclusive-design", "user-experience"],
+    commentCount: 6,
+    isVideo: false
   },
   {
     id: "5",
-    title: "Instructional for Voice and Multimodal AI",
-    excerpt: "Learn about voice technologies and multimodal AI interfaces that are changing how we interact with technology.",
-    coverImage: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
-    youtubeUrl: "https://www.youtube.com/watch?v=eGu44_HhCa0",
-    date: new Date("2025-03-20"),
+    title: "The Future of Education: AI Trends for 2026",
+    excerpt: "Our research team analyzes emerging trends in educational AI and predicts how they will shape learning environments in the coming year.",
+    content: "Full article content here...",
+    coverImage: "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?q=80&w=800",
+    date: new Date('2025-04-20'),
     author: {
-      name: "Jay Shrimpton",
-      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      name: "Dr. Robert Williams",
+      avatar: "https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
     },
-    commentCount: 8,
-    category: "Voice Technology"
+    category: "Research",
+    tags: ["future-trends", "predictions", "innovation"],
+    commentCount: 21,
+    isVideo: false
   },
   {
     id: "6",
-    title: "Instructional for AI Teaching Tools",
-    excerpt: "Practical workflows and examples of how to effectively integrate AI tools into teaching and learning environments.",
-    coverImage: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
-    youtubeUrl: "https://www.youtube.com/watch?v=EV1ggPgUPoo",
-    date: new Date("2025-03-05"),
+    title: "[Video] Introduction to InnovAIte's Educational Platform",
+    excerpt: "Watch this walkthrough of our platform's key features and how they integrate into existing educational workflows.",
+    content: "Video content and transcript...",
+    coverImage: "https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+    date: new Date('2025-04-15'),
     author: {
-      name: "Aneesh Sameer Pedram",
-      avatar: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      name: "Emily Cooper",
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
     },
-    commentCount: 7,
-    category: "Teaching"
+    category: "Tutorial",
+    tags: ["tutorial", "platform-overview", "features"],
+    commentCount: 9,
+    isVideo: true
   },
   {
     id: "7",
-    title: "DeepDive into Bolt.new",
-    excerpt: "A comprehensive exploration of the Bolt.new platform and how it can be used in educational contexts.",
-    coverImage: "https://images.unsplash.com/photo-1518770660439-4636190af475",
-    youtubeUrl: "https://www.youtube.com/watch?v=IUYo6sdpqEo",
-    date: new Date("2025-02-15"),
+    title: "Collaborative AI: How We're Working with Universities",
+    excerpt: "Learn about our partnerships with leading universities and how we're co-developing AI solutions for specific educational challenges.",
+    content: "Full article content here...",
+    coverImage: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+    date: new Date('2025-04-08'),
     author: {
-      name: "Michelle Chang",
-      avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      name: "Prof. Jonathan Blake",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
     },
-    commentCount: 20,
-    category: "Tool Review"
+    category: "Partnerships",
+    tags: ["collaboration", "universities", "research"],
+    commentCount: 5,
+    isVideo: false
   },
   {
     id: "8",
-    title: "DeepDive into Replit",
-    excerpt: "Discover how Replit can transform coding education and collaborative programming projects.",
-    coverImage: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
-    youtubeUrl: "https://www.youtube.com/watch?v=Yh7O4AWBDj4",
-    date: new Date("2025-02-01"),
+    title: "[Video] AI & Ethics in Education: Our Framework",
+    excerpt: "Watch our presentation on how we approach ethical considerations in AI development for educational contexts.",
+    content: "Video content and transcript...",
+    coverImage: "https://images.unsplash.com/photo-1576267423048-15c0040fec78?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+    date: new Date('2025-04-01'),
     author: {
-      name: "Robert Johnson",
-      avatar: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      name: "Dr. Maria Gonzalez",
+      avatar: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
     },
-    commentCount: 12,
-    category: "Tool Review"
+    category: "Ethics",
+    tags: ["ethics", "responsibility", "governance"],
+    commentCount: 17,
+    isVideo: true
   },
   {
     id: "9",
-    title: "DeepDive into Fynix.ai",
-    excerpt: "An in-depth look at the Fynix.ai platform and its applications in educational contexts.",
-    coverImage: "https://images.unsplash.com/photo-1581092335397-9fa341163a6a",
-    youtubeUrl: "https://www.youtube.com/watch?v=ei7o0jfAaqs",
-    date: new Date("2025-01-15"),
+    title: "How We're Making Academic Content More Accessible with AI",
+    excerpt: "Discover our approach to converting complex academic materials into more digestible formats using AI-powered summarization and visualization.",
+    content: "Full article content here...",
+    coverImage: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+    date: new Date('2025-03-25'),
     author: {
-      name: "Sarah Williams",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      name: "Thomas Lee",
+      avatar: "https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
     },
-    commentCount: 15,
-    category: "Tool Review"
+    category: "Accessibility",
+    tags: ["content-transformation", "simplification", "learning-materials"],
+    commentCount: 11,
+    isVideo: false
   },
   {
     id: "10",
-    title: "Instructional Video into AI for Research Data Analysis",
-    excerpt: "Learn how AI tools can enhance research processes and data analysis techniques.",
-    coverImage: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3",
-    youtubeUrl: "https://www.youtube.com/watch?v=dfaM72A9y10",
-    date: new Date("2024-12-20"),
+    title: "Building the Web Infrastructure for Educational AI",
+    excerpt: "Our web development team shares insights into creating robust, scalable platforms that deliver AI capabilities to educational institutions.",
+    content: "Full article content here...",
+    coverImage: "https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+    date: new Date('2025-03-18'),
     author: {
-      name: "David Chen",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      name: "Sophia Wang",
+      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
     },
-    commentCount: 18,
-    category: "Research"
-  },
-  {
-    id: "11",
-    title: "DeepDive into Lovable",
-    excerpt: "Explore the features of Lovable and how it can be used to create innovative AI-powered applications.",
-    coverImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c",
-    youtubeUrl: "https://www.youtube.com/watch?v=oXEGcY5OgBs",
-    date: new Date("2024-12-05"),
-    author: {
-      name: "Emma Wilson",
-      avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    commentCount: 25,
-    category: "Tool Review"
-  },
-  {
-    id: "12",
-    title: "Mastering Prompt Engineering",
-    excerpt: "Essential techniques and applications for effective prompt engineering with large language models.",
-    coverImage: "https://images.unsplash.com/photo-1526378722484-bd91ca387e72",
-    youtubeUrl: "https://www.youtube.com/watch?v=AG0oKD46KJQ",
-    date: new Date("2024-11-20"),
-    author: {
-      name: "Michael Thompson",
-      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    commentCount: 30,
-    category: "Prompt Engineering"
+    category: "Web Development",
+    tags: ["web-development", "infrastructure", "scalability"],
+    commentCount: 7,
+    isVideo: false
   }
 ];
-
-export function getBlogPost(id: string): BlogPost | undefined {
-  return blogPosts.find(post => post.id === id);
-}

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './components/theme-provider';
@@ -8,6 +7,8 @@ import { useAuth } from './contexts/AuthContext';
 import Navbar from './components/Navbar';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
+import BlogPosts from './pages/BlogPosts';
+import TeamMembers from './pages/TeamMembers';
 import Meetings from './pages/Meetings';
 import MeetingDetail from './pages/MeetingDetail';
 import Home from './pages/Home';
@@ -68,8 +69,9 @@ function App() {
       
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog" element={<BlogPosts />} />
         <Route path="/blog/:id" element={<BlogPost />} />
+        <Route path="/team" element={<TeamMembers />} />
         
         {/* Meetings routes */}
         <Route 

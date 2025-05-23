@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { ExternalLink, BookOpenText } from 'lucide-react';
+import { ExternalLink, BookOpenText, Users } from 'lucide-react';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -83,6 +83,17 @@ export const DesktopNavItems = () => {
               )}>
                 <BookOpenText className="mr-1 h-4 w-4" />
                 Blog
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <Link to="/team">
+              <NavigationMenuLink className={cn(
+                navigationMenuTriggerStyle(),
+                "bg-transparent text-white hover:bg-blue-900/50 dark:hover:bg-blue-950/70"
+              )}>
+                <Users className="mr-1 h-4 w-4" />
+                Team
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>

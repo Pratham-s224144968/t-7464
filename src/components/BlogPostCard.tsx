@@ -1,75 +1,90 @@
 
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { FileVideo, MessageSquare, Youtube } from "lucide-react";
-import { Link } from "react-router-dom";
-import { formatDistanceToNow } from "date-fns";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export interface BlogPost {
   id: string;
   title: string;
   excerpt: string;
+  content: string;
   coverImage: string;
-  youtubeUrl?: string;
   date: Date;
   author: {
     name: string;
     avatar: string;
   };
-  commentCount: number;
   category: string;
+  tags: string[];
+  commentCount: number;
+  isVideo: boolean;
 }
 
 interface BlogPostCardProps {
   post: BlogPost;
 }
 
-const BlogPostCard = ({ post }: BlogPostCardProps) => {
+const BlogPostCard: React.FC<BlogPostCardProps> = ({ post }) => {
   return (
-    <Card className="overflow-hidden border-blue-500/30 bg-blue-950/20 backdrop-blur hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300">
-      <div className="aspect-video w-full overflow-hidden">
-        <img 
-          src={post.coverImage} 
-          alt={post.title} 
-          className="w-full h-full object-cover transition-transform hover:scale-105 duration-500"
-        />
-      </div>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <span className="px-2 py-1 bg-blue-600/50 rounded-full text-xs text-blue-200">{post.category}</span>
-          <span className="text-sm text-white/60">{formatDistanceToNow(post.date, { addSuffix: true })}</span>
-        </div>
-        <CardTitle className="text-xl font-semibold text-white mt-2">{post.title}</CardTitle>
-        <CardDescription className="text-blue-200">{post.excerpt}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex items-center space-x-3 mb-4">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-blue-950/20 border-blue-500/30 backdrop-blur h-full flex flex-col">
+      <Link to={`/blog/${post.id}`} className="group">
+        <div className="relative aspect-video overflow-hidden">
           <img 
-            src={post.author.avatar} 
-            alt={post.author.name}
-            className="w-8 h-8 rounded-full border border-blue-500/50" 
+            src={post.coverImage} 
+            alt={post.title} 
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
-          <span className="text-sm text-white/70">{post.author.name}</span>
-        </div>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <div className="flex items-center space-x-4">
-          {post.youtubeUrl && (
-            <div className="flex items-center text-white/70">
-              <Youtube className="w-4 h-4 mr-1 text-blue-400" />
-              <span className="text-xs">Watch</span>
+          {post.isVideo && (
+            <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full">
+              Video
             </div>
           )}
-          <div className="flex items-center text-white/70">
-            <MessageSquare className="w-4 h-4 mr-1 text-blue-400" />
-            <span className="text-xs">{post.commentCount}</span>
+          <div className="absolute top-2 left-2">
+            <Badge className={`${
+              post.category === 'AI' ? 'bg-blue-600 hover:bg-blue-700' :
+              post.category === 'Technology' ? 'bg-purple-600 hover:bg-purple-700' :
+              post.category === 'UX Design' ? 'bg-pink-600 hover:bg-pink-700' :
+              post.category === 'Web Development' ? 'bg-amber-600 hover:bg-amber-700' :
+              'bg-green-600 hover:bg-green-700'
+            }`}>
+              {post.category}
+            </Badge>
           </div>
         </div>
-        <Button variant="outline" size="sm" asChild>
-          <Link to={`/blog/${post.id}`} className="text-blue-400 border-blue-500/50 hover:bg-blue-950/50">
-            Read More
-          </Link>
-        </Button>
+      </Link>
+      
+      <CardHeader className="pb-2">
+        <Link to={`/blog/${post.id}`}>
+          <CardTitle className="text-xl text-white hover:text-blue-400 transition-colors duration-200">
+            {post.title}
+          </CardTitle>
+        </Link>
+        <div className="flex items-center space-x-2 mt-2">
+          <Avatar className="h-6 w-6">
+            <AvatarImage src={post.author.avatar} alt={post.author.name} />
+            <AvatarFallback>{post.author.name[0]}</AvatarFallback>
+          </Avatar>
+          <CardDescription className="text-blue-300 text-sm">
+            {post.author.name} • {format(post.date, 'MMM dd, yyyy')}
+          </CardDescription>
+        </div>
+      </CardHeader>
+      
+      <CardContent className="pb-4 flex-grow">
+        <p className="text-gray-300 line-clamp-3">{post.excerpt}</p>
+      </CardContent>
+      
+      <CardFooter className="pt-0 flex justify-between text-sm text-blue-300 border-t border-blue-900/30 py-3">
+        <div className="flex space-x-2">
+          {post.tags.slice(0, 2).map((tag) => (
+            <span key={tag}>#{tag}</span>
+          ))}
+          {post.tags.length > 2 && <span>+{post.tags.length - 2}</span>}
+        </div>
+        <div>{post.commentCount} comments</div>
       </CardFooter>
     </Card>
   );
