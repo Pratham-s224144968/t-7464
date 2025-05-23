@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -152,7 +153,7 @@ const TeamMembers: React.FC = () => {
       <div className="min-h-screen bg-black text-white">
         <Navbar />
         <motion.section 
-          className="py-20 bg-gradient-to-b from-black to-blue-950/50" 
+          className="py-20 px-4 pt-28 bg-gradient-to-b from-black to-blue-950/50" 
           initial={{ opacity: 0 }} 
           animate={{ opacity: 1 }} 
           transition={{ duration: 0.8 }}
@@ -240,7 +241,7 @@ const TeamMembers: React.FC = () => {
     <div className="min-h-screen bg-black text-white">
       <Navbar />
       
-      <motion.section className="py-20 bg-gradient-to-b from-black to-blue-950/50" initial={{
+      <motion.section className="py-20 px-4 pt-28 bg-gradient-to-b from-black to-blue-950/50" initial={{
         opacity: 0
       }} animate={{
         opacity: 1
