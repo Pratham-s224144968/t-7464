@@ -61,11 +61,20 @@ const Contact = () => {
             <div className="space-y-3">
               <div className="flex items-center">
                 <Mail className="w-5 h-5 text-blue-400 mr-2" />
-                <span className="text-white/80">innovaite@deakin.edu.au</span>
+                <a href="mailto:innovaite@deakin.edu.au" className="text-white/80 hover:text-blue-400 transition-colors">
+                  innovaite@deakin.edu.au
+                </a>
               </div>
               <div className="flex items-center">
                 <MessageSquare className="w-5 h-5 text-blue-400 mr-2" />
-                <span className="text-white/80">MS Teams Channel</span>
+                <a 
+                  href="https://teams.microsoft.com/l/team/innovaite" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-white/80 hover:text-blue-400 transition-colors"
+                >
+                  MS Teams Channel
+                </a>
               </div>
             </div>
           </motion.div>
